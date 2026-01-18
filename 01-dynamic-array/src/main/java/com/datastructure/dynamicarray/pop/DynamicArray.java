@@ -2,22 +2,24 @@ package com.datastructure.dynamicarray.pop;
 
 import java.util.Arrays;
 
-public class DynamicArray {
+public class DynamicArray<T> {
 
     private int capacity = 10;
-    private Object[] elements = new Object[capacity];
+    private T[] elements;
     private int index = 0;
 
+    @SuppressWarnings("unchecked")
     public DynamicArray() {
-
+        this.elements = (T[]) new Object[capacity];
     }
 
+    @SuppressWarnings("unchecked")
     public DynamicArray(int capacity) {
         this.capacity = capacity;
-        this.elements = new Object[capacity];
+        this.elements = (T[]) new Object[capacity];
     }
 
-    public void add(Object element) {
+    public void add(T element) {
         if (this.index + 1 > capacity) {
             capacity = (int)(capacity * 1.5);
             elements = Arrays.copyOf(elements, capacity);
@@ -26,10 +28,8 @@ public class DynamicArray {
         index++;
     }
 
-    public void add(int index, Object element) {
-        if (index < 0 || index > this.index) {
-            throw new IndexOutOfBoundsException();
-        }
+    public void add(int index, T element) {
+        checkIndex(index, this.index + 1);
         if (this.index + 1 > capacity) {
             capacity = (int)(capacity * 1.5);
             elements = Arrays.copyOf(elements, capacity);
@@ -39,18 +39,24 @@ public class DynamicArray {
         this.index++;
     }
 
-    public Object get(int index) {
+    public T get(int index) {
+        checkIndex(index, this.index);
         return elements[index];
     }
 
-    public void set(int index, Object element) {
-        if (elements[index] != null) {
-        }
+    public T set(int index, T element) {
+        checkIndex(index, this.index);
+        T old = elements[index];
         elements[index] = element;
+        return old;
     }
 
-    public void remove() {
-
+    public T remove(int index) {
+        checkIndex(index, this.index);
+        T old= elements[index];
+        System.arraycopy(elements, index + 1, elements, index, this.index - index - 1);
+        this.index--;
+        return old;
     }
 
     public int size() {
@@ -75,5 +81,11 @@ public class DynamicArray {
 
     private void collapseCapacity() {
 
+    }
+
+    private void checkIndex(int index, int bound) {
+        if (index < 0 || index >= bound) {
+            throw new IndexOutOfBoundsException();
+        }
     }
 }
