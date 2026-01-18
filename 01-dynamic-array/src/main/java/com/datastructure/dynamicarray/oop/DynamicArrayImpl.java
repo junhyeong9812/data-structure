@@ -1,6 +1,7 @@
 package com.datastructure.dynamicarray.oop;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Objects;
 
 public class DynamicArrayImpl<E> implements DynamicArray<E> {
@@ -57,11 +58,7 @@ public class DynamicArrayImpl<E> implements DynamicArray<E> {
         System.arraycopy(elements, index + 1, elements, index, this.index - index -1);
         this.index--;
         elements[this.index] = null;
-        if (this.index - 1 <= capacity/4 && capacity > 10) {
-            capacity = Math.max(capacity/2, 10);
-            elements = Arrays.copyOf(elements, capacity);
-        }
-
+        collapseCapacity();
         return old;
     }
 
@@ -77,7 +74,10 @@ public class DynamicArrayImpl<E> implements DynamicArray<E> {
 
     @Override
     public boolean contains(E element){
-        return true;
+        for (int index = 0; index < this.index; index++) {
+            if(Objects.equals(elements[index],element)) return true;
+        }
+        return false;
     }
 
     @Override
@@ -94,6 +94,22 @@ public class DynamicArrayImpl<E> implements DynamicArray<E> {
         index = 0;
     }
 
+    @Override
+    public Iterator<E> iterator() {
+        return new Iterator<E>() {
+            private int cursor = 0;
+            @Override
+            public boolean hasNext() {
+                return cursor < index;
+            }
+
+            @Override
+            public E next() {
+                return elements[cursor++];
+            }
+        };
+    }
+
     private void checkIndex(int index, int bound) {
         if (index < 0 || index >= bound) {
             throw new IndexOutOfBoundsException();
@@ -105,6 +121,13 @@ public class DynamicArrayImpl<E> implements DynamicArray<E> {
             int extendCapacity = (int)(capacity * 1.5);
             capacity = extendCapacity;
             elements = Arrays.copyOf(elements, extendCapacity);
+        }
+    }
+
+    private void collapseCapacity() {
+        if ( this.index <= capacity/4 && capacity > 10) {
+            capacity = Math.max(capacity/2, 10);
+            elements = Arrays.copyOf(elements, capacity);
         }
     }
 }

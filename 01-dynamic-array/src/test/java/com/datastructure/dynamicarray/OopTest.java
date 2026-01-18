@@ -215,17 +215,17 @@ class OopTest {
         @DisplayName("19. 존재하는 요소를 contains로 확인할 수 있다")
         void test19_containsExistingElement() {
             // TODO: contains() 메서드 구현 후 테스트
-//             arr.add(1);
-//             arr.add(2);
-//             assertThat(arr.contains(1)).isTrue();
+             arr.add(1);
+             arr.add(2);
+             assertThat(arr.contains(1)).isTrue();
         }
 
         @Test
         @DisplayName("20. 존재하지 않는 요소는 contains가 false다")
         void test20_containsNonExistingElement() {
             // TODO: contains() 메서드 구현 후 테스트
-            // arr.add(1);
-            // assertThat(arr.contains(999)).isFalse();
+             arr.add(1);
+             assertThat(arr.contains(999)).isFalse();
         }
 
         @Test
@@ -344,14 +344,14 @@ class OopTest {
         @DisplayName("30. Iterator로 순회할 수 있다")
         void test30_iterator() {
             // TODO: Iterator 구현 후 테스트
-            // arr.add(1);
-            // arr.add(2);
-            // arr.add(3);
-            // int sum = 0;
-            // for (Integer i : arr) {
-            //     sum += i;
-            // }
-            // assertThat(sum).isEqualTo(6);
+             arr.add(1);
+             arr.add(2);
+             arr.add(3);
+             int sum = 0;
+             for (Integer i : arr) {
+                 sum += i;
+             }
+             assertThat(sum).isEqualTo(6);
         }
     }
 }

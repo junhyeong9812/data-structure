@@ -1,6 +1,8 @@
 package com.datastructure.dynamicarray.oop;
 
-public interface DynamicArray<E> {
+import java.util.Iterator;
+
+public interface DynamicArray<E> extends Iterable<E> {
 
     public void add(E element);
 
