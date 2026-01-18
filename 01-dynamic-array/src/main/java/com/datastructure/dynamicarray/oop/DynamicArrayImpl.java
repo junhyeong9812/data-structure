@@ -61,8 +61,7 @@ public class DynamicArrayImpl<E> implements DynamicArray<E> {
 
     @Override
     public boolean isEmpty(){
-
-        return true;
+        return index == 0;
     }
 
     @Override
