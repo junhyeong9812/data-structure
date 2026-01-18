@@ -1,6 +1,7 @@
 package com.datastructure.dynamicarray.oop;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class DynamicArrayImpl<E> implements DynamicArray<E> {
 
@@ -71,7 +72,10 @@ public class DynamicArrayImpl<E> implements DynamicArray<E> {
 
     @Override
     public int indexOf(E element){
-        return 0;
+        for (int index = 0; index < this.index; index++) {
+            if(Objects.equals(elements[index],element)) return index;
+        }
+        return -1;
     }
 
     @Override
