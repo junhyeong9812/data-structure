@@ -21,20 +21,14 @@ public class DynamicArray<T> {
     }
 
     public void add(T element) {
-        if (this.index + 1 > capacity) {
-            capacity = (int)(capacity * 1.5);
-            elements = Arrays.copyOf(elements, capacity);
-        }
+        extendCapacity();
         elements[index] = element;
         index++;
     }
 
     public void add(int index, T element) {
         checkIndex(index, this.index + 1);
-        if (this.index + 1 > capacity) {
-            capacity = (int)(capacity * 1.5);
-            elements = Arrays.copyOf(elements, capacity);
-        }
+        extendCapacity();
         System.arraycopy(elements, index, elements, index+1, this.index - index);
         elements[index] = element;
         this.index++;
@@ -58,6 +52,7 @@ public class DynamicArray<T> {
         System.arraycopy(elements, index + 1, elements, index, this.index - index - 1);
         this.index--;
         elements[this.index] = null;
+        collapseCapacity();
         return old;
     }
 
@@ -106,11 +101,17 @@ public class DynamicArray<T> {
     }
 
     private void extendCapacity() {
-
+        if (this.index + 1 > capacity) {
+            capacity = (int)(capacity * 1.5);
+            elements = Arrays.copyOf(elements, capacity);
+        }
     }
 
     private void collapseCapacity() {
-
+        if ( this.index <= capacity/4 && capacity > 10) {
+            capacity = Math.max(capacity/2, 10);
+            elements = Arrays.copyOf(elements, capacity);
+        }
     }
 
     private void checkIndex(int index, int bound) {
