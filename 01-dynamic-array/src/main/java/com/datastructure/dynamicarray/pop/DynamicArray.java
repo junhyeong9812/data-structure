@@ -22,21 +22,19 @@ public class DynamicArray {
             capacity = (int)(capacity * 1.5);
             elements = Arrays.copyOf(elements, capacity);
         }
-        for (int i = this.index; i > 0; i--) {
-            elements[i] = elements[i - 1];
-        }
         elements[index] = element;
         index++;
     }
 
     public void add(int index, Object element) {
+        if (index < 0 || index > this.index) {
+            throw new IndexOutOfBoundsException();
+        }
         if (this.index + 1 > capacity) {
             capacity = (int)(capacity * 1.5);
             elements = Arrays.copyOf(elements, capacity);
         }
-        for (int i = this.index; i > index ; i--) {
-            elements[i] = elements[i - 1];
-        }
+        System.arraycopy(elements, index, elements, index+1, this.index - index);
         elements[index] = element;
         this.index++;
     }
