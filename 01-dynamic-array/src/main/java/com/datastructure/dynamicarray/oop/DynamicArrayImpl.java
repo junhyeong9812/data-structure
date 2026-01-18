@@ -43,7 +43,10 @@ public class DynamicArrayImpl<E> implements DynamicArray<E> {
 
     @Override
     public E set(int index, E element){
-        return null;
+        checkIndex(index, this.index);
+        E old = elements[index];
+        elements[index] = element;
+        return old;
     }
 
     @Override
