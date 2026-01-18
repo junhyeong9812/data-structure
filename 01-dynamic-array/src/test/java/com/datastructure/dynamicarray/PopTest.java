@@ -214,35 +214,35 @@ class PopTest {
         @DisplayName("19. 존재하는 요소를 contains로 확인할 수 있다")
         void test19_containsExistingElement() {
             // TODO: contains() 메서드 구현 후 테스트
-            // arr.add(1);
-            // arr.add(2);
-            // assertThat(arr.contains(1)).isTrue();
+             arr.add(1);
+             arr.add(2);
+             assertThat(arr.contains(1)).isTrue();
         }
 
         @Test
         @DisplayName("20. 존재하지 않는 요소는 contains가 false다")
         void test20_containsNonExistingElement() {
             // TODO: contains() 메서드 구현 후 테스트
-            // arr.add(1);
-            // assertThat(arr.contains(999)).isFalse();
+             arr.add(1);
+             assertThat(arr.contains(999)).isFalse();
         }
 
         @Test
         @DisplayName("21. indexOf로 요소의 인덱스를 찾을 수 있다")
         void test21_indexOfExistingElement() {
             // TODO: indexOf() 메서드 구현 후 테스트
-            // arr.add(10);
-            // arr.add(20);
-            // arr.add(30);
-            // assertThat(arr.indexOf(20)).isEqualTo(1);
+             arr.add(10);
+             arr.add(20);
+             arr.add(30);
+             assertThat(arr.indexOf(20)).isEqualTo(1);
         }
 
         @Test
         @DisplayName("22. 존재하지 않는 요소의 indexOf는 -1이다")
         void test22_indexOfNonExistingElement() {
             // TODO: indexOf() 메서드 구현 후 테스트
-            // arr.add(1);
-            // assertThat(arr.indexOf(999)).isEqualTo(-1);
+             arr.add(1);
+             assertThat(arr.indexOf(999)).isEqualTo(-1);
         }
     }
 
@@ -254,21 +254,21 @@ class PopTest {
         @DisplayName("23. 초기 용량(10)을 초과하면 자동 확장된다")
         void test23_autoGrowBeyondInitialCapacity() {
             // TODO: 자동 확장 구현 후 테스트
-            // for (int i = 0; i < 15; i++) {
-            //     arr.add(i);
-            // }
-            // assertThat(arr.size()).isEqualTo(15);
+             for (int i = 0; i < 15; i++) {
+                 arr.add(i);
+             }
+             assertThat(arr.size()).isEqualTo(15);
         }
 
         @Test
         @DisplayName("24. 대량의 요소를 추가해도 정상 동작한다")
         void test24_addManyElements() {
             // TODO: 대량 추가 테스트
-            // for (int i = 0; i < 1000; i++) {
-            //     arr.add(i);
-            // }
-            // assertThat(arr.size()).isEqualTo(1000);
-            // assertThat(arr.get(999)).isEqualTo(999);
+             for (int i = 0; i < 1000; i++) {
+                 arr.add(i);
+             }
+             assertThat(arr.size()).isEqualTo(1000);
+             assertThat(arr.get(999)).isEqualTo(999);
         }
     }
 
@@ -280,23 +280,23 @@ class PopTest {
         @DisplayName("25. 요소가 1/4 이하가 되면 자동 축소된다")
         void test25_autoShrink() {
             // TODO: 자동 축소 구현 후 테스트
-            // for (int i = 0; i < 100; i++) {
-            //     arr.add(i);
-            // }
-            // for (int i = 0; i < 90; i++) {
-            //     arr.remove(arr.size() - 1);
-            // }
-            // assertThat(arr.size()).isEqualTo(10);
+             for (int i = 0; i < 100; i++) {
+                 arr.add(i);
+             }
+             for (int i = 0; i < 90; i++) {
+                 arr.remove(arr.size() - 1);
+             }
+             assertThat(arr.size()).isEqualTo(10);
         }
 
         @Test
         @DisplayName("26. 최소 용량(10) 이하로는 축소되지 않는다")
         void test26_shrinkMinimumCapacity() {
             // TODO: 최소 용량 유지 테스트
-            // arr.add(1);
-            // arr.remove(0);
-            // assertThat(arr.size()).isEqualTo(0);
-            // 내부 용량이 10 이상인지 확인 (필요시 getCapacity() 구현)
+             arr.add(1);
+             arr.remove(0);
+             assertThat(arr.size()).isEqualTo(0);
+//             내부 용량이 10 이상인지 확인 (필요시 getCapacity() 구현)
         }
     }
 
@@ -308,39 +308,39 @@ class PopTest {
         @DisplayName("27. clear로 모든 요소를 삭제할 수 있다")
         void test27_clear() {
             // TODO: clear() 메서드 구현 후 테스트
-            // arr.add(1);
-            // arr.add(2);
-            // arr.add(3);
-            // arr.clear();
-            // assertThat(arr.isEmpty()).isTrue();
+             arr.add(1);
+             arr.add(2);
+             arr.add(3);
+             arr.clear();
+             assertThat(arr.isEmpty()).isTrue();
         }
 
         @Test
         @DisplayName("28. 빈 배열에서 삭제 시 예외가 발생한다")
         void test28_removeFromEmptyArray() {
             // TODO: 예외 처리 구현 후 테스트
-            // assertThatThrownBy(() -> arr.remove(0))
-            //     .isInstanceOf(IndexOutOfBoundsException.class);
+             assertThatThrownBy(() -> arr.remove(0))
+                 .isInstanceOf(IndexOutOfBoundsException.class);
         }
 
         @Test
         @DisplayName("29. 중복 요소를 저장할 수 있다")
         void test29_duplicateElements() {
             // TODO: 중복 요소 테스트
-            // arr.add(1);
-            // arr.add(1);
-            // arr.add(1);
-            // assertThat(arr.size()).isEqualTo(3);
+             arr.add(1);
+             arr.add(1);
+             arr.add(1);
+             assertThat(arr.size()).isEqualTo(3);
         }
 
         @Test
         @DisplayName("30. toString으로 배열 내용을 확인할 수 있다")
         void test30_toStringFormat() {
             // TODO: toString() 메서드 구현 후 테스트
-            // arr.add(1);
-            // arr.add(2);
-            // arr.add(3);
-            // assertThat(arr.toString()).isEqualTo("[1, 2, 3]");
+             arr.add(1);
+             arr.add(2);
+             arr.add(3);
+             assertThat(arr.toString()).isEqualTo("[1, 2, 3]");
         }
     }
 }

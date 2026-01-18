@@ -1,6 +1,7 @@
 package com.datastructure.dynamicarray.pop;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class DynamicArray<T> {
 
@@ -56,6 +57,7 @@ public class DynamicArray<T> {
         T old= elements[index];
         System.arraycopy(elements, index + 1, elements, index, this.index - index - 1);
         this.index--;
+        elements[this.index] = null;
         return old;
     }
 
@@ -67,12 +69,40 @@ public class DynamicArray<T> {
         return index == 0;
     }
 
-    public void contains() {
+    public boolean contains(T element) {
+        for (int index = 0; index < this.index; index++) {
+            if (Objects.equals(elements[index], element)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public int indexOf(T element) {
+        for (int index = 0; index < this.index; index++) {
+            if (Objects.equals(elements[index], element)) {
+                return index;
+            }
+        }
+        return -1;
     }
 
     public void clear() {
+        Arrays.fill(elements, 0, this.index, null);
+        this.index = 0;
+    }
 
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        for (int index = 0; index < this.index; index++) {
+            sb.append(elements[index]);
+            if (index != this.index - 1) {
+                sb.append(", ");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
     }
 
     private void extendCapacity() {
