@@ -52,7 +52,17 @@ public class DynamicArrayImpl<E> implements DynamicArray<E> {
 
     @Override
     public E remove(int index){
-        return null;
+        checkIndex(index, this.index);
+        E old = elements[index];
+        System.arraycopy(elements, index + 1, elements, index, this.index - index -1);
+        this.index--;
+        elements[this.index] = null;
+        if (this.index - 1 <= capacity/4 && capacity > 10) {
+            capacity = Math.max(capacity/2, 10);
+            elements = Arrays.copyOf(elements, capacity);
+        }
+
+        return old;
     }
 
     @Override
