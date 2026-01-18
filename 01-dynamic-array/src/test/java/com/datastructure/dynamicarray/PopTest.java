@@ -11,11 +11,11 @@ import static org.assertj.core.api.Assertions.*;
 @DisplayName("동적 배열 - POP 구현 테스트")
 class PopTest {
 
-    private DynamicArray arr;
+    private DynamicArray<Integer> arr;
 
     @BeforeEach
     void setUp() {
-        arr = new DynamicArray();
+        arr = new DynamicArray<>();
     }
 
     @Nested
@@ -26,22 +26,22 @@ class PopTest {
         @DisplayName("01. 빈 배열 생성 시 size는 0이다")
         void test01_emptyArraySizeIsZero() {
             // TODO: size() 메서드 구현 후 테스트
-            // assertThat(arr.size()).isEqualTo(0);
+            assertThat(arr.size()).isEqualTo(0);
         }
 
         @Test
         @DisplayName("02. 빈 배열은 isEmpty가 true다")
         void test02_emptyArrayIsEmpty() {
             // TODO: isEmpty() 메서드 구현 후 테스트
-            // assertThat(arr.isEmpty()).isTrue();
+            assertThat(arr.isEmpty()).isTrue();
         }
 
         @Test
         @DisplayName("03. 초기 용량을 지정하여 생성할 수 있다")
         void test03_createWithInitialCapacity() {
             // TODO: 생성자 구현 후 테스트
-            // DynamicArray arrWithCapacity = new DynamicArray(100);
-            // assertThat(arrWithCapacity.size()).isEqualTo(0);
+            DynamicArray<Integer> arrWithCapacity = new DynamicArray<>(100);
+            assertThat(arrWithCapacity.size()).isEqualTo(0);
         }
     }
 
@@ -53,46 +53,46 @@ class PopTest {
         @DisplayName("04. 요소를 추가하면 size가 증가한다")
         void test04_addIncreasesSize() {
             // TODO: add() 메서드 구현 후 테스트
-            // arr.add(1);
-            // assertThat(arr.size()).isEqualTo(1);
+            arr.add(1);
+            assertThat(arr.size()).isEqualTo(1);
         }
 
         @Test
         @DisplayName("05. 여러 요소를 순서대로 추가할 수 있다")
         void test05_addMultipleElements() {
             // TODO: add() 메서드 구현 후 테스트
-            // arr.add(1);
-            // arr.add(2);
-            // arr.add(3);
-            // assertThat(arr.size()).isEqualTo(3);
+            arr.add(1);
+            arr.add(2);
+            arr.add(3);
+            assertThat(arr.size()).isEqualTo(3);
         }
 
         @Test
         @DisplayName("06. 특정 인덱스에 요소를 삽입할 수 있다")
         void test06_addAtIndex() {
             // TODO: add(index, element) 메서드 구현 후 테스트
-            // arr.add(1);
-            // arr.add(3);
-            // arr.add(1, 2);
-            // assertThat(arr.get(1)).isEqualTo(2);
+            arr.add(1);
+            arr.add(3);
+            arr.add(1, 2);
+            assertThat(arr.get(1)).isEqualTo(2);
         }
 
         @Test
         @DisplayName("07. 맨 앞에 요소를 삽입할 수 있다")
         void test07_addAtFront() {
             // TODO: add(0, element) 테스트
-            // arr.add(2);
-            // arr.add(3);
-            // arr.add(0, 1);
-            // assertThat(arr.get(0)).isEqualTo(1);
+            arr.add(2);
+            arr.add(3);
+            arr.add(0, 1);
+            assertThat(arr.get(0)).isEqualTo(1);
         }
 
         @Test
         @DisplayName("08. null 요소를 추가할 수 있다")
         void test08_addNullElement() {
             // TODO: null 처리 구현 후 테스트
-            // arr.add(null);
-            // assertThat(arr.get(0)).isNull();
+            arr.add(null);
+            assertThat(arr.get(0)).isNull();
         }
     }
 
@@ -104,28 +104,28 @@ class PopTest {
         @DisplayName("09. 인덱스로 요소를 조회할 수 있다")
         void test09_getByIndex() {
             // TODO: get() 메서드 구현 후 테스트
-            // arr.add(10);
-            // arr.add(20);
-            // assertThat(arr.get(0)).isEqualTo(10);
-            // assertThat(arr.get(1)).isEqualTo(20);
+            arr.add(10);
+            arr.add(20);
+            assertThat(arr.get(0)).isEqualTo(10);
+            assertThat(arr.get(1)).isEqualTo(20);
         }
 
         @Test
         @DisplayName("10. 음수 인덱스 조회 시 예외가 발생한다")
         void test10_getWithNegativeIndex() {
             // TODO: 예외 처리 구현 후 테스트
-            // arr.add(1);
-            // assertThatThrownBy(() -> arr.get(-1))
-            //     .isInstanceOf(IndexOutOfBoundsException.class);
+            arr.add(1);
+            assertThatThrownBy(() -> arr.get(-1))
+                    .isInstanceOf(IndexOutOfBoundsException.class);
         }
 
         @Test
         @DisplayName("11. 범위 초과 인덱스 조회 시 예외가 발생한다")
         void test11_getWithOutOfBoundsIndex() {
             // TODO: 예외 처리 구현 후 테스트
-            // arr.add(1);
-            // assertThatThrownBy(() -> arr.get(1))
-            //     .isInstanceOf(IndexOutOfBoundsException.class);
+            arr.add(1);
+            assertThatThrownBy(() -> arr.get(1))
+                    .isInstanceOf(IndexOutOfBoundsException.class);
         }
     }
 
@@ -137,26 +137,26 @@ class PopTest {
         @DisplayName("12. 특정 인덱스의 요소를 수정할 수 있다")
         void test12_setElement() {
             // TODO: set() 메서드 구현 후 테스트
-            // arr.add(1);
-            // arr.set(0, 100);
-            // assertThat(arr.get(0)).isEqualTo(100);
+            arr.add(1);
+            arr.set(0, 100);
+            assertThat(arr.get(0)).isEqualTo(100);
         }
 
         @Test
         @DisplayName("13. set은 이전 값을 반환한다")
         void test13_setReturnsOldValue() {
             // TODO: set() 반환값 구현 후 테스트
-            // arr.add(1);
-            // int old = arr.set(0, 100);
-            // assertThat(old).isEqualTo(1);
+            arr.add(1);
+            Integer old = arr.set(0, 100);
+            assertThat(old).isEqualTo(1);
         }
 
         @Test
         @DisplayName("14. 유효하지 않은 인덱스에 set 시 예외가 발생한다")
         void test14_setWithInvalidIndex() {
             // TODO: 예외 처리 구현 후 테스트
-            // assertThatThrownBy(() -> arr.set(0, 1))
-            //     .isInstanceOf(IndexOutOfBoundsException.class);
+            assertThatThrownBy(() -> arr.set(0, 1))
+                    .isInstanceOf(IndexOutOfBoundsException.class);
         }
     }
 
@@ -168,41 +168,41 @@ class PopTest {
         @DisplayName("15. 특정 인덱스의 요소를 삭제할 수 있다")
         void test15_removeByIndex() {
             // TODO: remove() 메서드 구현 후 테스트
-            // arr.add(1);
-            // arr.add(2);
-            // arr.add(3);
-            // arr.remove(1);
-            // assertThat(arr.size()).isEqualTo(2);
-            // assertThat(arr.get(1)).isEqualTo(3);
+             arr.add(1);
+             arr.add(2);
+             arr.add(3);
+             arr.remove(1);
+             assertThat(arr.size()).isEqualTo(2);
+             assertThat(arr.get(1)).isEqualTo(3);
         }
 
         @Test
         @DisplayName("16. remove는 삭제된 요소를 반환한다")
         void test16_removeReturnsElement() {
             // TODO: remove() 반환값 구현 후 테스트
-            // arr.add(100);
-            // int removed = arr.remove(0);
-            // assertThat(removed).isEqualTo(100);
+             arr.add(100);
+             Integer removed = arr.remove(0);
+             assertThat(removed).isEqualTo(100);
         }
 
         @Test
         @DisplayName("17. 맨 앞 요소를 삭제할 수 있다")
         void test17_removeFirst() {
             // TODO: remove(0) 테스트
-            // arr.add(1);
-            // arr.add(2);
-            // arr.remove(0);
-            // assertThat(arr.get(0)).isEqualTo(2);
+             arr.add(1);
+             arr.add(2);
+             arr.remove(0);
+             assertThat(arr.get(0)).isEqualTo(2);
         }
 
         @Test
         @DisplayName("18. 맨 뒤 요소를 삭제할 수 있다")
         void test18_removeLast() {
             // TODO: remove(size-1) 테스트
-            // arr.add(1);
-            // arr.add(2);
-            // arr.remove(1);
-            // assertThat(arr.size()).isEqualTo(1);
+             arr.add(1);
+             arr.add(2);
+             arr.remove(1);
+             assertThat(arr.size()).isEqualTo(1);
         }
     }
 
