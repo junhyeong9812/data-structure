@@ -56,7 +56,7 @@ public class DynamicArrayImpl<E> implements DynamicArray<E> {
 
     @Override
     public int size(){
-        return 0;
+        return index;
     }
 
     @Override
