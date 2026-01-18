@@ -76,7 +76,8 @@ public class DynamicArrayImpl<E> implements DynamicArray<E> {
 
     @Override
     public void clear() {
-
+        Arrays.fill(elements, 0, index, null);
+        index = 0;
     }
 
     private void checkIndex(int index, int bound) {
