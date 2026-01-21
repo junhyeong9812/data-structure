@@ -53,23 +53,36 @@ public class MyTestCase {
             @Test
             @DisplayName("빈 리스트에 추가하는 경우")
             void addFirst_blank_addsToFront() {
-
+                list.addFirst(1);
+                assertThat(list.get(0)).isEqualTo(1);
+                assertThat(list.size()).isEqualTo(1);
             }
             // 요소가 null인 경우
             @Test
             @DisplayName("추가하는 요소가 null인 경우")
             void addFirst_Null_addsToFront() {
-
+                list.addFirst(null);
+                assertThat(list.get(0)).isEqualTo(null);
+                assertThat(list.size()).isEqualTo(1);
             }
             // 데이터가 1개일 경우
             @Test
             @DisplayName("데이터가 1개일 경우")
-            void addFirst_whenOneElement_addToFront() {}
+            void addFirst_whenOneElement_addToFront() {
+                list.addFirst(1);
+                list.addFirst(2);
+                assertThat(list.get(0)).isEqualTo(2);
+                assertThat(list.size()).isEqualTo(2);
+            }
             // 데이터가 여러개일 경우
             @Test
             @DisplayName("데이터가 여러개일 경우")
             void addFirst_whenMultiElement_addToFront() {
-
+                list.addFirst(1);
+                list.addFirst(2);
+                list.addFirst(3);
+                assertThat(list.get(0)).isEqualTo(3);
+                assertThat(list.size()).isEqualTo(3);
             }
         }
 
@@ -81,25 +94,39 @@ public class MyTestCase {
             @Test
             @DisplayName("빈 리스트에 추가하는 경우")
             void addLast_blank_addsToBack() {
-
+                list.addLast(1);
+                assertThat(list.get(0)).isEqualTo(1);
+                assertThat(list.size()).isEqualTo(1);
             }
+
             // 요소가 null인 경우
             @Test
             @DisplayName("요소가 null인 경우")
             void addLast_null_addsToBack() {
-
+                list.addLast(null);
+                assertThat(list.get(0)).isEqualTo(null);
+                assertThat(list.size()).isEqualTo(1);
             }
+
             // 데이터가 1개일 경우
             @Test
             @DisplayName("데이터가 1개일 경우")
             void addLast_whenOneElement_addToBack() {
-
+                list.addLast(1);
+                list.addLast(2);
+                assertThat(list.get(1)).isEqualTo(2);
+                assertThat(list.size()).isEqualTo(2);
             }
+
             // 데이터가 여러개일 경우
             @Test
             @DisplayName("데이터가 여러개일 경우")
             void addLast_whenMultiElement_addToBack() {
-
+                list.addLast(1);
+                list.addLast(2);
+                list.addLast(3);
+                assertThat(list.get(2)).isEqualTo(3);
+                assertThat(list.size()).isEqualTo(3);
             }
         }
 
@@ -111,7 +138,6 @@ public class MyTestCase {
             @Test
             @DisplayName("빈 리스트에 추가하는 경우 (index = 0)")
             void add_blankList() {
-
             }
             // 요소가 null인 경우
             @Test
