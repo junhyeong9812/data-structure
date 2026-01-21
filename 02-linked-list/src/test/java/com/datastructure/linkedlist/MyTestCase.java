@@ -6,6 +6,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.*;
+
 public class MyTestCase {
 
 
@@ -14,7 +16,7 @@ public class MyTestCase {
     @DisplayName("단일 연결 리스트")
     class SinglyLinkedListTest {
 
-        private SinglyLinkedList list;
+        private SinglyLinkedList<Object> list;
         @BeforeEach
         void setUp() {
             list = new SinglyLinkedList<>();
@@ -27,19 +29,19 @@ public class MyTestCase {
             @Test
             @DisplayName("단일 연결 리스트가 생성된다.")
             void creationListTest() {
-
+                assertThat(list).isNotNull();
             }
             // 생성 시 size가 0이다.
             @Test
             @DisplayName("단일 연결 리스트 생성 시 size는 0이다.")
             void sizeIsZeroTest() {
-
+                assertThat(list.size()).isEqualTo(0);
             }
             // 생성 시 isEmpty가 true이다.
             @Test
             @DisplayName("단일 연결 리스트 생성 시 isEmpty는 true다.")
             void isEmptyIsTrueTest() {
-
+                assertThat(list.isEmpty()).isEqualTo(true);
             }
         }
 
