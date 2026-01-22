@@ -6,6 +6,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.NoSuchElementException;
+
 import static org.assertj.core.api.Assertions.*;
 
 public class MyTestCase {
@@ -228,20 +230,28 @@ public class MyTestCase {
             @Test
             @DisplayName("데이터가 1개일 경우")
             void removeFirst_oneElement_success() {
-
+                list.addFirst(1);
+                list.removeFirst();
+                assertThat(list.size()).isEqualTo(0);
+                assertThat(list.isEmpty()).isEqualTo(true);
             }
             // 데이터가 여러개일 경우
             @Test
             @DisplayName("데이터가 여러개일 경우")
             void removeFirst_multipleElements_success() {
-
+                list.addFirst(1);
+                list.addFirst(0);
+                list.removeFirst();
+                assertThat(list.size()).isEqualTo(1);
+                assertThat(list.get(0)).isEqualTo(1);
             }
             //맨 앞 요소가 삭제되지 않는다.
             // 빈 리스트에 삭제를 하는 경우(index 0)
             @Test
             @DisplayName("빈 리스트에서 삭제하는 경우")
             void removeFirst_emptyList_throwsException() {
-
+                assertThatThrownBy(() -> list.removeFirst())
+                        .isInstanceOf(NoSuchElementException.class);
             }
         }
 
