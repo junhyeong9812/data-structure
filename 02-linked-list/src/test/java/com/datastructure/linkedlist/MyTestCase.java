@@ -263,20 +263,30 @@ public class MyTestCase {
             @Test
             @DisplayName("데이터가 1일 경우")
             void removeLast_oneElement_success() {
-
+                list.addFirst(0);
+                Object removed = list.removeLast();
+                assertThat(removed).isEqualTo(0);
+                assertThat(list.size()).isEqualTo(0);
+                assertThat(list.isEmpty()).isEqualTo(true);
             }
             // 데이터가 여러개일 경우
             @Test
             @DisplayName("데이터가 여러개일 경우")
             void removeLast_multipleElements_success() {
-
+                list.addFirst(0);
+                list.addLast(1);
+                list.addLast(2);
+                Object removed = list.removeLast();
+                assertThat(removed).isEqualTo(2);
+                assertThat(list.size()).isEqualTo(2);
             }
             // 맨 앞 요소가 삭제되지 않는다.
             // 빈 리스트에 삭제를 하는 경우(index 0)
             @Test
             @DisplayName("빈 리스트에서 삭제하는 경우")
             void removeLast_emptyList_throwsException() {
-
+                assertThatThrownBy(() -> list.removeLast())
+                        .isInstanceOf(NoSuchElementException.class);
             }
         }
 
