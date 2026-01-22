@@ -298,19 +298,33 @@ public class MyTestCase {
             @Test
             @DisplayName("맨 앞 삭제 (index = 0)")
             void remove_atFront_success() {
-
+                list.addFirst(0);
+                list.addFirst(1);
+                Object removed= list.remove(0);
+                assertThat(removed).isEqualTo(1);
+                assertThat(list.size()).isEqualTo(1);
             }
             // 중간 삭제
             @Test
             @DisplayName("중간 삭제")
             void remove_atMiddle_success() {
-
+                list.addFirst(3);
+                list.addFirst(2);
+                list.addFirst(1);
+                Object removed = list.remove(1);
+                assertThat(removed).isEqualTo(2);
+                assertThat(list.size()).isEqualTo(2);
             }
             // 맨 뒤 삭제 (index == size - 1)
             @Test
             @DisplayName("맨 뒤 삭제 (index = size - 1)")
             void remove_atEnd_success() {
-
+                list.addFirst(3);
+                list.addFirst(2);
+                list.addFirst(1);
+                Object removed = list.remove(2);
+                assertThat(removed).isEqualTo(3);
+                assertThat(list.size()).isEqualTo(2);
             }
 
             // index 위치의 요소가 삭제되지 않는다.
@@ -318,19 +332,25 @@ public class MyTestCase {
             @Test
             @DisplayName("빈 리스트에서 삭제하는 경우")
             void remove_emptyList_throwsException() {
-
+                assertThatThrownBy(() -> list.remove(0))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
             }
             // index가 음수일 경우
             @Test
             @DisplayName("index가 음수일 경우")
             void remove_negativeIndex_throwsException() {
-
+                assertThatThrownBy(() -> list.remove(-1))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
             }
             // index가 size보다 클 경우
             @Test
             @DisplayName("index가 size이상일 경우")
             void remove_indexOverSize_throwsException() {
-
+                list.addFirst(0);
+                list.addLast(1);
+                list.addLast(2);
+                assertThatThrownBy(() -> list.remove(list.size() + 1))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
             }
         }
 
