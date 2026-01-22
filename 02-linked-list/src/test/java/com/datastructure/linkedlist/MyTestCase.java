@@ -495,19 +495,30 @@ public class MyTestCase {
             @Test
             @DisplayName("빈 리스트일 경우 0을 반환한다")
             void size_emptyList_returnsZero() {
-
+                assertThat(list.size()).isEqualTo(0);
             }
             // 데이터의 길이만큼 반환한다.
             @Test
             @DisplayName("데이터의 길이만큼 반환한다")
             void size_withElements_returnCount() {
+                list.addFirst(0);
+                list.add(1,1);
+                list.addLast(2);
 
+                assertThat(list.size()).isEqualTo(3);
             }
             // 추가/삭제 후 정확히 반영되는 지 확인
             @Test
             @DisplayName("추가/삭제 후 정확히 반영되는 지 확인")
             void size_afterAddAndRemove_updatesCorrectly() {
+                list.addFirst(0);
+                list.add(1,1);
 
+                assertThat(list.size()).isEqualTo(2);
+                list.addLast(2);
+                assertThat(list.size()).isEqualTo(3);
+                list.remove(2);
+                assertThat(list.size()).isEqualTo(2);
             }
         }
 
@@ -518,13 +529,14 @@ public class MyTestCase {
             @Test
             @DisplayName("빈 리스트일 경우 true를 반환한다")
             void isEmpty_emptyList_returnsTrue() {
-
+                assertThat(list.isEmpty()).isEqualTo(true);
             }
             // 데이터가 존재하면 false를 반환한다.
             @Test
             @DisplayName("데이터가 존재하면 false를 반환한다")
             void isEmpty_withElements_returnsFalse() {
-
+                list.addFirst(0);
+                assertThat(list.isEmpty()).isEqualTo(false);
             }
         }
 
