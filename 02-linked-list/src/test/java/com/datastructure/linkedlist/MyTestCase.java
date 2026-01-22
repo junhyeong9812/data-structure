@@ -138,55 +138,85 @@ public class MyTestCase {
             @Test
             @DisplayName("빈 리스트에 추가하는 경우 (index = 0)")
             void add_blankList() {
+                list.add(0,1);
+                assertThat(list.get(0)).isEqualTo(1);
+                assertThat(list.size()).isEqualTo(1);
             }
             // 요소가 null인 경우
             @Test
             @DisplayName("요소가 null인 경우")
             void add_whenNullElement_addToIndex() {
-
+                list.add(0, null);
+                assertThat(list.get(0)).isEqualTo(null);
+                assertThat(list.size()).isEqualTo(1);
             }
             // 데이터가 1개일 경우
             @Test
             @DisplayName("데이터가 1개일 경우")
             void add_whenOneElement_addToIndex() {
-
+                list.addFirst(0);
+                list.add(0,1);
+                assertThat(list.get(0)).isEqualTo(1);
+                assertThat(list.size()).isEqualTo(2);
             }
             // 데이터가 여러개일 경우
             @Test
             @DisplayName("데이터가 여러개인 경우")
             void add_whenMultiElement_addToIndex() {
+                list.addFirst(0);
+                list.addFirst(1);
+                list.add(1,2);
+                assertThat(list.get(1)).isEqualTo(2);
+                assertThat(list.get(2)).isEqualTo(0);
+                assertThat(list.size()).isEqualTo(3);
 
             }
             // 맨 앞에 추가하는 경우 (index 0)
             @Test
             @DisplayName("맨 앞에 추가하는 경우 (index = 0)")
             void add_atFront_success() {
-
+                list.addFirst(1);
+                list.add(0,0);
+                assertThat(list.get(0)).isEqualTo(0);
+                assertThat(list.size()).isEqualTo(2);
             }
             // 중간에 추가하는 경우
             @Test
             @DisplayName("중간에 추가하는 경우")
             void add_atMiddle_success() {
-
+                list.addFirst(0);
+                list.addLast(2);
+                list.add(1,1);
+                assertThat(list.get(1)).isEqualTo(1);
+                assertThat(list.size()).isEqualTo(3);
             }
             // 맨 뒤에 추가하는 경우 (index == size)
             @Test
             @DisplayName("맨 뒤에 추가하는 경우 (index = size)")
             void add_atEnd_success() {
-
+                list.addFirst(1);
+                list.addFirst(0);
+                list.add(2,2);
+                assertThat(list.get(2)).isEqualTo(2);
+                assertThat(list.size()).isEqualTo(3);
             }
             // 특정 위치에 요소가 추가 되지않는다.
             // 음수 인덱스인 경우 -> indexOutOfBoundsException
             @Test
             @DisplayName("음수 인덱스인 경우")
             void add_negativeIndex_throwsException() {
-
+                list.addFirst(0);
+                list.addLast(1);
+                assertThatThrownBy(() -> list.add(-1,3))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
             }
             // size보다 큰 인덱스인 경우 -> indexOutOfBoundsException
             @Test
             @DisplayName("size보다 큰 인덱스인 경우")
             void add_indexOverSize_throwsException() {
-
+                list.addFirst(0);
+                assertThatThrownBy(() -> list.add(2,2))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
             }
         }
 
