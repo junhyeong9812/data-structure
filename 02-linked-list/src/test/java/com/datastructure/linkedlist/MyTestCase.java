@@ -417,19 +417,42 @@ public class MyTestCase {
             @Test
             @DisplayName("맨 앞 index의 요소를 변경한다")
             void set_atFront_success() {
+                list.addFirst(0);
+                list.add(1,1);
+                list.addLast(2);
+                Object beforeObject = list.set(0,3);
 
+                assertThat(beforeObject).isEqualTo(0);
+                assertThat(list.get(0)).isEqualTo(3);
+                assertThat(list.size()).isEqualTo(3);
             }
             // 중간 index의 요소를 변경한다.
             @Test
             @DisplayName("중간 index의 요소를 변경한다")
             void set_atMiddle_success() {
+                list.addFirst(0);
+                list.add(1,1);
+                list.addLast(2);
 
+                Object beforeObject = list.set(1,3);
+
+                assertThat(beforeObject).isEqualTo(1);
+                assertThat(list.get(1)).isEqualTo(3);
+                assertThat(list.size()).isEqualTo(3);
             }
             // 맨 뒤 index의 요소를 변경한다.
             @Test
             @DisplayName("맨 뒤 index의 요소를 변경한다")
             void set_atEnd_success() {
+                list.addFirst(0);
+                list.add(1,1);
+                list.addLast(2);
 
+                Object beforeObject = list.set(2,3);
+
+                assertThat(beforeObject).isEqualTo(1);
+                assertThat(list.get(2)).isEqualTo(3);
+                assertThat(list.size()).isEqualTo(3);
             }
 
             // index 위치의 요소를 변경할 수 없다.
@@ -437,19 +460,30 @@ public class MyTestCase {
             @Test
             @DisplayName("빈 리스트일 경우")
             void set_emptyList_throwsException() {
-
+                assertThatThrownBy(() -> list.set(1,1))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
             }
             // index가 음수일 경우
             @Test
             @DisplayName("index가 음수인 경우")
             void set_negativeIndex_throwsException() {
+                list.addFirst(0);
+                list.add(1,1);
+                list.addLast(2);
 
+                assertThatThrownBy(() -> list.set(-1,1))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
             }
             // index가 size 이상일 경우
             @Test
             @DisplayName("index가 size 이상일 경우")
             void set_indexOverSize_throwsException() {
+                list.addFirst(0);
+                list.add(1,1);
+                list.addLast(2);
 
+                assertThatThrownBy(() -> list.set(list.size() + 1, 10))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
             }
         }
 
