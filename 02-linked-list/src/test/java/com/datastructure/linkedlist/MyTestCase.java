@@ -362,38 +362,50 @@ public class MyTestCase {
             @Test
             @DisplayName("맨 앞 인덱스를 조회한다")
             void get_atFront_success() {
-
+                list.addFirst(0);
+                list.add(1,1);
+                list.addLast(2);
+                assertThat(list.get(0)).isEqualTo(0);
             }
             //중간 인덱스를 조회한다.
             @Test
             @DisplayName("중간 인덱스를 조회한다")
             void get_atMiddle_success() {
-
+                list.addFirst(0);
+                list.add(1,1);
+                list.addLast(2);
+                assertThat(list.get(1)).isEqualTo(1);
             }
             //맨 뒤 인덱스를 조회힌다.
             @Test
             @DisplayName("맨 뒤 인덱스를 조회한다")
             void get_atEnd_success() {
-
+                list.addFirst(0);
+                list.add(1,1);
+                list.addLast(2);
+                assertThat(list.get(2)).isEqualTo(2);
             }
             // index 위치의 요소를 반환하지 않는다.
             // 빈 리스트일 경우
             @Test
             @DisplayName("빈 리스트일 경우")
             void get_emptyList_throwsException() {
-
+                assertThatThrownBy(() -> list.get(0))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
             }
             // index가 음수인 경우
             @Test
             @DisplayName("index가 음수인 경우")
             void get_negativeIndex_throwsException() {
-
+                assertThatThrownBy(() -> list.get(-1))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
             }
             // index가 size 이상일 경우
             @Test
             @DisplayName("index가 size 이상일 경우")
             void get_indexOverSize_throwsException() {
-
+                assertThatThrownBy(() -> list.get(list.size() + 1))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
             }
         }
 
