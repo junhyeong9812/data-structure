@@ -632,25 +632,21 @@ public class MyTestCase {
             @Test
             @DisplayName("해당 데이터를 빈 리스트로 변경한다")
             void clear_withElements_becomesEmpty() {
+                list.addFirst(3);
+                list.addFirst(2);
+                list.addFirst(1);
 
+                list.clear();
+                assertThat(list.size()).isEqualTo(0);
+                assertThat(list.isEmpty()).isEqualTo(true);
             }
             //빈 리스트에 clear를 호출해도 정상 동작한다.
             @Test
             @DisplayName("빈 리스트에 clear를 호출해도 정상 동작한다")
             void clear_emptyList_success() {
-
-            }
-            // clear 후 size가 0이다.
-            @Test
-            @DisplayName("clear 후 size가 0이다")
-            void clear_afterClear_sizeIsZero() {
-
-            }
-            // clear 후 isEmpty가 true다.
-            @Test
-            @DisplayName("clear 후 isEmpty가 true다")
-            void clear_afterClear_isEmptyTrue() {
-
+                list.clear();
+                assertThat(list.size()).isEqualTo(0);
+                assertThat(list.isEmpty()).isEqualTo(true);
             }
         }
 
@@ -662,19 +658,44 @@ public class MyTestCase {
             @Test
             @DisplayName("빈 리스트를 뒤집어도 정상 동작한다")
             void reverse_emptyList_success() {
-
+                list.reverse();
+                assertThat(list.isEmpty()).isTrue();
             }
             // 요소가 1개인 리스트를 뒤집는다.
             @Test
             @DisplayName("요소가 1개인 리스트를 뒤집는다")
             void reverse_oneElement_success() {
-
+                list.addFirst(0);
+                list.reverse();
+                assertThat(list.size()).isEqualTo(1);
+                assertThat(list.get(0)).isEqualTo(0);
             }
             // 요소가 여러 개인리스트를 뒤집는다.
             @Test
             @DisplayName("요소가 여러 개인 리스트를 뒤집는다")
             void reverse_multipleElements_success() {
+                list.addFirst(3);
+                list.addFirst(2);
+                list.addFirst(1);
+                list.reverse();
+                assertThat(list.get(0)).isEqualTo(3);
+                assertThat(list.get(1)).isEqualTo(2);
+                assertThat(list.get(2)).isEqualTo(1);
+            }
 
+            @Test
+            @DisplayName("reverse 두 번하면 원래 순서로 돌아간다")
+            void reverse_twice_returnsOriginal() {
+                list.addFirst(3);
+                list.addFirst(2);
+                list.addFirst(1);
+
+                list.reverse();
+                list.reverse();
+
+                assertThat(list.get(0)).isEqualTo(1);
+                assertThat(list.get(1)).isEqualTo(2);
+                assertThat(list.get(2)).isEqualTo(3);
             }
         }
     }
