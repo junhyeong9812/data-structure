@@ -231,7 +231,8 @@ public class MyTestCase {
             @DisplayName("데이터가 1개일 경우")
             void removeFirst_oneElement_success() {
                 list.addFirst(1);
-                list.removeFirst();
+                Object removed= list.removeFirst();
+                assertThat(removed).isEqualTo(1);
                 assertThat(list.size()).isEqualTo(0);
                 assertThat(list.isEmpty()).isEqualTo(true);
             }
@@ -241,7 +242,8 @@ public class MyTestCase {
             void removeFirst_multipleElements_success() {
                 list.addFirst(1);
                 list.addFirst(0);
-                list.removeFirst();
+                Object removed = list.removeFirst();
+                assertThat(removed).isEqualTo(0);
                 assertThat(list.size()).isEqualTo(1);
                 assertThat(list.get(0)).isEqualTo(1);
             }
