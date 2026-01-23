@@ -177,7 +177,14 @@ public class SinglyLinkedList<E> {
         return -1;
     }
 
-    public void clear() {}
+    public void clear() {
+        head = null;
+        tail = null;
+        size = 0;
+    }
 
-    public void reverse() {}
+    public void reverse() {
+
+
+    }
 }
