@@ -151,7 +151,7 @@ public class SinglyLinkedList<E> {
     }
 
     public boolean isEmpty() {
-        return true;
+        return size == 0;
     }
 
     public boolean contains(E element) {
