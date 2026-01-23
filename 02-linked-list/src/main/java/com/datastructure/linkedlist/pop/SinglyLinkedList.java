@@ -167,6 +167,13 @@ public class SinglyLinkedList<E> {
     }
 
     public int indexOf(E element) {
+        Node<E> node = head;
+        for (int index = 0; index < size; index++) {
+            if(Objects.equals(node.data, element)) {
+                return index;
+            }
+            node = node.next;
+        }
         return -1;
     }
 
