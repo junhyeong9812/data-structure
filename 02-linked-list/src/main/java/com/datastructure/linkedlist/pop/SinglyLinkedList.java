@@ -81,7 +81,23 @@ public class SinglyLinkedList<E> {
     }
 
     public E removeLast() {
-        return null;
+        if (size == 0) {
+            throw new NoSuchElementException();
+        }
+        E removed = tail.data;
+        if (size ==1) {
+            head = null;
+            tail = null;
+        } else {
+            Node<E> beforeNode = head;
+            for (int i = 0; i < size - 2; i++) {
+                beforeNode = beforeNode.next;
+            }
+            beforeNode.next = null;
+            tail = beforeNode;
+        }
+        size--;
+        return removed;
     }
 
     public E remove(int index) {
