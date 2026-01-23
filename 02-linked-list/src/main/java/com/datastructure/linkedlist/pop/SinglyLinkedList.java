@@ -123,7 +123,14 @@ public class SinglyLinkedList<E> {
     }
 
     public E get(int index) {
-        return null;
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException();
+        }
+        Node<E> beforeNode = head;
+        for (int i = 0; i < index; i++) {
+            beforeNode = beforeNode.next;
+        }
+        return beforeNode.data;
     }
 
     public E set(int index, E element) {
