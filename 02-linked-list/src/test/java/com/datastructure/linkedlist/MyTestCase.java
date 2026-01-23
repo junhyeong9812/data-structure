@@ -452,7 +452,7 @@ public class MyTestCase {
 
                 Object beforeObject = list.set(2,3);
 
-                assertThat(beforeObject).isEqualTo(1);
+                assertThat(beforeObject).isEqualTo(2);
                 assertThat(list.get(2)).isEqualTo(3);
                 assertThat(list.size()).isEqualTo(3);
             }
