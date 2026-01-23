@@ -3,6 +3,7 @@ package com.datastructure.linkedlist.pop;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class SinglyLinkedList<E> {
 
@@ -155,7 +156,14 @@ public class SinglyLinkedList<E> {
     }
 
     public boolean contains(E element) {
-        return true;
+        Node<E> node = head;
+        for (int index = 0; index < size; index++) {
+            if(Objects.equals(node.data, element)) {
+                return true;
+            }
+            node = node.next;
+        }
+        return false;
     }
 
     public int indexOf(E element) {
