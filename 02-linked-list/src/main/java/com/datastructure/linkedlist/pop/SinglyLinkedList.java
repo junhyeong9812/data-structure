@@ -2,6 +2,7 @@ package com.datastructure.linkedlist.pop;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class SinglyLinkedList<E> {
 
@@ -34,15 +35,49 @@ public class SinglyLinkedList<E> {
     }
 
     public void addLast(E element) {
-
+        Node<E> newNode = new Node<>(element);
+        if (size == 0) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            tail.next = newNode;
+            tail = newNode;
+        }
+        size++;
     }
 
     public void add(int index, E element) {
-
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException();
+        }
+        if (index == 0) {
+            addFirst(element);
+            return;
+        }
+        if (index == size) {
+            addLast(element);
+            return;
+        }
+        Node<E> beforeNode = head;
+        for (int i = 0; i < index - 1; i++) {
+            beforeNode = beforeNode.next;
+        }
+        Node<E> newNode = new Node<>(element, beforeNode.next);
+        beforeNode.next = newNode;
+        size++;
     }
 
     public E removeFirst() {
-        return null;
+        if (size == 0) {
+            throw new NoSuchElementException();
+        }
+        E removed = head.data;
+        head = head.next;
+        size--;
+        if (size == 0) {
+            tail = null;
+        }
+        return removed;
     }
 
     public E removeLast() {
