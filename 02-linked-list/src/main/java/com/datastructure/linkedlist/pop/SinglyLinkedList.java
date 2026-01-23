@@ -1,6 +1,19 @@
 package com.datastructure.linkedlist.pop;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SinglyLinkedList<E> {
+
+    private Node<E> head;
+    private Node<E> tail;
+    private int size;
+
+    class Node<E> {
+        E data;
+        Node<E> next;
+    }
+
 
     public void addFirst(E element) {
         
