@@ -1,5 +1,6 @@
 package com.datastructure.linkedlist;
 
+import com.datastructure.linkedlist.pop.DoublyLinkedList;
 import com.datastructure.linkedlist.pop.SinglyLinkedList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -705,6 +706,13 @@ public class MyTestCase {
     @Nested
     @DisplayName("이중 연결 리스트")
     class DoublyLinkedListTest {
+
+        private DoublyLinkedList<Object> list;
+
+        @BeforeEach
+        void setUp() {
+            list = new DoublyLinkedList<>();
+        }
 
         @Nested
         @DisplayName("이중 연결 리스트 생성")
