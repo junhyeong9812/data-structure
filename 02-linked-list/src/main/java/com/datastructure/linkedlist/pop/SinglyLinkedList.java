@@ -101,7 +101,25 @@ public class SinglyLinkedList<E> {
     }
 
     public E remove(int index) {
-        return null;
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException();
+        }
+        if (index == 0) {
+            return removeFirst();
+        }
+        if (index == size - 1) {
+            return removeLast();
+        }
+
+        Node<E> beforeNode = head;
+        for (int i = 0; i < index - 1; i++) {
+            beforeNode = beforeNode.next;
+        }
+        E removedData = beforeNode.next.data;
+        beforeNode.next = beforeNode.next.next;
+
+        size--;
+        return removedData;
     }
 
     public E get(int index) {
