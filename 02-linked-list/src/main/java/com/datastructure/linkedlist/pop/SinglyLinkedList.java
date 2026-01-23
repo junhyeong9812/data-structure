@@ -5,18 +5,32 @@ import java.util.List;
 
 public class SinglyLinkedList<E> {
 
-    private Node<E> head;
-    private Node<E> tail;
-    private int size;
+    private Node<E> head = null;
+    private Node<E> tail = null;
+    private int size = 0;
 
-    class Node<E> {
+    private static class Node<E> {
         E data;
         Node<E> next;
+
+        Node(E data) {
+            this.data = data;
+        }
+
+        Node(E data, Node<E> next) {
+            this.data = data;
+            this.next = next;
+        }
     }
 
 
     public void addFirst(E element) {
-        
+        Node<E> newNode = new Node<>(element, head);
+        head = newNode;
+        if (size == 0) {
+            tail = newNode;
+        }
+        size++;
     }
 
     public void addLast(E element) {
