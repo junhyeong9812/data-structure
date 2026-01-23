@@ -134,7 +134,16 @@ public class SinglyLinkedList<E> {
     }
 
     public E set(int index, E element) {
-        return null;
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException();
+        }
+        Node<E> beforeNode = head;
+        for (int i = 0; i < index; i++) {
+            beforeNode = beforeNode.next;
+        }
+        E oldData = beforeNode.data;
+        beforeNode.data = element;
+        return oldData;
     }
 
     public int size() {
