@@ -1,5 +1,7 @@
 package com.datastructure.linkedlist.pop;
 
+import java.util.NoSuchElementException;
+
 public class DoublyLinkedList<E> {
 
     private Node<E> head = null;
@@ -74,7 +76,19 @@ public class DoublyLinkedList<E> {
     }
 
     public E removeFirst() {
-        return null;
+        if (size == 0) {
+            throw new NoSuchElementException();
+        }
+        E removed = head.data;
+        if (size == 1) {
+            head = null;
+            tail = null;
+        } else {
+            head.next.prev = null;
+            head = head.next;
+        }
+        size--;
+        return removed;
     }
 
     public E removeLast() {
