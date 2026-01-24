@@ -49,7 +49,28 @@ public class DoublyLinkedList<E> {
     }
 
     public void add(int index, E element) {
-
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException();
+        }
+        if (index == 0) {
+            addFirst(element);
+            return;
+        }
+        if (index == size) {
+            addLast(element);
+            return;
+        }
+        Node<E> newNode = new Node<>(element);
+        Node<E> beforeNode = head;
+        for (int i = 0; i <index - 1; i++) {
+            beforeNode = beforeNode.next;
+        }
+        Node<E> nextNode = beforeNode.next;
+        newNode.prev = beforeNode;
+        newNode.next = nextNode;
+        nextNode.prev = newNode;
+        beforeNode.next = newNode;
+        size++;
     }
 
     public E removeFirst() {
