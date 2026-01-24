@@ -828,39 +828,59 @@ public class MyTestCase {
             @Test
             @DisplayName("요소가 맨 앞에 추가된다 (index = 0)")
             void add_atFront_success() {
+                list.addLast(0);
+                list.add(0, 1);
 
+                assertThat(list.size()).isEqualTo(2);
+                assertThat(list.get(0)).isEqualTo(1);
             }
 
             // 요소가 중간에 추가된다.
             @Test
             @DisplayName("요소가 맨 뒤에 추가된다 (index = size)")
             void add_atMiddle_success() {
+                list.addLast(0);
+                list.addLast(2);
+                list.add(1, 1);
 
+
+                assertThat(list.size()).isEqualTo(3);
+                assertThat(list.get(1)).isEqualTo(1);
             }
             // 요소가 맨 뒤에 추가된다. (index = size)
             @Test
             @DisplayName("요소가 맨 뒤에 추가된다 (index = size)")
             void add_atEnd_success() {
+                list.addLast(0);
+                list.add(list.size(), 1);
 
+                assertThat(list.size()).isEqualTo(2);
+                assertThat(list.get(1)).isEqualTo(1);
             }
             // null 요소가 추가된다.
             @Test
             @DisplayName("null 요소가 추가된다")
             void add_nullElement_success() {
+                list.add(0, null);
 
+                assertThat(list.size()).isEqualTo(1);
+                assertThat(list.get(0)).isEqualTo(null);
             }
             //요소가 추가되지 않는다.
             //index가 음수일 때 추가되지않는다.
             @Test
             @DisplayName("index가 음수일 때 추가되지 않는다")
             void add_negativeIndex_throwsException() {
+                assertThatThrownBy(() -> list.add(-1, 10))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
 
             }
             //index가 size보다 클 경우 추가되지 않는다.
             @Test
             @DisplayName("index가 size보다 클 경우 추가되지 않는다")
             void add_indexOverSize_throwsException() {
-
+                assertThatThrownBy(() -> list.add(list.size() + 1, 10))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
             }
         }
 
