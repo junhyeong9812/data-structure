@@ -783,25 +783,40 @@ public class MyTestCase {
             @Test
             @DisplayName("빈 리스트에 추가된다")
             void addLast_emptyList_success() {
+                list.addLast(0);
 
+                assertThat(list.size()).isEqualTo(1);
+                assertThat(list.get(0)).isEqualTo(0);
             }
             // 데이터가 1개일 때 추가된다.
             @Test
             @DisplayName("데이터가 1개일 때 추가된다")
             void addLast_oneElement_success() {
+                list.addLast(0);
+                list.addLast(1);
 
+                assertThat(list.size()).isEqualTo(2);
+                assertThat(list.get(1)).isEqualTo(1);
             }
             // 데이터가 여러개일 때 추가된다.
             @Test
             @DisplayName("데이터가 여러개일 때 추가된다")
             void addLast_multipleElements_success() {
+                list.addLast(0);
+                list.addLast(1);
+                list.addLast(2);
 
+                assertThat(list.size()).isEqualTo(3);
+                assertThat(list.get(2)).isEqualTo(2);
             }
             // null 요소를 추가한다.
             @Test
             @DisplayName("null 요소를 추가한다")
             void addLast_nullElement_success() {
+                list.addLast(null);
 
+                assertThat(list.size()).isEqualTo(1);
+                assertThat(list.get(0)).isEqualTo(null);
             }
         }
 
