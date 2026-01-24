@@ -1294,28 +1294,26 @@ public class MyTestCase {
         @DisplayName("clear 메서드 테스트")
         class ClearTest {
             // 빈리스트가 된다.
+            // size가 0이 된다.
+            // isEmpty가 true가 된다.
             @Test
             @DisplayName("빈 리스트가 된다.")
             void clear_withElements_becomesEmpty() {
+                list.addLast(0);
+                list.addLast(1);
+
+                list.clear();
+                assertThat(list.size()).isEqualTo(0);
+                assertThat(list.isEmpty()).isTrue();
 
             }
             // 빈 리스트에 clear 호출해도 정상 동작한다.
             @Test
             @DisplayName("빈 리스트에 clear 호출해도 정상 동작한다")
             void clear_emptyList_success() {
-
-            }
-            // size가 0이 된다.
-            @Test
-            @DisplayName("size가 0이 된다")
-            void clear_afterClear_sizeIsZero() {
-
-            }
-            // isEmpty가 true가 된다.
-            @Test
-            @DisplayName("isEmpty가 true가 된다")
-            void clear_afterClear_isEmptyTrue() {
-
+                list.clear();
+                assertThat(list.size()).isEqualTo(0);
+                assertThat(list.isEmpty()).isTrue();
             }
         }
 
@@ -1327,7 +1325,6 @@ public class MyTestCase {
             @Test
             @DisplayName("빈 리스트일 경우 정상 동작한다")
             void reverse_emptyList_success() {
-
             }
             // 데이터가 1개일 경우
             @Test
