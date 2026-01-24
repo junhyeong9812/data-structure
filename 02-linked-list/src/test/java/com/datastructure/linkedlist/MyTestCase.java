@@ -1037,19 +1037,30 @@ public class MyTestCase {
             @Test
             @DisplayName("맨 앞 요소를 조회한다 (index = 0)")
             void get_atFront_success() {
+                list.addLast(0);
+                list.addLast(1);
 
+                assertThat(list.get(0)).isEqualTo(0);
             }
             // 중간 요소를 조회한다.
             @Test
             @DisplayName("중간 요소를 조회한다")
             void get_atMiddle_success() {
+                list.addLast(0);
+                list.addLast(1);
+                list.addLast(2);
 
+                assertThat(list.get(1)).isEqualTo(1);
             }
             // 맨 뒤 요소를 조회한다. (index = size - 1)
             @Test
             @DisplayName("맨 뒤 요소를 조회한다 (index = size - 1)")
             void get_atEnd_success() {
+                list.addLast(0);
+                list.addLast(1);
+                list.addLast(2);
 
+                assertThat(list.get(list.size() - 1)).isEqualTo(2);
             }
 
             // index 요소가 반환되지 않는다.
@@ -1057,19 +1068,26 @@ public class MyTestCase {
             @Test
             @DisplayName("빈 리스트를 조회하는 경우")
             void get_emptyList_throwsException() {
-
+                assertThatThrownBy(() -> list.get(0))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
             }
             // index가 음수인 경우
             @Test
             @DisplayName("index가 음수인 경우")
             void get_negativeIndex_throwsException() {
-
+                list.addLast(0);
+                list.addLast(1);
+                assertThatThrownBy(() ->list.get(-1))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
             }
             // index가 size 이상인 경우
             @Test
             @DisplayName("index가 size 이상인 경우")
             void get_indexOverSize_throwsException() {
-
+                list.addLast(0);
+                list.addLast(1);
+                assertThatThrownBy(() ->list.get(list.size()))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
             }
         }
 
@@ -1081,38 +1099,69 @@ public class MyTestCase {
             @Test
             @DisplayName("맨 앞 요소를 수정한다 (index = 0)")
             void set_atFront_success() {
+                list.addLast(0);
+                list.addLast(1);
+                list.addLast(2);
 
+                Object targetValue = list.set(0,3);
+
+                assertThat(list.size()).isEqualTo(3);
+                assertThat(targetValue).isEqualTo(0);
+                assertThat(list.get(0)).isEqualTo(3);
             }
             // 중간 요소를 수정한다.
             @Test
             @DisplayName("중간 요소를 수정한다")
             void set_atMiddle_success() {
+                list.addLast(0);
+                list.addLast(1);
+                list.addLast(2);
 
+                Object targetValue = list.set(1,3);
+
+                assertThat(list.size()).isEqualTo(3);
+                assertThat(targetValue).isEqualTo(1);
+                assertThat(list.get(1)).isEqualTo(3);
             }
             // 맨 뒤 요소를 수정한다 (index = size - 1)
             @Test
             @DisplayName("맨 뒤 요소를 수정한다 (index = size - 1)")
             void set_atEnd_success() {
+                list.addLast(0);
+                list.addLast(1);
+                list.addLast(2);
 
+                Object targetValue = list.set(list.size() - 1,3);
+
+                assertThat(list.size()).isEqualTo(3);
+                assertThat(targetValue).isEqualTo(2);
+                assertThat(list.get(list.size() - 1)).isEqualTo(3);
             }
             // index 요소를 수정하지 않는다.
             // 빈 리스트인 경우
             @Test
             @DisplayName("빈 리스트인 경우")
             void set_emptyList_throwsException() {
-
+                assertThatThrownBy(() -> list.set(0,1))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
             }
             // index가 음수인 경우
             @Test
             @DisplayName("index가 음수인 경우")
             void set_negativeIndex_throwsException() {
+                list.addLast(0);
 
+                assertThatThrownBy(() -> list.set(-1, 0))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
             }
             // index가 size 이상인 경우
             @Test
             @DisplayName("index가 size 이상인 경우")
             void set_indexOverSize_throwsException() {
+                list.addLast(0);
 
+                assertThatThrownBy(() -> list.set(2, 0))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
             }
         }
 
@@ -1124,7 +1173,6 @@ public class MyTestCase {
             @Test
             @DisplayName("빈 리스트인 경우 0을 반환한다")
             void size_emptyList_returnsZero() {
-
             }
             // 데이터가 1개일 경우
             @Test
