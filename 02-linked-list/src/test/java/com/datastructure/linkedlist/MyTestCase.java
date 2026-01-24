@@ -718,23 +718,16 @@ public class MyTestCase {
         @DisplayName("이중 연결 리스트 생성")
         class Creation {
             // 이중 연결 리스트가 생성이 된다.
+            // 이중 연결 리스트의 size가 0이다.
+            // 이중 연결 리스트의 isEmpty는 true이다.
             @Test
             @DisplayName("이중 연결 리스트가 생성된다")
             void creation_success() {
-
+                assertThat(list).isNotNull();
+                assertThat(list.size()).isEqualTo(0);
+                assertThat(list.isEmpty()).isTrue();
             }
-            // 이중 연결 리스트의 size가 0이다.
-            @Test
-            @DisplayName("이중 연결 리스트의 size는 0이다")
-            void creation_sizeIsZero() {
 
-            }
-            // 이중 연결 리스트의 isEmpty는 true이다.
-            @Test
-            @DisplayName("생성 시 isEmpty가 true이다")
-            void creation_isEmptyTrue() {
-
-            }
         }
 
         @Nested
