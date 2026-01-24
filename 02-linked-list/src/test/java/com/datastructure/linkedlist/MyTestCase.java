@@ -1252,31 +1252,41 @@ public class MyTestCase {
             @Test
             @DisplayName("요소가 존재하면 해당 인덱스를 반환한다")
             void indexOf_existingElement_returnsIndex() {
+                list.addLast(0);
 
+                assertThat(list.indexOf(0)).isEqualTo(0);
             }
             // 요소가 존재하지 않으면 -1을 반환한다.
             @Test
             @DisplayName("요소가 존재하지 않으면 -1을 반환한다")
             void indexOf_nonExistingElement_returnsMinusOne() {
+                list.addLast(1);
 
+                assertThat(list.indexOf(0)).isEqualTo(-1);
             }
             // 빈 리스트일 경우 -1을 반환한다.
             @Test
             @DisplayName("빈 리스트일 경우 -1을 반환한다")
             void indexOf_emptyList_returnsMinusOne() {
-
+                assertThat(list.indexOf(0)).isEqualTo(-1);
             }
             // 중복 요소가 있으면 첫 번째 index를 반환한다.
             @Test
             @DisplayName("중복 요소가 있으면 첫 번째 index를 반환한다")
             void indexOf_duplicateElements_returnsFirstIndex() {
+                list.addLast(0);
+                list.addLast(1);
+                list.addLast(0);
 
+                assertThat(list.indexOf(0)).isEqualTo(0);
             }
             // null 요소를 찾는 경우
             @Test
             @DisplayName("null 요소를 찾는 경우")
             void indexOf_nullElement_returnsCorrectly() {
+                list.addLast(null);
 
+                assertThat(list.indexOf(null)).isEqualTo(0);
             }
         }
 
