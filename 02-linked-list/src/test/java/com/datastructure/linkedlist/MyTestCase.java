@@ -1173,18 +1173,24 @@ public class MyTestCase {
             @Test
             @DisplayName("빈 리스트인 경우 0을 반환한다")
             void size_emptyList_returnsZero() {
+                assertThat(list.size()).isEqualTo(0);
             }
             // 데이터가 1개일 경우
             @Test
             @DisplayName("데이터가 1개일 경우")
             void size_oneElement_returnsOne() {
+                list.addLast(0);
 
+                assertThat(list.size()).isEqualTo(1);
             }
             // 데이터가 여러개일 경우
             @Test
             @DisplayName("데이터가 여러개일 경우")
             void size_multipleElements_returnsCount() {
+                list.addLast(0);
+                list.addLast(1);
 
+                assertThat(list.size()).isEqualTo(2);
             }
         }
 
