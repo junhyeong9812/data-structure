@@ -929,20 +929,31 @@ public class MyTestCase {
             @Test
             @DisplayName("데이터가 1개일 때 삭제하는 경우")
             void removeLast_oneElement_success() {
+                list.addLast(0);
+                Object removed = list.removeLast();
 
+                assertThat(list.size()).isEqualTo(0);
+                assertThat(removed).isEqualTo(0);
             }
             // 데이터가 여러개일 경우 삭제하는 경우
             @Test
             @DisplayName("데이터가 여러개일 경우 삭제하는 경우")
             void removeLast_multipleElements_success() {
+                list.addLast(0);
+                list.addLast(1);
 
+                Object removed = list.removeLast();
+
+                assertThat(list.size()).isEqualTo(1);
+                assertThat(removed).isEqualTo(1);
             }
             // 맨 뒤의 요소가 삭제되지 않는 경우
             // 빈 리스트에 삭제하는 경우
             @Test
             @DisplayName("빈 리스트에서 삭제하는 경우")
             void removeLast_emptyList_throwsException() {
-
+                assertThatThrownBy(() -> list.removeLast())
+                        .isInstanceOf(NoSuchElementException.class);
             }
         }
 
@@ -954,19 +965,40 @@ public class MyTestCase {
             @Test
             @DisplayName("맨 앞의 요소를 삭제하는 경우 (index = 0)")
             void remove_atFront_success() {
+                list.addLast(0);
+                list.addLast(1);
+                list.addLast(2);
 
+                Object removed = list.remove(0);
+
+                assertThat(list.size()).isEqualTo(2);
+                assertThat(removed).isEqualTo(0);
             }
             // 중간 요소를 삭제하는 경우
             @Test
             @DisplayName("중간 요소를 삭제하는 경우")
             void remove_atMiddle_success() {
+                list.addLast(0);
+                list.addLast(1);
+                list.addLast(2);
 
+                Object removed = list.remove(1);
+
+                assertThat(list.size()).isEqualTo(2);
+                assertThat(removed).isEqualTo(1);
             }
             // 맨 마지막의 요소를 삭제하는 경우 index = size - 1
             @Test
             @DisplayName("맨 마지막의 요소를 삭제하는 경우( index = size - 1)")
             void remove_atEnd_success() {
+                list.addLast(0);
+                list.addLast(1);
+                list.addLast(2);
 
+                Object removed = list.remove(list.size() - 1);
+
+                assertThat(list.size()).isEqualTo(2);
+                assertThat(removed).isEqualTo(2);
             }
 
             // index 요소가 삭제되지 않는 경우.
@@ -974,19 +1006,26 @@ public class MyTestCase {
             @Test
             @DisplayName("index가 음수 일 경우")
             void remove_negativeIndex_throwsException() {
+                list.addLast(0);
 
+                assertThatThrownBy(() -> list.remove(-1))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
             }
             // index가 size보다 클 경우
             @Test
             @DisplayName("index가 size 이상일 경우")
             void remove_indexOverSize_throwsException() {
+                list.addLast(0);
 
+                assertThatThrownBy(() -> list.remove(list.size()))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
             }
             // 빈 리스트일 경우
             @Test
             @DisplayName("빈 리스트일 경우")
             void remove_emptyList_throwsException() {
-
+                assertThatThrownBy(() -> list.remove(0))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
             }
         }
 
