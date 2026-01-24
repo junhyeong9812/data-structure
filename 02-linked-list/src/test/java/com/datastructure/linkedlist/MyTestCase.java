@@ -1325,18 +1325,32 @@ public class MyTestCase {
             @Test
             @DisplayName("빈 리스트일 경우 정상 동작한다")
             void reverse_emptyList_success() {
+                list.reverse();
+
+                assertThat(list.size()).isEqualTo(0);
+                assertThat(list.isEmpty()).isTrue();
             }
             // 데이터가 1개일 경우
             @Test
             @DisplayName("데이터가 1개일 경우")
             void reverse_oneElement_success() {
-
+                list.addLast(0);
+                list.reverse();
+                assertThat(list.size()).isEqualTo(1);
+                assertThat(list.get(0)).isEqualTo(0);
             }
             // 데이터가 여러개일 경우
             @Test
             @DisplayName("데이터가 여러개일 경우")
             void reverse_multipleElements_success() {
-
+                list.addLast(0);
+                list.addLast(1);
+                list.addLast(2);
+                list.reverse();
+                assertThat(list.size()).isEqualTo(3);
+                assertThat(list.get(0)).isEqualTo(2);
+                assertThat(list.get(1)).isEqualTo(1);
+                assertThat(list.get(2)).isEqualTo(0);
             }
         }
     }
