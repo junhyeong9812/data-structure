@@ -1202,13 +1202,14 @@ public class MyTestCase {
             @Test
             @DisplayName("빈 리스트인 경우 true를 반환한다")
             void isEmpty_emptyList_returnsTrue() {
-
+                assertThat(list.isEmpty()).isTrue();
             }
             // 데이터가 존재할 경우 false를 반환한다.
             @Test
             @DisplayName("데이터가 존재할 경우 false를 반환한다")
             void isEmpty_withElements_returnFalse() {
-
+                list.addLast(0);
+                assertThat(list.isEmpty()).isFalse();
             }
         }
 
