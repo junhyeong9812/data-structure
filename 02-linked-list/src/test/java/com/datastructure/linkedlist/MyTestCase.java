@@ -892,20 +892,32 @@ public class MyTestCase {
             @Test
             @DisplayName("데이터가 1개일 때 삭제하는 경우")
             void removeFirst_oneElement_success() {
+                list.addLast(0);
 
+                Object removed = list.removeFirst();
+
+                assertThat(list.size()).isEqualTo(0);
+                assertThat(removed).isEqualTo(0);
             }
             // 데이터가 여러개일 때 삭제하는 경우
             @Test
             @DisplayName("데이터가 여러개일 때 삭제하는 경우")
             void removeFirst_multipleElements_success() {
+                list.addLast(0);
+                list.addLast(1);
 
+                Object removed = list.removeFirst();
+
+                assertThat(list.size()).isEqualTo(1);
+                assertThat(removed).isEqualTo(0);
             }
             // 맨 앞의 요소가 삭제되지 않는다.
             // 빈 리스트에 삭제하는 경우
             @Test
             @DisplayName("빈 리스트에서 삭제하는 경우")
             void removeFirst_emptyList_throwsException() {
-
+                assertThatThrownBy(() -> list.removeFirst())
+                        .isInstanceOf(NoSuchElementException.class);
             }
         }
 
