@@ -1220,25 +1220,28 @@ public class MyTestCase {
             @Test
             @DisplayName("요소가 존재하면 true를 반환한다")
             void contains_existingElement_returnsTrue() {
-
+                list.addLast(0);
+                assertThat(list.contains(0)).isTrue();
             }
             // 요소가 존재하지 않으면 false를 반환한다.
             @Test
             @DisplayName("요소가 존재하지 않으면 false를 반환한다")
             void contains_nonExistingElement_returnsFalse() {
-
+                list.addLast(1);
+                assertThat(list.contains(0)).isFalse();
             }
             // 빈 리스트일 경우 false를 반환한다.
             @Test
             @DisplayName("빈 리스트일 경우 false를 반환한다")
             void contains_emptyList_returnsFalse() {
-
+                assertThat(list.contains(0)).isFalse();
             }
             // null 요소를 찾는 경우
             @Test
             @DisplayName("null 요소를 찾는 경우")
             void contains_nullElement_returnsCorrectly() {
-
+                list.addLast(null);
+                assertThat(list.contains(null)).isTrue();
             }
         }
 
