@@ -157,10 +157,11 @@ public class DoublyLinkedList<E> {
     }
 
     public boolean isEmpty() {
-        return true;
+        return size == 0;
     }
 
     public boolean contains(E element) {
+
         return true;
     }
 
