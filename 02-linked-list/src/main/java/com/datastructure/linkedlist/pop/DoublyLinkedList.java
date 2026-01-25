@@ -92,7 +92,19 @@ public class DoublyLinkedList<E> {
     }
 
     public E removeLast() {
-        return null;
+        if (size == 0) {
+            throw new NoSuchElementException();
+        }
+        E removed = tail.data;
+        if (size == 1) {
+            head = null;
+            tail = null;
+        } else {
+            tail.prev.next = null;
+            tail = tail.prev;
+        }
+        size--;
+        return removed;
     }
 
     public E remove(int index) {
