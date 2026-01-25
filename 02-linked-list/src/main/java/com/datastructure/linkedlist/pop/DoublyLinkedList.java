@@ -185,5 +185,19 @@ public class DoublyLinkedList<E> {
         size = 0;
     }
 
-    public void reverse() {}
+    public void reverse() {
+        if (size == 0) {
+            return;
+        }
+        Node<E> node = tail;
+        Node<E> originalHead = head;
+        head = node;
+        for (int i = 0; i < size; i++) {
+            Node<E> nextNode = node.prev;
+            node.prev = node.next;
+            node.next = nextNode;
+            node = nextNode;
+        }
+        tail = originalHead;
+    }
 }
