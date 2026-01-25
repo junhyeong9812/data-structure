@@ -140,7 +140,16 @@ public class DoublyLinkedList<E> {
     }
 
     public E set(int index, E element) {
-        return null;
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException();
+        }
+        Node<E> targetNode = head;
+        for (int i = 0; i < index; i++) {
+            targetNode = targetNode.next;
+        }
+        E removed = targetNode.data;
+        targetNode.data = element;
+        return removed;
     }
 
     public int size() {
