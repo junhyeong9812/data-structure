@@ -171,10 +171,19 @@ public class DoublyLinkedList<E> {
     }
 
     public int indexOf(E element) {
+        Node<E> node = head;
+        for (int i = 0; i < size; i++) {
+            if (Objects.equals(node.data,element)) return i;
+            node = node.next;
+        }
         return -1;
     }
 
-    public void clear() {}
+    public void clear() {
+        tail = null;
+        head = null;
+        size = 0;
+    }
 
     public void reverse() {}
 }
