@@ -108,7 +108,24 @@ public class DoublyLinkedList<E> {
     }
 
     public E remove(int index) {
-        return null;
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException();
+        }
+        if (index == 0) {
+            return removeFirst();
+        }
+        if (index == size - 1) {
+            return removeLast();
+        }
+        Node<E> targetNode = head;
+        for (int i = 0; i < index; i++) {
+            targetNode = targetNode.next;
+        }
+        targetNode.prev.next = targetNode.next;
+        targetNode.next.prev = targetNode.prev;
+        E removed = targetNode.data;
+        size--;
+        return removed;
     }
 
     public E get(int index) {
