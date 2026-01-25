@@ -153,7 +153,7 @@ public class DoublyLinkedList<E> {
     }
 
     public int size() {
-        return  0;
+        return  size;
     }
 
     public boolean isEmpty() {
