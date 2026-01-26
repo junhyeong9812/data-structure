@@ -33,7 +33,15 @@ public class SinglyLinkedListImpl<E> implements LinkedList<E> {
     }
 
     public void addLast(E element) {
-
+        Node<E> newNode = new Node<>(element);
+        if (size == 0) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            tail.next = newNode;
+            tail = newNode;
+        }
+        size++;
     }
 
     public void add(int index, E element) {
