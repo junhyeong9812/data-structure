@@ -1,6 +1,7 @@
 package com.datastructure.linkedlist.oop;
 
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class SinglyLinkedListImpl<E> implements LinkedList<E> {
 
@@ -155,7 +156,14 @@ public class SinglyLinkedListImpl<E> implements LinkedList<E> {
     }
 
     public boolean contains(E element) {
-
+        Node<E> node = head;
+        for (int i = 0; i < size; i++) {
+            if (Objects.equals(element, node.data)) {
+                return true;
+            }
+            node = node.next;
+        }
+        return false;
     }
 
     public int indexOf(E element) {
