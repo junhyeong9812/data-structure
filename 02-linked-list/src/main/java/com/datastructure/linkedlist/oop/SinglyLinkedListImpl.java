@@ -45,7 +45,25 @@ public class SinglyLinkedListImpl<E> implements LinkedList<E> {
     }
 
     public void add(int index, E element) {
-
+        if(index < 0 || index > size) {
+            throw new IndexOutOfBoundsException();
+        }
+        if (index == 0) {
+            addFirst(element);
+            return;
+        }
+        if (index == size) {
+            addLast(element);
+            return;
+        }
+        Node<E> beforeNode = head;
+        for (int i = 0; i < index - 1; i++) {
+            beforeNode = beforeNode.next;
+        }
+        Node<E> newNode = new Node<>(element);
+        newNode.next = beforeNode.next;
+        beforeNode.next = newNode;
+        size++;
     }
 
     public E removeFirst() {
