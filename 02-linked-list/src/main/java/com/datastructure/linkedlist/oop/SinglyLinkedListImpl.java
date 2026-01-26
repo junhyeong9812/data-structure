@@ -102,7 +102,23 @@ public class SinglyLinkedListImpl<E> implements LinkedList<E> {
     }
 
     public E remove(int index) {
-
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException();
+        }
+        if (index == 0) {
+            return removeFirst();
+        }
+        if (index == size - 1) {
+            return removeLast();
+        }
+        Node<E> beforeNode = head;
+        for (int i = 0; i < index - 1; i++) {
+            beforeNode = beforeNode.next;
+        }
+        Node<E> targetNode = beforeNode.next;
+        beforeNode.next = targetNode.next;
+        size--;
+        return targetNode.data;
     }
 
     public E get(int index) {
