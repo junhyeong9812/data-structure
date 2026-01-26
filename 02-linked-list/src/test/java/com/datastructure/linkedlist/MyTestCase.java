@@ -1,5 +1,6 @@
 package com.datastructure.linkedlist;
 
+import com.datastructure.linkedlist.oop.DoublyLinkedListImpl;
 import com.datastructure.linkedlist.oop.LinkedList;
 import com.datastructure.linkedlist.oop.SinglyLinkedListImpl;
 import com.datastructure.linkedlist.pop.DoublyLinkedList;
@@ -711,11 +712,12 @@ public class MyTestCase {
     @DisplayName("이중 연결 리스트")
     class DoublyLinkedListTest {
 
-        private DoublyLinkedList<Object> list;
+//        private DoublyLinkedList<Object> list;
+        private LinkedList<Object> list;
 
         @BeforeEach
         void setUp() {
-            list = new DoublyLinkedList<>();
+            list = new DoublyLinkedListImpl<>();
         }
 
         @Nested
