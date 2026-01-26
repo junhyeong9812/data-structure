@@ -122,7 +122,14 @@ public class SinglyLinkedListImpl<E> implements LinkedList<E> {
     }
 
     public E get(int index) {
-
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException();
+        }
+        Node<E> targetNode = head;
+        for (int i = 0; i < index; i++) {
+            targetNode = targetNode.next;
+        }
+        return targetNode.data;
     }
 
     public E set(int index, E element) {
