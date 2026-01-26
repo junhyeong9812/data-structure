@@ -12,7 +12,7 @@ public interface LinkedList<E> {
 
     public E removeLast();
 
-    public E remove();
+    public E remove(int index);
 
     public E get(int index);
 
