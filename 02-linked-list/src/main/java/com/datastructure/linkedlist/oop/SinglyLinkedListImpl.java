@@ -133,7 +133,17 @@ public class SinglyLinkedListImpl<E> implements LinkedList<E> {
     }
 
     public E set(int index, E element) {
-
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException();
+        }
+        E beforeData = null;
+        Node<E> targetNode = head;
+        for (int i = 0; i < index; i++) {
+            targetNode = targetNode.next;
+        }
+        beforeData = targetNode.data;
+        targetNode.data = element;
+        return beforeData;
     }
 
     public int size() {
