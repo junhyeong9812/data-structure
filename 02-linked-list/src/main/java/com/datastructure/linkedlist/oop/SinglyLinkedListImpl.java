@@ -167,14 +167,33 @@ public class SinglyLinkedListImpl<E> implements LinkedList<E> {
     }
 
     public int indexOf(E element) {
-
+        Node<E> node = head;
+        for (int i = 0; i < size; i++) {
+            if (Objects.equals(element, node.data)) {
+                return i;
+            }
+            node = node.next;
+        }
+        return -1;
     }
 
     public void clear() {
-
+        head = null;
+        tail = null;
+        size = 0;
     }
 
     public void reverse() {
-
+        Node<E> node = head;
+        Node<E> next = null;
+        Node<E> prev = null;
+        tail = head;
+        for (int i = 0; i < size; i++) {
+            next = node.next;
+            node.next = prev;
+            prev = node;
+            node = next;
+        }
+        head = prev;
     }
 }
