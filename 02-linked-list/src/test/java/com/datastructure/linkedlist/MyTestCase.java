@@ -1,5 +1,7 @@
 package com.datastructure.linkedlist;
 
+import com.datastructure.linkedlist.oop.LinkedList;
+import com.datastructure.linkedlist.oop.SinglyLinkedListImpl;
 import com.datastructure.linkedlist.pop.DoublyLinkedList;
 import com.datastructure.linkedlist.pop.SinglyLinkedList;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,10 +21,12 @@ public class MyTestCase {
     @DisplayName("단일 연결 리스트")
     class SinglyLinkedListTest {
 
-        private SinglyLinkedList<Object> list;
+//        private SinglyLinkedList<Object> list;
+        private LinkedList<Object> list;
         @BeforeEach
         void setUp() {
-            list = new SinglyLinkedList<>();
+//            list = new SinglyLinkedList<>();
+            list = new SinglyLinkedListImpl<>();
         }
 
         @Nested
