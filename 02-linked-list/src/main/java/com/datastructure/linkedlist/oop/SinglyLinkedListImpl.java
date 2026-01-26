@@ -1,5 +1,7 @@
 package com.datastructure.linkedlist.oop;
 
+import java.util.NoSuchElementException;
+
 public class SinglyLinkedListImpl<E> implements LinkedList<E> {
 
     private Node<E> head;
@@ -67,14 +69,39 @@ public class SinglyLinkedListImpl<E> implements LinkedList<E> {
     }
 
     public E removeFirst() {
-
+        if (size == 0) {
+            throw new NoSuchElementException();
+        }
+        E removed = head.data;
+        head = head.next;
+        if (size == 1) {
+            tail = null;
+        }
+        size--;
+        return removed;
     }
 
     public E removeLast() {
-
+        if (size == 0) {
+            throw new NoSuchElementException();
+        }
+        E removed = tail.data;
+        if (size == 1) {
+            head = null;
+            tail = null;
+        } else {
+            Node<E> beforeNode = head;
+            for (int i = 0; i < size - 2; i++) {
+                beforeNode = beforeNode.next;
+            }
+            beforeNode.next = null;
+            tail = beforeNode;
+        }
+        size--;
+        return removed;
     }
 
-    public E remove() {
+    public E remove(int index) {
 
     }
 
