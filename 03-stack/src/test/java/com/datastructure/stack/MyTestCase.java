@@ -7,6 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.*;
+
 public class MyTestCase {
 
     @Nested
@@ -23,6 +25,13 @@ public class MyTestCase {
         @DisplayName("배열 기반 스택 생성 테스트")
         class Creation {
 
+            @Test
+            @DisplayName("배열 기반 스택이 생성된다.")
+            void creation_success() {
+                // null이 아닌 지 확인한다
+                // isEmpty인지 확인한다.
+                // size가 0인지 확인한다.
+            }
         }
 
         @Nested
