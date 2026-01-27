@@ -128,6 +128,22 @@ public class MyTestCase {
     }
 
     @Nested
+    @DisplayName("추가 기능 테스트")
+    class AdditionalTest {
+        @Nested
+        @DisplayName("search 메서드 테스트")
+        class SearchTest {
+
+        }
+
+        @Nested
+        @DisplayName("toArray 메서드 테스트")
+        class ToArrayTest {
+
+        }
+    }
+
+    @Nested
     @DisplayName("추가 응용 테스트")
     class ApplicationTest {
         @Nested
