@@ -127,6 +127,26 @@ public class MyTestCase {
         }
     }
 
+    @Nested
+    @DisplayName("추가 응용 테스트")
+    class ApplicationTest {
+        @Nested
+        @DisplayName("괄호 매칭 테스트")
+        class ParenthesesTest {
 
+        }
+
+        @Nested
+        @DisplayName("후위 표기법 계산 테스트")
+        class PostfixEvaluationTest {
+
+        }
+
+        @Nested
+        @DisplayName("중위->후위 변환 테스트")
+        class InfixToPostfixTest {
+
+        }
+    }
 
 }
