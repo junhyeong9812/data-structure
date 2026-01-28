@@ -63,7 +63,25 @@ public class MyTestCase {
         @Nested
         @DisplayName("pop 메서드 테스트")
         class PopTest {
+            @Test
+            @DisplayName("빈 스택에 요소를 제거한다")
+            void pop_emptyStack_throwsException() {
+                //익셉션이 정상적으로 일어나는 확인
+            }
 
+            @Test
+            @DisplayName("데이터가 있는 스택의 요소를 제거한다")
+            void pop_nonEmptyStack_success() {
+                // 사이즈 감소 확인
+                // 반환값이 마지막 요소가 맞는 지 확인
+            }
+
+            @Test
+            @DisplayName("null인 요소를 제거한다")
+            void pop_nullElement_success() {
+                // 사이즈 감소 확인
+                // 반환된 값이 null인지 확
+            }
         }
 
         @Nested
