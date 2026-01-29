@@ -86,7 +86,7 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("peek 메서드 테스트")
-        class peekTest {
+        class PeekTest {
 
             @Test
             @DisplayName("빈 스택의 요소를 조회하면 예외가 발생한다")
@@ -102,7 +102,7 @@ public class MyTestCase {
             }
 
             @Test
-            @DisplayName("null인 요소를 추가한다")
+            @DisplayName("null인 요소를 조회한다")
             void peek_nullElement_success() {
                 // 조회한 데이터가 null인 지확인한다.
                 // 사이즈를 확인한다.
@@ -112,7 +112,25 @@ public class MyTestCase {
         @Nested
         @DisplayName("top 메서드 테스트")
         class TopTest {
+            @Test
+            @DisplayName("빈 스택의 요소를 조회하면 예외가 발생한다")
+            void top_emptyStack_throwsException() {
+                // 빈 스택에 사용시 예외가 발생한다.
+            }
 
+            @Test
+            @DisplayName("데이터가 있는 요소에 데이터를 조회한다")
+            void top_nonEmptyStack_success() {
+                //데이터가 마지막으로 넣은 데이터와 일치하는 지 확인
+                // 데이터 사이즈가 맞는 지 확인한다.
+            }
+
+            @Test
+            @DisplayName("null 요소를 조회한다")
+            void top_nullElement_success() {
+                // 데이터가 null인 지 조회한다.
+                // 데이터 사이즈를 확인한다.
+            }
         }
 
         @Nested
