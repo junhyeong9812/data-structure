@@ -170,7 +170,19 @@ public class MyTestCase {
         @Nested
         @DisplayName("clear 메서드 테스트")
         class ClearTest {
+            @Test
+            @DisplayName("빈 요소일 때 동작하는 지 확인한다")
+            void clear_emptyStack_success() {
+                // 사이즈가 0인 지 확인한다.
+                // isEmpty가 true인지 확인한다
+            }
 
+            @Test
+            @DisplayName("데이터가 있는 스택이 비워지는 지 확인한다")
+            void clear_nonEmptyStack_success() {
+                // clear 후 size가 0인 지 확인한다.
+                // clear 후 isEmpty가 true인지 확인한다.
+            }
         }
     }
 
