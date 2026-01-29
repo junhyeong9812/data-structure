@@ -154,6 +154,17 @@ public class MyTestCase {
         @DisplayName("size 메서드 테스트")
         class SizeTest {
 
+            @Test
+            @DisplayName("빈 스택의 사이즈가 0인지 확인한다")
+            void size_emptyStack_returnZero() {
+                // 사이즈가 0인지 확인한다.
+            }
+
+            @Test
+            @DisplayName("데이터가 있는 스택의 사이즈를 확인한다")
+            void size_nonEmptyStack_returnCount() {
+                // 사이즈가 일치하는 지 확인한다
+            }
         }
 
         @Nested
