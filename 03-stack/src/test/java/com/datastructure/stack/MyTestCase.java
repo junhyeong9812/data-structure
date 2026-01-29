@@ -88,6 +88,25 @@ public class MyTestCase {
         @DisplayName("peek 메서드 테스트")
         class peekTest {
 
+            @Test
+            @DisplayName("빈 스택의 요소를 조회하면 예외가 발생한다")
+            void peek_emptyStack_throwsException() {
+                // 빈요소를 조회 시 익셉션이 나오는 지 확인한다.
+            }
+
+            @Test
+            @DisplayName("데이터가 있는 스택의 요소를 조회한다")
+            void peek_nonEmptyStack_success() {
+                // 조회한 데이터가 일치하는 지확인한다.
+                // 사이즈를 확인한다.
+            }
+
+            @Test
+            @DisplayName("null인 요소를 추가한다")
+            void peek_nullElement_success() {
+                // 조회한 데이터가 null인 지확인한다.
+                // 사이즈를 확인한다.
+            }
         }
 
         @Nested
