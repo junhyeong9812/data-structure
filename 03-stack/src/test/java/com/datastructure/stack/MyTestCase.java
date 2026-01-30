@@ -367,7 +367,23 @@ public class MyTestCase {
         @Nested
         @DisplayName("search 메서드 테스트")
         class SearchTest {
+            @Test
+            @DisplayName("빈 스택인 경우")
+            void search_emptyStack_returnsMinusOne() {
+                // -1 반환 확인
+            }
+            @Test
+            @DisplayName("요소가 존재하는 경우")
+            void search_existingElement_returnPosition() {
 
+                // top=1 기준으로 위치 반환 확인
+            }
+
+            @Test
+            @DisplayName("요소가 존재하지 않는 경우")
+            void search_nonExistingElement_returnMinusOne() {
+                // -1 반환 확인
+            }
         }
 
         @Nested
