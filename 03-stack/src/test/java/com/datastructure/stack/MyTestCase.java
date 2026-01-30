@@ -510,6 +510,35 @@ public class MyTestCase {
         @DisplayName("중위->후위 변환 테스트")
         class InfixToPostfixTest {
 
+            @Test
+            @DisplayName("단순 수식 변환 - 3 + 4 -> 3 4 +")
+            void infix_simple_success() {
+
+            }
+
+            @Test
+            @DisplayName("연산자 우선 순위 적용 - 3 + 4 * 2 -> 3 4 2 * +")
+            void infix_precedence_success() {
+
+            }
+
+            @Test
+            @DisplayName("복합 수식 - ( 1 + 2) * ( 3 + 4) -> 1 2 + 3 4 + *")
+            void infix_complex_success() {
+
+            }
+
+            @Test
+            @DisplayName("빈 수식이면 빈 문자열 반환")
+            void infix_empty_returnsEmpty() {
+
+            }
+
+            @Test
+            @DisplayName("괄호가 맞지 않으면 예외 발생")
+            void infix_mismatchedParentheses_throwsException() {
+
+            }
         }
     }
 
