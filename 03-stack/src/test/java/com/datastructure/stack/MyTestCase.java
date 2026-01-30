@@ -390,6 +390,17 @@ public class MyTestCase {
         @DisplayName("toArray 메서드 테스트")
         class ToArrayTest {
 
+            @Test
+            @DisplayName("빈 스택인 경우")
+            void toArray_emptyStack_returnsEmptyArray() {
+                // 빈 배열이 반환된다.
+            }
+
+            @Test
+            @DisplayName("요소가 존재하는 경우")
+            void toArray_nonEmptyStack_returnsArray() {
+//                배열 순서에 맞게 반환된다
+            }
         }
     }
 
