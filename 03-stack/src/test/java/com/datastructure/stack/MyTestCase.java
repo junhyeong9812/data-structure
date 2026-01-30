@@ -410,7 +410,53 @@ public class MyTestCase {
         @Nested
         @DisplayName("괄호 매칭 테스트")
         class ParenthesesTest {
+            @Test
+            @DisplayName("단순 괄호가 매칭된다 - ()")
+            void parentheses_simple_returnsTrue() {
 
+            }
+
+            @Test
+            @DisplayName("중괄호가 매칭된다 - {}")
+            void parentheses_curly_returnsTrue() {
+
+            }
+
+            @Test
+            @DisplayName("대괄호가 매칭된다 - []")
+            void parentheses_square_returnsTrue() {
+
+            }
+
+            @Test
+            @DisplayName("복합 괄호가 매칭된다 - ([{}])")
+            void parentheses_nested_returnsTrue() {
+
+            }
+
+            @Test
+            @DisplayName("여러 괄호가 매칭된다 - (){}[]")
+            void parentheses_multiple_returnsTrue() {
+
+            }
+
+            @Test
+            @DisplayName("짝이 맞지 않으면 false =(]")
+            void parentheses_mismatch_returnsFalse() {
+
+            }
+
+            @Test
+            @DisplayName("순서가 틀리면 false - ([)]")
+            void parentheses_wrongOrder_returnsFalse() {
+
+            }
+
+            @Test
+            @DisplayName("빈 문자열은 true")
+            void parentheses_empty_returnsTrue() {
+
+            }
         }
 
         @Nested
