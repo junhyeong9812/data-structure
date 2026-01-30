@@ -463,6 +463,47 @@ public class MyTestCase {
         @DisplayName("후위 표기법 계산 테스트")
         class PostfixEvaluationTest {
 
+            @Test
+            @DisplayName("덧셈 계산 - 3 4 +")
+            void postfix_addition_success() {
+                // 결과 7
+            }
+
+            @Test
+            @DisplayName("뺄셈 계산 - 10 3 -")
+            void postfix_substraction_success() {
+                // 결과 7
+            }
+
+            @Test
+            @DisplayName("나눗셈 계산 - 12 4 /")
+            void postfix_division_success() {
+                // 결과: 3
+            }
+
+            @Test
+            @DisplayName("복합 수식 - 3 4 + 2 *")
+            void postfix_complex_success() {
+                //결과: 14
+            }
+
+            @Test
+            @DisplayName("빈 수식이면 예외 발생")
+            void postfix_empty_throwsException() {
+
+            }
+
+            @Test
+            @DisplayName("피연산자 부족하면 예외 발 생 - 3 +")
+            void postfix_insufficientOperands_throwsException() {
+
+            }
+
+            @Test
+            @DisplayName("0으로 나누면 예외 발생")
+            void postfix_divisionByZero_throwsException() {
+
+            }
         }
 
         @Nested
