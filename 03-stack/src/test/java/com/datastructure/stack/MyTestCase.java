@@ -217,12 +217,16 @@ public class MyTestCase {
             @DisplayName("빈 스택의 사이즈가 0인지 확인한다")
             void size_emptyStack_returnZero() {
                 // 사이즈가 0인지 확인한다.
+                assertThat(stack.size()).isZero();
             }
 
             @Test
             @DisplayName("데이터가 있는 스택의 사이즈를 확인한다")
             void size_nonEmptyStack_returnCount() {
                 // 사이즈가 일치하는 지 확인한다
+                stack.push(1);
+                stack.push(2);
+                assertThat(stack.size()).isEqualTo(2);
             }
         }
 
@@ -234,6 +238,8 @@ public class MyTestCase {
             void clear_emptyStack_success() {
                 // 사이즈가 0인 지 확인한다.
                 // isEmpty가 true인지 확인한다
+                assertThatNoException().isThrownBy(() -> stack.clear());
+                assertThat(stack.isEmpty()).isTrue();
             }
 
             @Test
@@ -241,6 +247,12 @@ public class MyTestCase {
             void clear_nonEmptyStack_success() {
                 // clear 후 size가 0인 지 확인한다.
                 // clear 후 isEmpty가 true인지 확인한다.
+                stack.push(1);
+                stack.push(2);
+
+                stack.clear();
+                assertThat(stack.isEmpty()).isTrue();
+                assertThat(stack.size()).isZero();
             }
         }
     }
