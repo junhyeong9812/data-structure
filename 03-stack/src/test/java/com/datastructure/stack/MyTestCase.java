@@ -28,6 +28,9 @@ public class MyTestCase {
             @Test
             @DisplayName("배열 기반 스택이 생성된다.")
             void creation_success() {
+                assertThat(stack).isNotNull();
+                assertThat(stack.isEmpty()).isTrue();
+                assertThat(stack.size()).isZero();
                 // null이 아닌 지 확인한다
                 // isEmpty인지 확인한다.
                 // size가 0인지 확인한다.
