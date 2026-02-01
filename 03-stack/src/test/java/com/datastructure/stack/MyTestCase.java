@@ -160,6 +160,8 @@ public class MyTestCase {
             @DisplayName("빈 스택의 요소를 조회하면 예외가 발생한다")
             void top_emptyStack_throwsException() {
                 // 빈 스택에 사용시 예외가 발생한다.
+                assertThatThrownBy(() -> stack.top())
+                        .isInstanceOf(EmptyStackException.class);
             }
 
             @Test
@@ -167,6 +169,11 @@ public class MyTestCase {
             void top_nonEmptyStack_success() {
                 //데이터가 마지막으로 넣은 데이터와 일치하는 지 확인
                 // 데이터 사이즈가 맞는 지 확인한다.
+                stack.push(1);
+                Object topData = stack.top();
+
+                assertThat(stack.size()).isOne();
+                assertThat(topData).isEqualTo(1);
             }
 
             @Test
@@ -174,6 +181,11 @@ public class MyTestCase {
             void top_nullElement_success() {
                 // 데이터가 null인 지 조회한다.
                 // 데이터 사이즈를 확인한다.
+                stack.push(null);
+                Object topData = stack.top();
+
+                assertThat(stack.size()).isOne();
+                assertThat(topData).isNull();
             }
         }
 
