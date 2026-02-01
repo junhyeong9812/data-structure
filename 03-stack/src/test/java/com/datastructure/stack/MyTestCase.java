@@ -126,6 +126,8 @@ public class MyTestCase {
             @DisplayName("빈 스택의 요소를 조회하면 예외가 발생한다")
             void peek_emptyStack_throwsException() {
                 // 빈요소를 조회 시 익셉션이 나오는 지 확인한다.
+                assertThatThrownBy(() -> stack.peek())
+                        .isInstanceOf(EmptyStackException.class);
             }
 
             @Test
@@ -133,6 +135,10 @@ public class MyTestCase {
             void peek_nonEmptyStack_success() {
                 // 조회한 데이터가 일치하는 지확인한다.
                 // 사이즈를 확인한다.
+                stack.push(1);
+                Object peekData = stack.peek();
+                assertThat(stack.size()).isOne();
+                assertThat(peekData).isEqualTo(1);
             }
 
             @Test
@@ -140,6 +146,10 @@ public class MyTestCase {
             void peek_nullElement_success() {
                 // 조회한 데이터가 null인 지확인한다.
                 // 사이즈를 확인한다.
+                stack.push(null);
+                Object peekNull = stack.peek();
+                assertThat(stack.size()).isOne();
+                assertThat(peekNull).isNull();
             }
         }
 
