@@ -7,6 +7,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.EmptyStackException;
+import java.util.Objects;
+
 import static org.assertj.core.api.Assertions.*;
 
 public class MyTestCase {
@@ -85,6 +88,8 @@ public class MyTestCase {
             @DisplayName("빈 스택에 요소를 제거한다")
             void pop_emptyStack_throwsException() {
                 //익셉션이 정상적으로 일어나는 확인
+                assertThatThrownBy(() -> stack.pop())
+                        .isInstanceOf(EmptyStackException.class);
             }
 
             @Test
@@ -92,13 +97,24 @@ public class MyTestCase {
             void pop_nonEmptyStack_success() {
                 // 사이즈 감소 확인
                 // 반환값이 마지막 요소가 맞는 지 확인
+                stack.push(0);
+                stack.push(1);
+                stack.push(2);
+                Object popData = stack.pop();
+
+                assertThat(stack.size()).isEqualTo(2);
+                assertThat(popData).isEqualTo(2);
             }
 
             @Test
             @DisplayName("null인 요소를 제거한다")
             void pop_nullElement_success() {
                 // 사이즈 감소 확인
-                // 반환된 값이 null인지 확
+                // 반환된 값이 null인지 확인
+                stack.push(null);
+                Object popData = stack.pop();
+                assertThat(stack.size()).isZero();
+                assertThat(popData).isNull();
             }
         }
 
