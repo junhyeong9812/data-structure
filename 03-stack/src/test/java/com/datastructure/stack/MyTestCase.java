@@ -197,12 +197,15 @@ public class MyTestCase {
             @DisplayName("빈 스택을 조회한다")
             void isEmpty_emptyStack_returnsTrue() {
                 // 빈 스택일 떄 true
+                assertThat(stack.isEmpty()).isTrue();
             }
 
             @Test
             @DisplayName("데이터가 존재하는 스택을 조회한다.")
             void isEmpty_nonEmptyStack_returnFalse() {
                 //데이터가 존재할 때 false
+                stack.push(1);
+                assertThat(stack.isEmpty()).isFalse();
             }
         }
 
