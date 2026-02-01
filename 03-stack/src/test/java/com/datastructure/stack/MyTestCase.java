@@ -272,11 +272,14 @@ public class MyTestCase {
         class Creation {
 
             @Test
-            @DisplayName("배열 기반 스택이 생성된다.")
+            @DisplayName("연결 리스트 기반 스택이 생성된다.")
             void creation_success() {
                 // null이 아닌 지 확인한다
                 // isEmpty인지 확인한다.
                 // size가 0인지 확인한다.
+                assertThat(stack).isNotNull();
+                assertThat(stack.isEmpty()).isTrue();
+                assertThat(stack.size()).isZero();
             }
         }
 
