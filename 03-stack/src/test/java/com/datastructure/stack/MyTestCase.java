@@ -292,6 +292,10 @@ public class MyTestCase {
                 // 추가 후 size가 1인지 확인한다.
                 // 추가 후 isEmpty가 false인지 확인한다.
                 // top으로 값이 같은 지 확인한다.
+                stack.push(1);
+                assertThat(stack.size()).isEqualTo(1);
+                assertThat(stack.isEmpty()).isFalse();
+                assertThat(stack.top()).isEqualTo(1);
             }
 
             @Test
@@ -299,6 +303,11 @@ public class MyTestCase {
             void push_nonEmptyStack_success() {
                 // 추가 size가 2인지 확인한다.
                 // 추가 후 top으로 값이 같은 지 확인한다.
+                stack.push(1);
+                stack.push(2);
+
+                assertThat(stack.size()).isEqualTo(2);
+                assertThat(stack.top()).isEqualTo(2);
             }
 
             @Test
@@ -306,6 +315,10 @@ public class MyTestCase {
             void push_nullElement_success() {
                 // 추가 size를 확인한다.
                 // 추가 후 top으로 값을 확인한다.
+                stack.push(null);
+
+                assertThat(stack.size()).isOne();
+                assertThat(stack.top()).isNull();
             }
         }
 
