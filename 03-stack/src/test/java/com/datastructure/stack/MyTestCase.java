@@ -17,7 +17,7 @@ public class MyTestCase {
     @Nested
     @DisplayName("배열 기반 스택")
     class ArrayStackTest {
-
+ 
         ArrayStack stack ;
         @BeforeEach
         void setup() {
@@ -440,12 +440,16 @@ public class MyTestCase {
             @DisplayName("빈 스택을 조회한다")
             void isEmpty_emptyStack_returnsTrue() {
                 // 빈 스택일 떄 true
+                assertThat(stack.isEmpty()).isTrue();
             }
 
             @Test
             @DisplayName("데이터가 존재하는 스택을 조회한다.")
             void isEmpty_nonEmptyStack_returnFalse() {
                 //데이터가 존재할 때 false
+                stack.push(1);
+
+                assertThat(stack.isEmpty()).isFalse();
             }
         }
 
@@ -457,12 +461,17 @@ public class MyTestCase {
             @DisplayName("빈 스택의 사이즈가 0인지 확인한다")
             void size_emptyStack_returnZero() {
                 // 사이즈가 0인지 확인한다.
+                assertThat(stack.size()).isZero();
             }
 
             @Test
             @DisplayName("데이터가 있는 스택의 사이즈를 확인한다")
             void size_nonEmptyStack_returnCount() {
                 // 사이즈가 일치하는 지 확인한다
+                stack.push(1);
+                stack.push(2);
+                stack.push(3);
+                assertThat(stack.size()).isEqualTo(3);
             }
         }
 
@@ -474,6 +483,9 @@ public class MyTestCase {
             void clear_emptyStack_success() {
                 // 사이즈가 0인 지 확인한다.
                 // isEmpty가 true인지 확인한다
+                assertThatNoException().isThrownBy(() -> stack.clear());
+                assertThat(stack.size()).isZero();
+                assertThat(stack.isEmpty()).isTrue();
             }
 
             @Test
@@ -481,6 +493,13 @@ public class MyTestCase {
             void clear_nonEmptyStack_success() {
                 // clear 후 size가 0인 지 확인한다.
                 // clear 후 isEmpty가 true인지 확인한다.
+                stack.push(1);
+                stack.push(2);
+
+                stack.clear();
+
+                assertThat(stack.size()).isZero();
+                assertThat(stack.isEmpty()).isTrue();
             }
         }
     }
@@ -495,6 +514,7 @@ public class MyTestCase {
             @DisplayName("빈 스택인 경우")
             void search_emptyStack_returnsMinusOne() {
                 // -1 반환 확인
+
             }
             @Test
             @DisplayName("요소가 존재하는 경우")
