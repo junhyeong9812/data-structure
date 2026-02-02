@@ -758,31 +758,57 @@ public class MyTestCase {
             @Test
             @DisplayName("단순 수식 변환 - 3 + 4 -> 3 4 +")
             void infix_simple_success() {
+                String PROBLEM_STRING = "3 + 4";
+                String result = problems.infixToPostfix(PROBLEM_STRING);
+                assertThat(result).isEqualTo("3 4 +");
+            }
 
+            @Test
+            @DisplayName("뺄셈 연산자 - 10 - 3 -> 10 3 -")
+            void infix_subtraction_success() {
+                String PROBLEM_STRING = "10 - 3";
+                String result = problems.infixToPostfix(PROBLEM_STRING);
+                assertThat(result).isEqualTo("10 3 -");
+            }
+
+            @Test
+            @DisplayName("나눗셈 연산자 - 12 / 4 -> 12 4 /")
+            void infix_division_success() {
+                String PROBLEM_STRING = "12 / 4";
+                String result = problems.infixToPostfix(PROBLEM_STRING);
+                assertThat(result).isEqualTo("12 4 /");
             }
 
             @Test
             @DisplayName("연산자 우선 순위 적용 - 3 + 4 * 2 -> 3 4 2 * +")
             void infix_precedence_success() {
-
+                String PROBLEM_STRING = "3 + 4 * 2";
+                String result = problems.infixToPostfix(PROBLEM_STRING);
+                assertThat(result).isEqualTo("3 4 2 * +");
             }
 
             @Test
             @DisplayName("복합 수식 - ( 1 + 2) * ( 3 + 4) -> 1 2 + 3 4 + *")
             void infix_complex_success() {
-
+                String PROBLEM_STRING = "( 1 + 2) * ( 3 + 4)";
+                String result = problems.infixToPostfix(PROBLEM_STRING);
+                assertThat(result).isEqualTo("1 2 + 3 4 + *");
             }
 
             @Test
             @DisplayName("빈 수식이면 빈 문자열 반환")
             void infix_empty_returnsEmpty() {
-
+                String PROBLEM_STRING = "";
+                String result = problems.infixToPostfix(PROBLEM_STRING);
+                assertThat(result).isEqualTo("");
             }
 
             @Test
             @DisplayName("괄호가 맞지 않으면 예외 발생")
             void infix_mismatchedParentheses_throwsException() {
-
+                String PROBLEM_STRING = "( 1 + 2 * ( 3 + 4)";
+                assertThatThrownBy(() -> problems.infixToPostfix(PROBLEM_STRING))
+                        .isInstanceOf(IllegalArgumentException.class);
             }
         }
     }
