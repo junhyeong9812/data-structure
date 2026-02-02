@@ -9,7 +9,7 @@ public class StackProblems {
         return 0;
     }
 
-    public int infixToPostfix(String data) {
-        return 0;
+    public String infixToPostfix(String data) {
+        return null;
     }
 }
