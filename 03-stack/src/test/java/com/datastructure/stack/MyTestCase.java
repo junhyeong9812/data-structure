@@ -565,12 +565,27 @@ public class MyTestCase {
             @DisplayName("빈 스택인 경우")
             void toArray_emptyStack_returnsEmptyArray() {
                 // 빈 배열이 반환된다.
+                assertThat(arrayStack.toArray()).isEmpty();
+                assertThat(arrayStack.toArray()).isEqualTo(new Object[0]);
+                assertThat(linkedStack.toArray()).isEmpty();
+                assertThat(linkedStack.toArray()).isEqualTo(new Object[0]);
             }
 
             @Test
             @DisplayName("요소가 존재하는 경우")
             void toArray_nonEmptyStack_returnsArray() {
 //                배열 순서에 맞게 반환된다
+                arrayStack.push(1);
+                arrayStack.push(2);
+                arrayStack.push(3);
+                linkedStack.push(1);
+                linkedStack.push(2);
+                linkedStack.push(3);
+
+                assertThat(arrayStack.toArray()).containsExactly(1, 2, 3);
+                assertThat(arrayStack.toArray()).isEqualTo(new Object[]{1, 2, 3});
+                assertThat(linkedStack.toArray()).containsExactly(1, 2, 3);
+                assertThat(linkedStack.toArray()).isEqualTo(new Object[]{1, 2, 3});
             }
         }
     }
