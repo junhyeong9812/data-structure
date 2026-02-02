@@ -2,6 +2,7 @@ package com.datastructure.stack;
 
 import com.datastructure.stack.pop.ArrayStack;
 import com.datastructure.stack.pop.LinkedStack;
+import com.datastructure.stack.pop.StackProblems;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -593,55 +594,90 @@ public class MyTestCase {
     @Nested
     @DisplayName("추가 응용 테스트")
     class ApplicationTest {
+
+        StackProblems problems = new StackProblems();
+
         @Nested
         @DisplayName("괄호 매칭 테스트")
         class ParenthesesTest {
             @Test
             @DisplayName("단순 괄호가 매칭된다 - ()")
             void parentheses_simple_returnsTrue() {
-
+                String PROBLEM_STRING = "(안녕하)세요";
+                boolean result = problems.isValidParentheses(PROBLEM_STRING);
+                assertThat(result).isTrue();
             }
 
             @Test
             @DisplayName("중괄호가 매칭된다 - {}")
             void parentheses_curly_returnsTrue() {
-
+                String PROBLEM_STRING = "{안녕하}세요";
+                boolean result = problems.isValidParentheses(PROBLEM_STRING);
+                assertThat(result).isTrue();
             }
 
             @Test
             @DisplayName("대괄호가 매칭된다 - []")
             void parentheses_square_returnsTrue() {
-
+                String PROBLEM_STRING = "[안녕하]세요";
+                boolean result = problems.isValidParentheses(PROBLEM_STRING);
+                assertThat(result).isTrue();
             }
 
             @Test
             @DisplayName("복합 괄호가 매칭된다 - ([{}])")
             void parentheses_nested_returnsTrue() {
-
+                String PROBLEM_STRING = "(누군가 [어디선가 {나타나} 그를 ] 잡아 ) 갔다";
+                boolean result = problems.isValidParentheses(PROBLEM_STRING);
+                assertThat(result).isTrue();
             }
 
             @Test
             @DisplayName("여러 괄호가 매칭된다 - (){}[]")
             void parentheses_multiple_returnsTrue() {
-
+                String PROBLEM_STRING = "(오늘은){유난히}[좋은 날이였다]";
+                boolean result = problems.isValidParentheses(PROBLEM_STRING);
+                assertThat(result).isTrue();
             }
 
             @Test
             @DisplayName("짝이 맞지 않으면 false =(]")
             void parentheses_mismatch_returnsFalse() {
-
+                String PROBLEM_STRING = "안녕(하세]요";
+                boolean result = problems.isValidParentheses(PROBLEM_STRING);
+                assertThat(result).isFalse();
             }
 
             @Test
             @DisplayName("순서가 틀리면 false - ([)]")
             void parentheses_wrongOrder_returnsFalse() {
+                String PROBLEM_STRING = "안녕(하세[요)반갑]습니다";
+                boolean result = problems.isValidParentheses(PROBLEM_STRING);
+                assertThat(result).isFalse();
+            }
 
+            @Test
+            @DisplayName("여는 괄호만 있으면 false - (")
+            void parentheses_only_returnsFalse() {
+                String PROBLEM_STRING = "(안녕";
+                boolean result = problems.isValidParentheses(PROBLEM_STRING);
+                assertThat(result).isFalse();
+            }
+
+            @Test
+            @DisplayName("닫는 괄호만 있으면 false - )")
+            void parentheses_onlyClose_returnsFalse() {
+                String PROBLEM_STRING = "안녕)";
+                boolean result = problems.isValidParentheses(PROBLEM_STRING);
+                assertThat(result).isFalse();
             }
 
             @Test
             @DisplayName("빈 문자열은 true")
             void parentheses_empty_returnsTrue() {
-
+                String PROBLEM_STRING = "";
+                boolean result = problems.isValidParentheses(PROBLEM_STRING);
+                assertThat(result).isTrue();
             }
         }
 
