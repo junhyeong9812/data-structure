@@ -689,42 +689,65 @@ public class MyTestCase {
             @DisplayName("덧셈 계산 - 3 4 +")
             void postfix_addition_success() {
                 // 결과 7
+                String PROMLEM_STRING = "3 4 +";
+                int result = problems.evaluatePostfix(PROMLEM_STRING);
+                assertThat(result).isEqualTo(7);
             }
 
             @Test
             @DisplayName("뺄셈 계산 - 10 3 -")
             void postfix_substraction_success() {
                 // 결과 7
+                String PROMLEM_STRING = "10 3 -";
+                int result = problems.evaluatePostfix(PROMLEM_STRING);
+                assertThat(result).isEqualTo(7);
             }
 
             @Test
             @DisplayName("나눗셈 계산 - 12 4 /")
             void postfix_division_success() {
                 // 결과: 3
+                String PROMLEM_STRING = "12 4 /";
+                int result = problems.evaluatePostfix(PROMLEM_STRING);
+                assertThat(result).isEqualTo(3);
+            }
+
+            @Test
+            @DisplayName("곱셈 계산 - 3 4 *")
+            void postfix_multiplication_success() {
+                String PROBLEM_STRING = "3 4 *";
+                int result = problems.evaluatePostfix(PROBLEM_STRING);
+                assertThat(result).isEqualTo(12);
             }
 
             @Test
             @DisplayName("복합 수식 - 3 4 + 2 *")
             void postfix_complex_success() {
                 //결과: 14
+                String PROMLEM_STRING = "3 4 + 2 *";
+                int result = problems.evaluatePostfix(PROMLEM_STRING);
+                assertThat(result).isEqualTo(14);
             }
 
             @Test
             @DisplayName("빈 수식이면 예외 발생")
             void postfix_empty_throwsException() {
-
+                String PROMLEM_STRING = "";
+                assertThatThrownBy(() ->problems.evaluatePostfix(PROMLEM_STRING)).isInstanceOf(IllegalArgumentException.class);
             }
 
             @Test
             @DisplayName("피연산자 부족하면 예외 발 생 - 3 +")
             void postfix_insufficientOperands_throwsException() {
-
+                String PROMLEM_STRING = "3 +";
+                assertThatThrownBy(() ->problems.evaluatePostfix(PROMLEM_STRING)).isInstanceOf(IllegalArgumentException.class);
             }
 
             @Test
             @DisplayName("0으로 나누면 예외 발생")
             void postfix_divisionByZero_throwsException() {
-
+                String PROMLEM_STRING = "12 0 /";
+                assertThatThrownBy(() ->problems.evaluatePostfix(PROMLEM_STRING)).isInstanceOf(ArithmeticException.class);
             }
         }
 
