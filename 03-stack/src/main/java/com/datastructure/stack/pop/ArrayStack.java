@@ -46,7 +46,7 @@ public class ArrayStack<E> {
         return 0;
     }
 
-    public E[] toArray() {
+    public Object[] toArray() {
         return null;
     }
 }
