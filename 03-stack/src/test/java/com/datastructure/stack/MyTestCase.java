@@ -507,6 +507,15 @@ public class MyTestCase {
     @Nested
     @DisplayName("추가 기능 테스트")
     class AdditionalTest {
+
+        ArrayStack arrayStack;
+        LinkedStack linkedStack;
+        @BeforeEach
+        void setup() {
+            arrayStack = new ArrayStack();
+            linkedStack = new LinkedStack<>();
+        }
+
         @Nested
         @DisplayName("search 메서드 테스트")
         class SearchTest {
@@ -514,19 +523,37 @@ public class MyTestCase {
             @DisplayName("빈 스택인 경우")
             void search_emptyStack_returnsMinusOne() {
                 // -1 반환 확인
-
+                assertThat(arrayStack.search(1)).isEqualTo(-1);
+                assertThat(linkedStack.search(1)).isEqualTo(-1);
             }
             @Test
             @DisplayName("요소가 존재하는 경우")
             void search_existingElement_returnPosition() {
-
                 // top=1 기준으로 위치 반환 확인
+                arrayStack.push(1);
+                arrayStack.push(2);
+                arrayStack.push(3);
+                linkedStack.push(1);
+                linkedStack.push(2);
+                linkedStack.push(3);
+
+                assertThat(arrayStack.search(1)).isEqualTo(1);
+                assertThat(arrayStack.search(2)).isEqualTo(2);
+                assertThat(arrayStack.search(3)).isEqualTo(3);
+                assertThat(linkedStack.search(1)).isEqualTo(1);
+                assertThat(linkedStack.search(2)).isEqualTo(2);
+                assertThat(linkedStack.search(3)).isEqualTo(3);
             }
 
             @Test
             @DisplayName("요소가 존재하지 않는 경우")
             void search_nonExistingElement_returnMinusOne() {
                 // -1 반환 확인
+                arrayStack.push(1);
+                linkedStack.push(1);
+
+                assertThat(arrayStack.search(2)).isEqualTo(-1);
+                assertThat(linkedStack.search(2)).isEqualTo(-1);
             }
         }
 
