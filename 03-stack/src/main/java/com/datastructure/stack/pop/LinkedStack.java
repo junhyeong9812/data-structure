@@ -81,6 +81,12 @@ public class LinkedStack<E> {
     }
 
     public Object[] toArray() {
-        return null;
+        Object[] array= new Object[size()];
+        Node<E> temp = top;
+        for (int i = size(); i > 0; i--) {
+            array[i - 1] = temp.element;
+            temp = temp.prev;
+        }
+        return array;
     }
 }
