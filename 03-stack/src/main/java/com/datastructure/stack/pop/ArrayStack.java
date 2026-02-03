@@ -1,7 +1,8 @@
 package com.datastructure.stack.pop;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.EmptyStackException;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class ArrayStack<E> {
@@ -21,6 +22,9 @@ public class ArrayStack<E> {
     }
 
     public E pop() {
+        if (top == 0) {
+            throw new EmptyStackException();
+        }
         E popData = data[--top];
         data[top] = null;
         shrinkCapacity();
@@ -28,11 +32,17 @@ public class ArrayStack<E> {
     }
 
     public E peek() {
+        if (top == 0) {
+            throw new EmptyStackException();
+        }
         return data[top - 1];
 
     }
 
     public E top() {
+        if (top == 0) {
+            throw new EmptyStackException();
+        }
         return data[top - 1];
     }
 
