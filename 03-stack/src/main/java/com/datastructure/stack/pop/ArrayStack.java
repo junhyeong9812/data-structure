@@ -44,7 +44,9 @@ public class ArrayStack<E> {
     }
 
     public void clear() {
-
+        capacity = 10;
+        data = (E[]) new Object[capacity];
+        top = 0;
     }
 
     public int search(E element) {
