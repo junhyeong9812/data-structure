@@ -27,19 +27,20 @@ public class ArrayStack<E> {
     }
 
     public E peek() {
-        return null;
+        return data[top - 1];
+
     }
 
     public E top() {
-        return null;
+        return data[top - 1];
     }
 
     public boolean isEmpty() {
-        return false;
+        return top == 0;
     }
 
     public int size() {
-        return 0;
+        return top;
     }
 
     public void clear() {
