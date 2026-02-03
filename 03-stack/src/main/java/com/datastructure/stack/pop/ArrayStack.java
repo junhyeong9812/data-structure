@@ -2,6 +2,7 @@ package com.datastructure.stack.pop;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class ArrayStack<E> {
     private int capacity = 10;
@@ -50,7 +51,12 @@ public class ArrayStack<E> {
     }
 
     public int search(E element) {
-        return 0;
+        for (int i = top - 1; i >= 0; i--) {
+            if (Objects.equals(data[i], element)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public Object[] toArray() {
