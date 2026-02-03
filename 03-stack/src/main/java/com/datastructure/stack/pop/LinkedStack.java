@@ -7,8 +7,12 @@ public class LinkedStack<E> {
     private Node<E> top;
 
     public static class Node<E> {
-        E data;
+        E element;
         Node<E> next;
+
+        public Node(E element) {
+            this.element = element;
+        }
     }
 
     public void push(E element) {
