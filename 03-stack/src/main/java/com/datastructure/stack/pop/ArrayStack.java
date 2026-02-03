@@ -60,7 +60,7 @@ public class ArrayStack<E> {
     }
 
     public Object[] toArray() {
-        return null;
+        return Arrays.copyOf(data, top);
     }
 
     private void extendCapacity() {
