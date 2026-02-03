@@ -2,6 +2,7 @@ package com.datastructure.stack.pop;
 
 import java.util.EmptyStackException;
 import java.util.List;
+import java.util.Objects;
 
 public class LinkedStack<E> {
 
@@ -67,7 +68,16 @@ public class LinkedStack<E> {
     }
 
     public int search(E element) {
-        return 0;
+        Node<E> temp = top;
+        int count = 0;
+        while (temp != null) {
+            if (Objects.equals(temp.element, element)) {
+                return count;
+            }
+            temp = temp.prev;
+            count++;
+        }
+        return -1;
     }
 
     public Object[] toArray() {
