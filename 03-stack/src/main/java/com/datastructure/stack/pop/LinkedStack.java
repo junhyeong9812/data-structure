@@ -1,5 +1,6 @@
 package com.datastructure.stack.pop;
 
+import java.util.EmptyStackException;
 import java.util.List;
 
 public class LinkedStack<E> {
@@ -22,17 +23,26 @@ public class LinkedStack<E> {
     }
 
     public E pop() {
+        if (top == null) {
+            throw new EmptyStackException();
+        }
         E element = top.element;
         top = top.prev;
         return element;
     }
 
     public E peek() {
-        return null;
+        if (top == null) {
+            throw new EmptyStackException();
+        }
+        return top.element;
     }
 
     public E top() {
-        return null;
+        if (top == null) {
+            throw new EmptyStackException();
+        }
+        return top.element;
     }
 
     public boolean isEmpty() {
