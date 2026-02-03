@@ -10,12 +10,13 @@ public class ArrayStack<E> {
 
     @SuppressWarnings("unChecked")
     public ArrayStack() {
-        this.data = (E[])new Object[capacity];
+        this.data = (E[]) new Object[capacity];
         top = 0;
     }
 
     public void push(E element) {
-
+        extendCapacity();
+        data[top++] = element;
     }
 
     public E pop() {
@@ -48,5 +49,15 @@ public class ArrayStack<E> {
 
     public Object[] toArray() {
         return null;
+    }
+
+    private void extendCapacity() {
+        if (top == capacity) {
+            capacity *= 2;
+            data = Arrays.copyOf(data, capacity);
+        }
+    }
+    private void shrinkCapacity() {
+
     }
 }
