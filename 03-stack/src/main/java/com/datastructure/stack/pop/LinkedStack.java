@@ -16,7 +16,9 @@ public class LinkedStack<E> {
     }
 
     public void push(E element) {
-
+        Node<E> newNode = new Node<>(element);
+        top.next = newNode;
+        top = newNode;
     }
 
     public E pop() {
