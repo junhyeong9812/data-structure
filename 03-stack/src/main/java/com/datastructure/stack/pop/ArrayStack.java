@@ -20,7 +20,10 @@ public class ArrayStack<E> {
     }
 
     public E pop() {
-        return null;
+        E popData = data[--top];
+        data[top] = null;
+        shrinkCapacity();
+        return popData;
     }
 
     public E peek() {
@@ -53,11 +56,14 @@ public class ArrayStack<E> {
 
     private void extendCapacity() {
         if (top == capacity) {
-            capacity *= 2;
+            capacity = (int)(capacity * 1.5);
             data = Arrays.copyOf(data, capacity);
         }
     }
     private void shrinkCapacity() {
-
+        if (top <= capacity/4 && capacity > 10) {
+            capacity = Math.max(capacity/2, 10);
+            data = Arrays.copyOf(data, capacity);
+        }
     }
 }
