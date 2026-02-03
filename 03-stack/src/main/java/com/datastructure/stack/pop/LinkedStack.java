@@ -8,7 +8,7 @@ public class LinkedStack<E> {
 
     public static class Node<E> {
         E element;
-        Node<E> next;
+        Node<E> prev;
 
         public Node(E element) {
             this.element = element;
@@ -17,12 +17,14 @@ public class LinkedStack<E> {
 
     public void push(E element) {
         Node<E> newNode = new Node<>(element);
-        top.next = newNode;
+        newNode.prev = top;
         top = newNode;
     }
 
     public E pop() {
-        return null;
+        E element = top.element;
+        top = top.prev;
+        return element;
     }
 
     public E peek() {
