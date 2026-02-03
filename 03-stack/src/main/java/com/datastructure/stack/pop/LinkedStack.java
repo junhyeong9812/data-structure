@@ -63,7 +63,7 @@ public class LinkedStack<E> {
     }
 
     public void clear() {
-
+        top = null;
     }
 
     public int search(E element) {
