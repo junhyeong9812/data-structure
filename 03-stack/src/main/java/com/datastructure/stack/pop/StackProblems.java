@@ -1,88 +1,60 @@
 package com.datastructure.stack.pop;
 
+
 public class StackProblems {
     public boolean isValidParentheses(String data) {
         char[] datas = data.toCharArray();
-        Parentheses parentheses = new Parentheses();
-        Braces braces = new Braces();
-        Brackets brackets = new Brackets();
 
-        for(int i = 0; i <datas.length; i++) {
-            parentheses.checkParentheses(datas[i]);
-            braces.checkBraces(datas[i]);
-            brackets.checkBrackets(datas[i]);
-        }
+        // 데이터를 스택에 저장
 
-        return parentheses.isMatched() && braces.isMatched() && brackets.isMatched();
+        ValidateParentheses validateParentheses = new ValidateParentheses();
+
+        return validateParentheses.isValid(datas);
     }
 
-    private class Parentheses {
-        private int openParenthesis;
-        private int closeParenthesis;
+    public class ValidateParentheses {
 
-        public Parentheses() {
-            this.openParenthesis = 0;
-            this.closeParenthesis = 0;
-        }
+        public boolean isValid(char[] datas) {
+            int size = datas.length;
+            ArrayStack<Character> openStack = new ArrayStack<>();
+            for (int i = 0; i < size; i++) {
+                char data = datas[i];
+                if (data == '(') {
+                    openStack.push(data);
 
-        public void checkParentheses(char data) {
-            if (data == '(') {
-                openParenthesis++;
+                }
+                if (data == '{') {
+                    openStack.push(data);
+
+                }
+                if (data == '[') {
+                    openStack.push(data);
+
+                }
+                if (data == ')') {
+                    if (openStack.isEmpty() || openStack.pop() != '(') {
+                        return false;
+                    }
+                }
+                if (data == '}') {
+                    if (openStack.isEmpty() || openStack.pop() != '{') {
+                        return false;
+                    }
+                }
+                if (data == ']') {
+                    if (openStack.isEmpty() || openStack.pop() != '[') {
+                        return false;
+                    }
+                }
             }
-            if (data == ')') {
-                closeParenthesis++;
+            if (!openStack.isEmpty()) {
+                return false;
             }
-        }
-        public boolean isMatched() {
-            return openParenthesis == closeParenthesis;
-        }
-    }
-
-    private class Braces {
-        private int openBrace;
-        private int closeBrace;
-
-        public Braces() {
-            this.openBrace = 0;
-            this.closeBrace = 0;
-        }
-
-        public void checkBraces(char data) {
-            if (data == '{') {
-                openBrace++;
-            }
-            if (data == '}') {
-                closeBrace++;
-            }
-        }
-
-        public boolean isMatched() {
-            return openBrace == closeBrace;
+            return true;
         }
     }
 
-    private class Brackets {
-        private int openBracket;
-        private int closeBracket;
 
-        public Brackets() {
-            this.openBracket = 0;
-            this.closeBracket = 0;
-        }
-
-        public void checkBrackets(char data) {
-            if (data == '[') {
-                openBracket++;
-            }
-            if (data == ']') {
-                closeBracket++;
-            }
-        }
-
-        public boolean isMatched() {
-            return openBracket == closeBracket;
-        }
-    }
 
     public int evaluatePostfix(String data) {
         return 0;
