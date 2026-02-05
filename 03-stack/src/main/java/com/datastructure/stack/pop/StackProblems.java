@@ -57,32 +57,43 @@ public class StackProblems {
 
         ArrayStack<Integer> numbers = new ArrayStack<>();
         for (int i = 0; i < tokens.length; i++) {
-            if (isNumber(String.valueOf(tokens[i]))) {
+            if (isNumber(tokens[i])) {
                 numbers.push(Integer.parseInt(tokens[i]));
             } else {
                 if (Objects.equals(tokens[i],"+")) {
-                    int rightOperand = numbers.pop();
-                    int leftOperand = numbers.pop();
+                    int[] checkNumbers= checkNumbers(numbers);
+                    int rightOperand = checkNumbers[1];
+                    int leftOperand = checkNumbers[0];
                     numbers.push(leftOperand + rightOperand);
                 }
                 if (Objects.equals(tokens[i],"-")) {
-                    int rightOperand = numbers.pop();
-                    int leftOperand = numbers.pop();
+                    int[] checkNumbers= checkNumbers(numbers);
+                    int rightOperand = checkNumbers[1];
+                    int leftOperand = checkNumbers[0];
                     numbers.push(leftOperand - rightOperand);
                 }
                 if (Objects.equals(tokens[i],"*")) {
-                    int rightOperand = numbers.pop();
-                    int leftOperand = numbers.pop();
+                    int[] checkNumbers= checkNumbers(numbers);
+                    int rightOperand = checkNumbers[1];
+                    int leftOperand = checkNumbers[0];
                     numbers.push(leftOperand * rightOperand);
                 }
                 if (Objects.equals(tokens[i],"/")) {
-                    int rightOperand = numbers.pop();
-                    int leftOperand = numbers.pop();
+                    int[] checkNumbers= checkNumbers(numbers);
+                    int rightOperand = checkNumbers[1];
+                    int leftOperand = checkNumbers[0];
+                    if (rightOperand == 0) {
+                        throw new ArithmeticException();
+                    }
                     numbers.push(leftOperand / rightOperand);
                 }
                 if (Objects.equals(tokens[i],"%")) {
-                    int rightOperand = numbers.pop();
-                    int leftOperand = numbers.pop();
+                    int[] checkNumbers= checkNumbers(numbers);
+                    int rightOperand = checkNumbers[1];
+                    int leftOperand = checkNumbers[0];
+                    if (rightOperand == 0) {
+                        throw new ArithmeticException();
+                    }
                     numbers.push(leftOperand % rightOperand);
                 }
             }
@@ -90,8 +101,15 @@ public class StackProblems {
         }
         return numbers.pop();
     }
+    public int[] checkNumbers(ArrayStack<Integer> numbers) {
+        if(numbers.isEmpty()) throw new IllegalArgumentException();
+        int rightOperand = numbers.pop();
+        if(numbers.isEmpty()) throw new IllegalArgumentException();
+        int leftOperand = numbers.pop();
+        return new int[]{leftOperand, rightOperand};
+    }
 
-    public boolean isNumber(String data) {
+    private boolean isNumber(String data) {
         try {
             Integer.parseInt(data);
             return true;
