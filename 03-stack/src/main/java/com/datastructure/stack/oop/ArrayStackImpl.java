@@ -1,5 +1,7 @@
 package com.datastructure.stack.oop;
 
+import java.util.Arrays;
+
 public class ArrayStackImpl<E> implements Stack<E> {
 
     private int capacity;
@@ -42,6 +44,11 @@ public class ArrayStackImpl<E> implements Stack<E> {
 
     }
 
-    private void growStack() {}
+    private void growStack() {
+        if (capacity == top) {
+            capacity = (int)(capacity * 1.5);
+            stackData = Arrays.copyOf(stackData, capacity);
+        }
+    }
     private void shrink() {}
 }
