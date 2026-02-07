@@ -2,6 +2,17 @@ package com.datastructure.stack.oop;
 
 public class ArrayStackImpl<E> implements Stack<E> {
 
+    private int capacity;
+    private E[] stackData;
+    private int top;
+
+    @SuppressWarnings("unchecked")
+    public ArrayStackImpl() {
+        this.capacity = 10;
+        this.stackData = (E[]) new Object[capacity];
+        this.top = 0;
+    }
+
     public void push(E element) {
 
     }
@@ -30,4 +41,7 @@ public class ArrayStackImpl<E> implements Stack<E> {
     public void clear() {
 
     }
+
+    private void growStack() {}
+    private void shrink() {}
 }
