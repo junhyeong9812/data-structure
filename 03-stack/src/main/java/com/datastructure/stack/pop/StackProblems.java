@@ -126,46 +126,34 @@ public class StackProblems {
     }
 
     public String infixToPostfix(String data) {
-        isValidParentheses(data);
+        if (!isValidParentheses(data)) {
+            throw new IllegalArgumentException();
+        }
         String[] tokens = data.split(" ");
 
         ArrayStack<String> operators = new ArrayStack<>();
 
         StringBuilder postfixResult = new StringBuilder();
-        for (int i =0; i < tokens.length; i++) {
+        for (int i = 0; i < tokens.length; i++) {
+            if (isNumber(tokens[i])) {
+                postfixResult.append(tokens[i]).append(" ");
+            }
             if (isOperator(tokens[i]) || tokens[i].equals("(")) {
                 operators.push(tokens[i]);
             }
-            if(tokens[i].equals(")")) {
-                while( !operators.isEmpty() && !operators.peek().equals("(")) {
-                    String popOperator= operators.pop();
-                    if (!operators.isEmpty() && (operators.top().equals("+") || operators.top().equals("-")) && (popOperator.equals("*") || popOperator.equals("%"))) {
-                        String forwordOperator = operators.pop();
-                        postfixResult.append(popOperator).append(" ");
-                        postfixResult.append(forwordOperator).append(" ");
-                    } else {
-                        postfixResult.append(popOperator);
-                    }
+            if (tokens[i].equals(")")) {
+                while ( !operators.isEmpty() && !operators.peek().equals("(")) {
+                    String operator = operators.pop();
+                    postfixResult.append(operator).append(" ");
                 }
-                operators.pop();
-            }
-            if(isNumber(tokens[i])) {
-                postfixResult.append(tokens[i]).append(" ");
-            }
-        }
-        if(!operators.isEmpty()) {
-            while( !operators.isEmpty() && !operators.peek().equals("(")) {
-                String popOperator= operators.pop();
-                if (!operators.isEmpty() && (operators.top().equals("+") || operators.top().equals("-")) && (popOperator.equals("*") || popOperator.equals("%"))) {
-                    String forwordOperator = operators.pop();
-                    postfixResult.append(popOperator).append(" ");
-                    postfixResult.append(forwordOperator).append(" ");
-                } else {
-                    postfixResult.append(popOperator);
+                if (!operators.isEmpty() && operators.peek().equals("(")) {
+                    operators.pop();
                 }
             }
         }
-
+        while ( !operators.isEmpty()) {
+            postfixResult.append(operators.pop()).append(" ");
+        }
         return postfixResult.toString().trim();
     }
 }
