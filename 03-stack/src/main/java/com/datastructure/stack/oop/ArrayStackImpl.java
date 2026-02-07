@@ -16,7 +16,9 @@ public class ArrayStackImpl<E> implements Stack<E> {
     }
 
     public void push(E element) {
-
+        growStack();
+        stackData[top] = element;
+        top++;
     }
 
     public E pop() {
