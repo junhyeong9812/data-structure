@@ -41,7 +41,7 @@ public class ArrayStackImpl<E> implements Stack<E> {
     }
 
     public int size(){
-        return 0;
+        return top;
     }
 
     public void clear() {
