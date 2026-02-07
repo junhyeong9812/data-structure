@@ -790,7 +790,7 @@ public class MyTestCase {
             @Test
             @DisplayName("복합 수식 - ( 1 + 2) * ( 3 + 4) -> 1 2 + 3 4 + *")
             void infix_complex_success() {
-                String PROBLEM_STRING = "( 1 + 2) * ( 3 + 4)";
+                String PROBLEM_STRING = "( 1 + 2 ) * ( 3 + 4 )";
                 String result = problems.infixToPostfix(PROBLEM_STRING);
                 assertThat(result).isEqualTo("1 2 + 3 4 + *");
             }
@@ -806,7 +806,7 @@ public class MyTestCase {
             @Test
             @DisplayName("괄호가 맞지 않으면 예외 발생")
             void infix_mismatchedParentheses_throwsException() {
-                String PROBLEM_STRING = "( 1 + 2 * ( 3 + 4)";
+                String PROBLEM_STRING = "( 1 + 2 * ( 3 + 4 )";
                 assertThatThrownBy(() -> problems.infixToPostfix(PROBLEM_STRING))
                         .isInstanceOf(IllegalArgumentException.class);
             }
