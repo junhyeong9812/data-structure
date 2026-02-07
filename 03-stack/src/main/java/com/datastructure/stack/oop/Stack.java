@@ -15,4 +15,8 @@ public interface Stack<E> {
     public int size();
 
     public void clear();
+
+    public int search(E element);
+
+    public E[] toArray();
 }
