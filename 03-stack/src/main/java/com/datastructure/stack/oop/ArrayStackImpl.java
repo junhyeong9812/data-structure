@@ -45,7 +45,9 @@ public class ArrayStackImpl<E> implements Stack<E> {
     }
 
     public void clear() {
-
+        capacity = 10;
+        top = 0;
+        stackData = (E[])(new Object[capacity]);
     }
 
     private void growStack() {
