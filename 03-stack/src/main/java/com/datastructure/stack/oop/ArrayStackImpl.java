@@ -50,6 +50,14 @@ public class ArrayStackImpl<E> implements Stack<E> {
         stackData = (E[])(new Object[capacity]);
     }
 
+    public int search(E element) {
+
+    }
+
+    public E[] toArray() {
+        return Arrays.copyOf(stackData,top);
+    }
+
     private void growStack() {
         if (capacity == top) {
             capacity = (int)(capacity * 1.5);
