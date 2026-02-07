@@ -37,8 +37,7 @@ public class ArrayStackImpl<E> implements Stack<E> {
     }
 
     public boolean isEmpty() {
-
-        return true;
+        return top == 0;
     }
 
     public int size(){
