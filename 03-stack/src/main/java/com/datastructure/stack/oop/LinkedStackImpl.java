@@ -30,4 +30,12 @@ public class LinkedStackImpl<E> implements Stack<E> {
     public void clear() {
 
     }
+
+    public int search(E element) {
+        return 0;
+    }
+
+    public E[] toArray(){
+        return null;
+    }
 }
