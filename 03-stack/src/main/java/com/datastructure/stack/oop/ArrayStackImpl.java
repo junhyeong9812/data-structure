@@ -50,5 +50,10 @@ public class ArrayStackImpl<E> implements Stack<E> {
             stackData = Arrays.copyOf(stackData, capacity);
         }
     }
-    private void shrink() {}
+    private void shrinkStack() {
+        if (top <= capacity/4 && capacity > 10) {
+            capacity = Math.max(capacity/2, 10);
+            stackData = Arrays.copyOf(stackData, capacity);
+        }
+    }
 }
