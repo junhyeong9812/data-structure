@@ -29,11 +29,11 @@ public class ArrayStackImpl<E> implements Stack<E> {
     }
 
     public E peek() {
-        return null;
+        return stackData[top - 1];
     }
 
     public E top() {
-        return null;
+        return stackData[top - 1];
     }
 
     public boolean isEmpty() {
