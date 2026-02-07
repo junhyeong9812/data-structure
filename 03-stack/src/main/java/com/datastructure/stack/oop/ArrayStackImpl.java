@@ -22,7 +22,10 @@ public class ArrayStackImpl<E> implements Stack<E> {
     }
 
     public E pop() {
-        return null;
+        top--;
+        E popData = stackData[top];
+        shrinkStack();
+        return popData;
     }
 
     public E peek() {
