@@ -1,6 +1,7 @@
 package com.datastructure.stack.oop;
 
 import java.util.EmptyStackException;
+import java.util.Objects;
 
 public class LinkedStackImpl<E> implements Stack<E> {
 
@@ -58,11 +59,23 @@ public class LinkedStackImpl<E> implements Stack<E> {
     }
 
     public void clear() {
-
+        top = null;
     }
 
     public int search(E element) {
-        return 0;
+        if (top == null) {
+            throw new EmptyStackException();
+        }
+        int count = 0;
+        Node<E> checkNode = top;
+        while(checkNode != null) {
+            if (Objects.equals(checkNode.element,element)) {
+                return count;
+            }
+            checkNode = checkNode.prev;
+            count++;
+        }
+        return -1;
     }
 
     public E[] toArray(){
