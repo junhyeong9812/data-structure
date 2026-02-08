@@ -1,6 +1,8 @@
 package com.datastructure.stack.oop;
 
 import java.util.Arrays;
+import java.util.EmptyStackException;
+import java.util.Objects;
 
 public class ArrayStackImpl<E> implements Stack<E> {
 
@@ -22,6 +24,9 @@ public class ArrayStackImpl<E> implements Stack<E> {
     }
 
     public E pop() {
+        if (size() == 0) {
+            throw new EmptyStackException();
+        }
         top--;
         E popData = stackData[top];
         shrinkStack();
@@ -29,10 +34,16 @@ public class ArrayStackImpl<E> implements Stack<E> {
     }
 
     public E peek() {
+        if (size() == 0) {
+            throw new EmptyStackException();
+        }
         return stackData[top - 1];
     }
 
     public E top() {
+        if (size() == 0) {
+            throw new EmptyStackException();
+        }
         return stackData[top - 1];
     }
 
@@ -51,7 +62,10 @@ public class ArrayStackImpl<E> implements Stack<E> {
     }
 
     public int search(E element) {
-
+        for (int i = 0; i < top; i++) {
+            if (Objects.equals(stackData[i],element)) return  i;
+        }
+        return -1;
     }
 
     public E[] toArray() {
