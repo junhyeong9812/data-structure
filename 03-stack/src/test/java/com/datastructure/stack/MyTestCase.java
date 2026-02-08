@@ -517,12 +517,16 @@ public class MyTestCase {
     @DisplayName("추가 기능 테스트")
     class AdditionalTest {
 
-        ArrayStack arrayStack;
-        LinkedStack linkedStack;
+//        ArrayStack arrayStack;
+//        LinkedStack linkedStack;
+        Stack<Integer> arrayStack;
+        Stack<Integer> linkedStack;
         @BeforeEach
         void setup() {
-            arrayStack = new ArrayStack();
-            linkedStack = new LinkedStack<>();
+//            arrayStack = new ArrayStack();
+//            linkedStack = new LinkedStack<>();
+            arrayStack = new ArrayStackImpl<>();
+            linkedStack = new LinkedStackImpl<>();
         }
 
         @Nested
