@@ -13,7 +13,9 @@ public class LinkedStackImpl<E> implements Stack<E> {
         }
     }
     public void push(E element) {
-
+        Node<E> addStack = new Node<>(element);
+        addStack.prev = top;
+        top = addStack;
     }
 
     public E pop() {
