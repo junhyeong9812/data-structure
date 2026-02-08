@@ -2,6 +2,16 @@ package com.datastructure.stack.oop;
 
 public class LinkedStackImpl<E> implements Stack<E> {
 
+    private Node<E> top;
+
+    private class Node<E> {
+        E element;
+        Node<E> prev;
+
+        public Node(E element) {
+            this.element = element;
+        }
+    }
     public void push(E element) {
 
     }
