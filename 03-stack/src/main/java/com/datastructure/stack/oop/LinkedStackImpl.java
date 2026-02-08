@@ -62,14 +62,12 @@ public class LinkedStackImpl<E> implements Stack<E> {
     }
 
     public int search(E element) {
-        if (top == null) {
-            throw new EmptyStackException();
-        }
         int count = 0;
+        int size = size();
         Node<E> checkNode = top;
         while(checkNode != null) {
             if (Objects.equals(checkNode.element,element)) {
-                return count;
+                return size - count;
             }
             checkNode = checkNode.prev;
             count++;
@@ -88,9 +86,9 @@ public class LinkedStackImpl<E> implements Stack<E> {
 //        }
 //        return result;
 //    }
-    public E[] toArray(){
+    public Object[] toArray(){
         int size = size();
-        E[] result = (E[])new Object[size];
+        Object[] result = new Object[size];
         Node<E>  checkNode = top;
         for (int i = size; i > 0; i--) {
             result[i - 1] = checkNode.element;

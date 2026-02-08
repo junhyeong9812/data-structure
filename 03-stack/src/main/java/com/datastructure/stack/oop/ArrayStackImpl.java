@@ -63,12 +63,12 @@ public class ArrayStackImpl<E> implements Stack<E> {
 
     public int search(E element) {
         for (int i = 0; i < top; i++) {
-            if (Objects.equals(stackData[i],element)) return  i;
+            if (Objects.equals(stackData[i],element)) return i + 1;
         }
         return -1;
     }
 
-    public E[] toArray() {
+    public Object[] toArray() {
         return Arrays.copyOf(stackData,top);
     }
 
