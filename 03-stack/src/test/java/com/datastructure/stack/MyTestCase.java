@@ -1,5 +1,8 @@
 package com.datastructure.stack;
 
+import com.datastructure.stack.oop.ArrayStackImpl;
+import com.datastructure.stack.oop.LinkedStackImpl;
+import com.datastructure.stack.oop.Stack;
 import com.datastructure.stack.pop.ArrayStack;
 import com.datastructure.stack.pop.LinkedStack;
 import com.datastructure.stack.pop.StackProblems;
@@ -19,10 +22,12 @@ public class MyTestCase {
     @DisplayName("배열 기반 스택")
     class ArrayStackTest {
  
-        ArrayStack stack ;
+//        ArrayStack stack ;
+        Stack stack;
         @BeforeEach
         void setup() {
-            stack = new ArrayStack();
+//            stack = new ArrayStack();
+            stack = new ArrayStackImpl<>();
         }
 
         @Nested
@@ -262,10 +267,13 @@ public class MyTestCase {
     @DisplayName("연결 리스트 기반 스택")
     class LinkedStackTest {
 
-        LinkedStack stack ;
+//        LinkedStack stack ;
+        Stack stack;
         @BeforeEach
         void setup() {
-            stack = new LinkedStack();
+
+//            stack = new LinkedStack();
+            stack = new LinkedStackImpl<>();
         }
 
         @Nested
