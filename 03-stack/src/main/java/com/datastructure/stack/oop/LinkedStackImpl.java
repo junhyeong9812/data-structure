@@ -1,5 +1,7 @@
 package com.datastructure.stack.oop;
 
+import java.util.EmptyStackException;
+
 public class LinkedStackImpl<E> implements Stack<E> {
 
     private Node<E> top;
@@ -19,15 +21,26 @@ public class LinkedStackImpl<E> implements Stack<E> {
     }
 
     public E pop() {
-        return null;
+        if (top == null) {
+            throw new EmptyStackException();
+        }
+        E popElement = top.element;
+        top = top.prev;
+        return popElement;
     }
 
     public E peek() {
-        return null;
+        if (top == null) {
+            throw new EmptyStackException();
+        }
+        return top.element;
     }
 
     public E top() {
-        return null;
+        if (top == null) {
+            throw new EmptyStackException();
+        }
+        return top.element;
     }
 
     public boolean isEmpty() {
