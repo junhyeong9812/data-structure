@@ -44,12 +44,17 @@ public class LinkedStackImpl<E> implements Stack<E> {
     }
 
     public boolean isEmpty() {
-
-        return true;
+        return top == null;
     }
 
     public int size(){
-        return 0;
+        int count = 0;
+        Node<E> checkNode = top;
+        while(checkNode != null) {
+            checkNode = checkNode.prev;
+            count++;
+        }
+        return count;
     }
 
     public void clear() {
