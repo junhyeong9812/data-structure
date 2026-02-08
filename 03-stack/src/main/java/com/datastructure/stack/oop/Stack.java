@@ -18,5 +18,5 @@ public interface Stack<E> {
 
     public int search(E element);
 
-    public E[] toArray();
+    public Object[] toArray();
 }
