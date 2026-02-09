@@ -11,7 +11,7 @@ public class StackProblemsImpl implements StackProblems{
 
     @Override
     public boolean isValidParentheses(String data) {
-        return false;
+        return validator.validate(data);
     }
 
     @Override
