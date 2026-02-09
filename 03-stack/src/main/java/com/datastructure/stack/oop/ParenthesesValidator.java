@@ -18,20 +18,21 @@ public class ParenthesesValidator {
                 openParentheses.push(datas[i]);
             }
             if (datas[i] == ')') {
-                if (openParentheses.isEmpty() && openParentheses.peek() !='(') {
+                if (openParentheses.isEmpty() || openParentheses.peek() !='(') {
                     return false;
                 }
+                openParentheses.pop();
             }
 
             if (datas[i] == '}') {
-                if (!openParentheses.isEmpty() && openParentheses.peek()=='{') {
+                if (openParentheses.isEmpty() || openParentheses.peek()!='{') {
                     return false;
                 }
                 openParentheses.pop();
             }
 
             if (datas[i] == ']') {
-                if (!openParentheses.isEmpty() && openParentheses.peek()=='[') {
+                if (openParentheses.isEmpty() || openParentheses.peek()!='[') {
                     return false;
                 }
                 openParentheses.pop();
