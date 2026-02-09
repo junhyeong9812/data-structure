@@ -1,7 +1,5 @@
 package com.datastructure.stack.oop;
 
-import java.util.Objects;
-
 public class ParenthesesValidator {
 
     public boolean validate(String data) {
