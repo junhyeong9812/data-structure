@@ -21,6 +21,6 @@ public class StackProblemsImpl implements StackProblems{
 
     @Override
     public String infixToPostfix(String data) {
-        return "";
+        return calculator.infixToPostfix(data);
     }
 }
