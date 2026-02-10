@@ -1,11 +1,8 @@
 package com.datastructure.stack;
 
-import com.datastructure.stack.oop.ArrayStackImpl;
-import com.datastructure.stack.oop.LinkedStackImpl;
-import com.datastructure.stack.oop.Stack;
+import com.datastructure.stack.oop.*;
 import com.datastructure.stack.pop.ArrayStack;
 import com.datastructure.stack.pop.LinkedStack;
-import com.datastructure.stack.pop.StackProblems;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -607,7 +604,8 @@ public class MyTestCase {
     @DisplayName("추가 응용 테스트")
     class ApplicationTest {
 
-        StackProblems problems = new StackProblems();
+//        StackProblems problems = new StackProblems();
+        StackProblems problems = new StackProblemsImpl();
 
         @Nested
         @DisplayName("괄호 매칭 테스트")
