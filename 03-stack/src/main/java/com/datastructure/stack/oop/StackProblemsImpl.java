@@ -16,7 +16,7 @@ public class StackProblemsImpl implements StackProblems{
 
     @Override
     public int evaluatePostfix(String data) {
-        return 0;
+        return calculator.evaluatePostfix(data);
     }
 
     @Override
