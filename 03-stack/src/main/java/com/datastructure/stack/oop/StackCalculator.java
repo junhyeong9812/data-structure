@@ -1,6 +1,9 @@
 package com.datastructure.stack.oop;
 
 public class StackCalculator {
+
+    private ParenthesesValidator validator = new ParenthesesValidator();
+
 //    public int evaluatePostfix(String data) {
 //        String[] datas = data.split(" ");
 //
@@ -127,6 +130,40 @@ public class StackCalculator {
         return true;
     }
     public String infixToPostfix(String data){
-        return null;
+        if (!validator.validate(data)) {
+            throw new IllegalArgumentException();
+        }
+
+        String[] datas = data.split(" ");
+
+        Stack<String> operators = new ArrayStackImpl<>();
+        StringBuilder evaluatePostfix = new StringBuilder();
+        for (int i = 0; i < datas.length; i++) {
+            if (isNumber(datas[i])) {
+                evaluatePostfix.append(datas[i]).append(" ");
+            }
+            if (data.equals("+")|| data.equals("-")) {
+                while (!operators.isEmpty() && (operators.peek().equals("*") || operators.peek().equals("/") || operators.peek().equals("%"))) {
+                    evaluatePostfix.append(operators.pop()).append(" ");
+                }
+            }
+            checkOperator(operators, datas[i]);
+            if (datas[i].equals(")")) {
+                while (!operators.isEmpty() && !operators.peek().equals("(")) {
+                    evaluatePostfix.append(operators.pop()).append(" ");
+                }
+                operators.pop();
+            }
+        }
+        while (!operators.isEmpty()) {
+            evaluatePostfix.append(operators.pop()).append(" ");
+        }
+        return evaluatePostfix.toString().trim();
+    }
+
+    private void checkOperator(Stack<String> operators, String data) {
+        if (data.equals("+") || data.equals("-") || data.equals("*") || data.equals("/") || data.equals("%") || data.equals("(")) {
+            operators.push(data);
+        }
     }
 }
