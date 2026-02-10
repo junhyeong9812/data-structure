@@ -798,6 +798,14 @@ public class MyTestCase {
             }
 
             @Test
+            @DisplayName("복잡한 연산자 우선 순위 적용 - 3 * 4 + 2 * 5")
+            void infix_complex_precedence_success() {
+                String PROBLEM_STRING = "3 * 4 + 2 * 5";
+                String result = problems.infixToPostfix(PROBLEM_STRING);
+                assertThat(result).isEqualTo("3 4 2 5 * + *");
+            }
+
+            @Test
             @DisplayName("복합 수식 - ( 1 + 2) * ( 3 + 4) -> 1 2 + 3 4 + *")
             void infix_complex_success() {
                 String PROBLEM_STRING = "( 1 + 2 ) * ( 3 + 4 )";
