@@ -13,6 +13,24 @@ public class ArrayQueue<E> {
         this.size = 0;
     }
 
+    public void enqueue(E element) {}
+
+    public boolean offer(E element) {return false;}
+
+    public E dequeue() {return null;}
+
+    public E poll() {return null;}
+
+    public E peek() {return null;}
+
+    public E front() {return null;}
+
+    public boolean isEmpty() {return true;}
+
+    public int size() {return 0;}
+
+    public void clear() {}
+
     private void growArrayQueue() {
         if (capacity == size) {
             capacity = (int)(capacity * 1.5);
