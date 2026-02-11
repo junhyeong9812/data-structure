@@ -8,7 +8,20 @@ public class MyTestCase {
 
     @Nested
     @DisplayName("배열 기반 큐")
-    class ArrayQueueTest {}
+    class ArrayQueueTest {
+
+        @Nested
+        @DisplayName("배열 기반 큐를 생성할 수 있다")
+        class Creation {
+
+            @Test
+            @DisplayName("배열 기반 큐를 생성한다.")
+            void test1() {
+
+            }
+        }
+
+    }
 
     @Nested
     @DisplayName("연결 리스트 기반 큐")
