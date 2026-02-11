@@ -210,6 +210,35 @@ public class MyTestCase {
     @DisplayName("배열 기반 덱")
     class ArrayDequeTest {
 
+        @Nested
+        @DisplayName("배열 기반 덱 생성 테스트")
+        class CreateTest {
+
+        }
+
+        @Nested
+        @DisplayName("addFirst 메서드 테스트")
+        class AddFirstTest {}
+
+        @Nested
+        @DisplayName("addLast 메서드 테스트")
+        class AddLastTest {}
+
+        @Nested
+        @DisplayName("removeFirst 메서드 테스트")
+        class RemoveFirstTest {}
+
+        @Nested
+        @DisplayName("removeLast 메서드 테스트")
+        class RemoveLastTest {}
+
+        @Nested
+        @DisplayName("peekFirst 메서드 테스트")
+        class PeekFirstTest {}
+
+        @Nested
+        @DisplayName("peekLast 메서드 테스트")
+        class PeekLastTest {}
     }
 
     @Nested
