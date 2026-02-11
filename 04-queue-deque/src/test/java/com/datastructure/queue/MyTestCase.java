@@ -245,6 +245,33 @@ public class MyTestCase {
     @DisplayName("연결 리스트 기반 덱")
     class LinkedListDequeTest {
 
+        @Nested
+        @DisplayName("연결 리스트 기반 덱")
+        class CreateTest {}
+
+        @Nested
+        @DisplayName("addFirst 메서드 테스트")
+        class AddFirstTest {}
+
+        @Nested
+        @DisplayName("addLast 메서드 테스트")
+        class AddLastTest {}
+
+        @Nested
+        @DisplayName("removeFirst 메서드 테스트")
+        class removeFirstTest {}
+
+        @Nested
+        @DisplayName("removeLast 메서드 테스트")
+        class removeLastTest {}
+
+        @Nested
+        @DisplayName("peekFirst 메서드 테스트")
+        class peekFirstTest {}
+
+        @Nested
+        @DisplayName("peekLast 메서드 테스트")
+        class peekLastTest {}
     }
 
 
