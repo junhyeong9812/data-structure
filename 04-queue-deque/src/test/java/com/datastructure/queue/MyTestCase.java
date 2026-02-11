@@ -21,6 +21,59 @@ public class MyTestCase {
             }
         }
 
+        @Nested
+        @DisplayName("enqueue 메서드 테스트")
+        class EnqueueTest {
+
+        }
+
+        @Nested
+        @DisplayName("offer 메서드 테스트")
+        class OfferTest {
+
+        }
+
+        @Nested
+        @DisplayName("dequeue 메서드 테스트")
+        class DequeueTest {
+
+        }
+
+        @Nested
+        @DisplayName("poll 메서드 테스트")
+        class PollTest {
+
+        }
+
+        @Nested
+        @DisplayName("peek 메서드 테스트")
+        class PeekTest {
+
+        }
+
+        @Nested
+        @DisplayName("front 메서드 테스트")
+        class FrontTest {
+
+        }
+
+        @Nested
+        @DisplayName("isEmpty 메서드 테스트")
+        class IsEmptyTest {
+
+        }
+
+        @Nested
+        @DisplayName("size 메서드 테스트")
+        class SizeTest {
+
+        }
+
+        @Nested
+        @DisplayName("clear 메서드 테스트")
+        class ClearTest {
+
+        }
     }
 
     @Nested
