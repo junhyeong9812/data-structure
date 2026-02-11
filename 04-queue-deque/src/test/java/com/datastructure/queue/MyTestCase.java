@@ -33,13 +33,6 @@ public class MyTestCase {
             }
 
             @Test
-            @DisplayName("null 요소를 저장할 수 있다.")
-            void create_queue_allows_null() {
-                assertThatCode(() -> queue.enqueue(null))
-                        .doesNotThrowAnyException();
-            }
-
-            @Test
             @DisplayName("초기 용량을 지정하여 큐를 생성한다.")
             void create_queue_with_capacity() {
                 ArrayQueue<Integer> customQueue = new ArrayQueue<>(20);
@@ -51,6 +44,55 @@ public class MyTestCase {
         @DisplayName("enqueue 메서드 테스트")
         class EnqueueTest {
 
+            @Test
+            @DisplayName("빈 배열 기반 큐에 요소를 추가할 수 있다.")
+            void enqueue_to_empty_queue() {
+
+                queue.enqueue(10);
+
+                assertThat(queue.peek()).isEqualTo(10);
+                assertThat(queue.size()).isOne();
+            }
+
+            @Test
+            @DisplayName("요소가 있는 배열 기반 큐에 요소를 추가할 수 있다.")
+            void enqueue_to_non_empty_queue() {
+                queue.enqueue(1);
+                queue.enqueue(2);
+                queue.enqueue(3);
+
+                assertThat(queue.peek()).isEqualTo(1);
+                assertThat(queue.size()).isEqualTo(3);
+            }
+
+            @Test
+            @DisplayName("null 요소를 저장할 수 있다.")
+            void enqueue_null_element() {
+                assertThatCode(() -> queue.enqueue(null))
+                        .doesNotThrowAnyException();
+            }
+
+            @Test
+            @DisplayName("여러 요소를 순차적으로 추가할 수 있다.")
+            void enqueue_multiple_elements() {
+                for (int i = 0; i < 5; i++) {
+                    queue.enqueue(i);
+                }
+                assertThat(queue.size()).isEqualTo(5);
+                assertThat(queue.peek()).isEqualTo(0);
+            }
+
+            @Test
+            @DisplayName("용량 초과 시 자동으로 확장된다.")
+            void enqueue_expands_capacity_when_full() {
+                for (int i = 0; i < 10; i++) {
+                    queue.enqueue(i);
+                }
+                queue.enqueue(11);
+
+                assertThat(queue.size()).isEqualTo(11);
+                assertThat(queue.peek()).isEqualTo(0);
+            }
         }
 
         @Nested
