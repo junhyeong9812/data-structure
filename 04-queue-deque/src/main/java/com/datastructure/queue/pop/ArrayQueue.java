@@ -13,6 +13,12 @@ public class ArrayQueue<E> {
         this.size = 0;
     }
 
+    public ArrayQueue(int capacity) {
+        this.capacity = capacity;
+        this.elements = (E[])(new Object[capacity]);
+        this.size = 0;
+    }
+
     public void enqueue(E element) {}
 
     public boolean offer(E element) {return false;}
