@@ -1,8 +1,12 @@
 package com.datastructure.queue;
 
+import com.datastructure.queue.pop.ArrayQueue;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.*;
 
 public class MyTestCase {
 
@@ -10,14 +14,36 @@ public class MyTestCase {
     @DisplayName("배열 기반 큐")
     class ArrayQueueTest {
 
+        ArrayQueue<Integer> queue;
+
+        @BeforeEach
+        void setup() {
+             queue = new ArrayQueue<>();
+        }
+
         @Nested
         @DisplayName("배열 기반 큐를 생성 테스트")
         class CreateTest {
 
             @Test
             @DisplayName("배열 기반 큐를 생성한다.")
-            void test1() {
+            void create_emtpy_queue() {
+                assertThat(queue.isEmpty()).isTrue();
+                assertThat(queue.size()).isZero();
+            }
 
+            @Test
+            @DisplayName("null 요소를 저장할 수 있다.")
+            void create_queue_allows_null() {
+                assertThatCode(() -> queue.enqueue(null))
+                        .doesNotThrowAnyException();
+            }
+
+            @Test
+            @DisplayName("초기 용량을 지정하여 큐를 생성한다.")
+            void create_queue_with_capacity() {
+                ArrayQueue<Integer> customQueue = new ArrayQueue<>(20);
+                assertThat(customQueue.isEmpty()).isTrue();
             }
         }
 
