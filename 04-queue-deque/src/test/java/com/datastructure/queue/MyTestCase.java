@@ -11,8 +11,8 @@ public class MyTestCase {
     class ArrayQueueTest {
 
         @Nested
-        @DisplayName("배열 기반 큐를 생성할 수 있다")
-        class Creation {
+        @DisplayName("배열 기반 큐를 생성 테스트")
+        class CreateTest {
 
             @Test
             @DisplayName("배열 기반 큐를 생성한다.")
@@ -80,6 +80,65 @@ public class MyTestCase {
     @DisplayName("연결 리스트 기반 큐")
     class LinkedListQueueTest {
 
+        @Nested
+        @DisplayName("연결 리스트 기반 큐 생성 테스트")
+        class CreateTest {
+
+        }
+
+        @Nested
+        @DisplayName("enqueue 메서드 테스트")
+        class EnqueueTest {
+
+        }
+
+        @Nested
+        @DisplayName("offer 메서드 테스트")
+        class OfferTest {
+
+        }
+
+        @Nested
+        @DisplayName("dequeue 메서드 테스트")
+        class DequeueTest {
+
+        }
+
+        @Nested
+        @DisplayName("poll 메서드 테스트")
+        class PollTest {
+
+        }
+
+        @Nested
+        @DisplayName("peek 메서드 테스트")
+        class PeekTest {
+
+        }
+
+        @Nested
+        @DisplayName("front 메서드 테스트")
+        class FrontTest {
+
+        }
+
+        @Nested
+        @DisplayName("isEmpty 메서드 테스트")
+        class IsEmtpyTest {
+
+        }
+
+        @Nested
+        @DisplayName("size 메서드 테스트")
+        class SizeTest {
+
+        }
+
+        @Nested
+        @DisplayName("clear 메서드 테스트")
+        class ClearTest {
+
+        }
     }
 
     @Nested
