@@ -278,7 +278,15 @@ public class MyTestCase {
     @Nested
     @DisplayName("추가 응용 테스트")
     class ApplicationTest {
+        @Nested
+        @DisplayName("슬라이딩 윈도우 최댓값")
+        class SlidingWindowMaxTest {}
 
+        @Nested
+        @DisplayName("최근 요청 카운터")
+        class RecentRequestCounterTest {
+
+        }
     }
 
 }
