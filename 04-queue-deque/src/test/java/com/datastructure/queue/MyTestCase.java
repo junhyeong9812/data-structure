@@ -164,6 +164,74 @@ public class MyTestCase {
         @DisplayName("dequeue 메서드 테스트")
         class DequeueTest {
 
+            @Test
+            @DisplayName("빈 배열 기반 큐에 dequeue 시 예외가 발생한다.")
+            void dequeue_throws_exception_when_empty() {
+                assertThatThrownBy(() -> queue.dequeue())
+                        .isInstanceOf(Exception.class);
+                //큐의 익셉션이 어떤건지 확인할 필요가 있다.
+            }
+
+            @Test
+            @DisplayName("요소가 존재하는 배열 기반 큐에 요소를 제거한다.")
+            void dequeue_removes_element_from_non_empty_queue() {
+                queue.enqueue(0);
+                queue.enqueue(1);
+                queue.enqueue(2);
+
+                int first = queue.dequeue();
+                assertThat(first).isEqualTo(0);
+                assertThat(queue.size()).isEqualTo(2);
+            }
+
+            @Test
+            @DisplayName("null 요소를 제거할 수 있다.")
+            void dequeue_removes_null_element() {
+                queue.enqueue(null);
+
+                assertThat(queue.dequeue()).isNull();
+                assertThat(queue.isEmpty()).isTrue();
+                assertThat(queue.size()).isZero();
+            }
+
+            @Test
+            @DisplayName("여러 요소를 순차적으로 제거할 수 있다.")
+            void dequeue_multiple_elements_in_fifo_order() {
+                for(int i = 0; i < 10; i++) {
+                    queue.enqueue(i);
+                }
+
+                assertThat(queue.dequeue()).isEqualTo(0);
+                assertThat(queue.dequeue()).isEqualTo(1);
+                assertThat(queue.dequeue()).isEqualTo(2);
+                assertThat(queue.size()).isEqualTo(7);
+            }
+
+            @Test
+            @DisplayName("요소를 제거 후 사이즈가 감소한다.")
+            void dequeue_decreases_size() {
+                queue.enqueue(0);
+                queue.enqueue(1);
+                queue.enqueue(2);
+
+                queue.dequeue();
+
+                assertThat(queue.size()).isEqualTo(2);
+            }
+
+            @Test
+            @DisplayName("용량 축소 임계값 이하로 감소 시 정상 동작한다.")
+            void dequeue_shrinks_capacity_when_below_threshold() {
+                for (int i = 0; i < 15; i++) {
+                    queue.enqueue(i);
+                }
+                for (int i = 0; i < 11; i++) {
+                    queue.dequeue();
+                }
+
+                assertThat(queue.size()).isEqualTo(4);
+                assertThat(queue.peek()).isEqualTo(12);
+            }
         }
 
         @Nested
