@@ -238,6 +238,78 @@ public class MyTestCase {
         @DisplayName("poll 메서드 테스트")
         class PollTest {
 
+            @Test
+            @DisplayName("빈 배열 기반 큐에 poll 시 null을 반환한다.")
+            void poll_returns_null_when_empty() {
+                assertThat(queue.isEmpty()).isTrue();
+                assertThat(queue.size()).isZero();
+                assertThat(queue.poll()).isNull();
+            }
+
+            @Test
+            @DisplayName("요소가 존재하는 배열 기반 큐에 요소를 제거한다.")
+            void poll_removes_element_from_non_empty_queue() {
+                queue.enqueue(0);
+
+                int result = queue.poll();
+                assertThat(result).isZero();
+                assertThat(queue.isEmpty()).isTrue();
+                assertThat(queue.size()).isZero();
+            }
+
+            @Test
+            @DisplayName("null 요소를 제거할 수 있다.")
+            void poll_removes_null_element() {
+                queue.enqueue(null);
+                assertThat(queue.size()).isEqualTo(1);
+
+                Object result = queue.poll();
+                assertThat(result).isNull();
+                assertThat(queue.size()).isZero();
+            }
+
+            @Test
+            @DisplayName("여러 요소를 순차적으로 제거할 수 있다.")
+            void poll_multiple_elements_in_fifo_order() {
+                for (int i = 0; i < 3; i++) {
+                    queue.enqueue(i);
+                }
+
+                assertThat(queue.poll()).isEqualTo(0);
+                assertThat(queue.poll()).isEqualTo(1);
+                assertThat(queue.poll()).isEqualTo(2);
+                assertThat(queue.poll()).isNull();
+                assertThat(queue.size()).isZero();
+                assertThat(queue.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("요소를 제거 후 사이즈가 감소한다.")
+            void poll_decreases_size() {
+                for (int i = 0; i < 5; i++) {
+                    queue.enqueue(i);
+                }
+                assertThat(queue.size()).isEqualTo(5);
+
+                int result = queue.poll();
+
+                assertThat(queue.size()).isEqualTo(4);
+                assertThat(result).isEqualTo(0);
+            }
+
+            @Test
+            @DisplayName("용량 축소 임계값 이하로 감소 시 정상 동작한다.")
+            void poll_shrinks_capacity_when_below_threshold() {
+                for (int i = 0; i < 15; i++) {
+                    queue.enqueue(i);
+                }
+                for (int i = 0; i < 11; i++) {
+                    queue.poll();
+                }
+
+                assertThat(queue.size()).isEqualTo(4);
+                assertThat(queue.peek()).isEqualTo(12);
+            }
         }
 
         @Nested
