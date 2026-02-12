@@ -99,6 +99,65 @@ public class MyTestCase {
         @DisplayName("offer 메서드 테스트")
         class OfferTest {
 
+            @Test
+            @DisplayName("빈 배열 기반 큐에 요소를 추가할 수 있다.")
+            void offer_to_empty_queue() {
+                queue.offer(1);
+
+                assertThat(queue.size()).isEqualTo(1);
+                assertThat(queue.peek()).isEqualTo(1);
+            }
+
+            @Test
+            @DisplayName("요소를 추가하면 True를 반환한다.")
+            void offer_returns_true_on_success() {
+                boolean result = queue.offer(1);
+
+                assertThat(result).isTrue();
+            }
+
+            @Test
+            @DisplayName("요소가 있는 배열 기반 큐에 요소를 추가할 수 있다.")
+            void offer_to_non_empty_queue() {
+                queue.offer(0);
+                queue.offer(1);
+
+                assertThat(queue.size()).isEqualTo(2);
+                assertThat(queue.peek()).isEqualTo(0);
+            }
+
+            @Test
+            @DisplayName("배열 기반 큐에 null을 추가할 수 있다.")
+            void offer_null_element() {
+                queue.offer(null);
+
+                assertThat(queue.size()).isEqualTo(1);
+                assertThat(queue.peek()).isNull();
+            }
+
+            @Test
+            @DisplayName("여러 요소를 순차적으로 추가할 수 있다.")
+            void offer_multiple_elements() {
+                for (int i = 0; i < 10; i++) {
+                    queue.offer(i);
+                }
+                assertThat(queue.dequeue()).isEqualTo(0);
+                assertThat(queue.dequeue()).isEqualTo(1);
+                assertThat(queue.dequeue()).isEqualTo(2);
+                assertThat(queue.dequeue()).isEqualTo(3);
+            }
+
+            @Test
+            @DisplayName("용량 초과 시 자동으로 확장된다.")
+            void offer_expands_capacity_when_full() {
+                for (int i = 0; i < 10; i++) {
+                    queue.offer(i);
+                }
+                boolean result = queue.offer(1);
+
+                assertThat(result).isTrue();
+                assertThat(queue.size()).isEqualTo(11);
+            }
         }
 
         @Nested
