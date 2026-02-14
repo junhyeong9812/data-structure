@@ -373,6 +373,57 @@ public class MyTestCase {
         @DisplayName("front 메서드 테스트")
         class FrontTest {
 
+            @Test
+            @DisplayName("빈 큐에 front 시 null을 반환한다.")
+            void front_returns_null_when_empty() {
+                assertThat(queue.isEmpty()).isTrue();
+                assertThat(queue.front()).isNull();
+            }
+
+            @Test
+            @DisplayName("앞 요소를 조회할 수 있다.")
+            void front_returns_front_element() {
+                queue.enqueue(0);
+                queue.enqueue(1);
+                queue.enqueue(2);
+
+                assertThat(queue.front()).isEqualTo(0);
+                assertThat(queue.size()).isEqualTo(3);
+            }
+
+            @Test
+            @DisplayName("앞 요소가 null인 경우 null을 반환한다.")
+            void front_returns_null_element() {
+                queue.enqueue(null);
+                queue.enqueue(1);
+
+                assertThat(queue.isEmpty()).isFalse();
+                assertThat(queue.size()).isEqualTo(2);
+                assertThat(queue.front()).isNull();
+            }
+
+            @Test
+            @DisplayName("front 후 큐가 변경되지 않는다.")
+            void front_does_not_modify_queue() {
+                queue.enqueue(0);
+                queue.enqueue(1);
+                queue.enqueue(2);
+
+                assertThat(queue.front()).isEqualTo(0);
+                assertThat(queue.size()).isEqualTo(3);
+            }
+
+            @Test
+            @DisplayName("여러번 조회해도 같은 요소를 반환한다.")
+            void front_multiple_times_returns_same_element() {
+                queue.enqueue(0);
+                queue.enqueue(1);
+                queue.enqueue(2);
+
+                assertThat(queue.front()).isEqualTo(0);
+                assertThat(queue.front()).isEqualTo(0);
+                assertThat(queue.front()).isEqualTo(0);
+            }
         }
 
         @Nested
