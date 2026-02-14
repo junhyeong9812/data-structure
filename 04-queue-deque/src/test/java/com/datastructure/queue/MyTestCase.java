@@ -316,6 +316,57 @@ public class MyTestCase {
         @DisplayName("peek 메서드 테스트")
         class PeekTest {
 
+            @Test
+            @DisplayName("빈 큐에서 peek 시 null을 반환한다.")
+            void peek_returns_null_when_empty() {
+                assertThat(queue.isEmpty()).isTrue();
+                assertThat(queue.peek()).isNull();
+            }
+
+            @Test
+            @DisplayName("앞 요소를 조회할 수 있다.")
+            void peek_returns_front_element() {
+                queue.enqueue(0);
+                queue.enqueue(1);
+
+                assertThat(queue.peek()).isZero();
+                assertThat(queue.size()).isEqualTo(2);
+            }
+
+            @Test
+            @DisplayName("앞 요소가 null인 경우 null을 반환한다.")
+            void peek_returns_null_element() {
+                queue.enqueue(null);
+                queue.enqueue(1);
+
+                assertThat(queue.peek()).isNull();
+                assertThat(queue.isEmpty()).isFalse();
+                assertThat(queue.size()).isEqualTo(2);
+            }
+
+            @Test
+            @DisplayName("peek 후 큐가 변경되지 않는다.")
+            void peek_does_not_modify_queue() {
+                queue.enqueue(0);
+                queue.enqueue(1);
+                queue.enqueue(2);
+
+                assertThat(queue.peek()).isEqualTo(0);
+                assertThat(queue.size()).isEqualTo(3);
+                assertThat(queue.isEmpty()).isFalse();
+            }
+
+            @Test
+            @DisplayName("여러 번 조회해도 같은 요소를 반환한다.")
+            void peek_multiple_times_returns_same_element() {
+                queue.enqueue(0);
+                queue.enqueue(1);
+                queue.enqueue(2);
+
+                assertThat(queue.peek()).isEqualTo(0);
+                assertThat(queue.peek()).isEqualTo(0);
+                assertThat(queue.peek()).isEqualTo(0);
+            }
         }
 
         @Nested
