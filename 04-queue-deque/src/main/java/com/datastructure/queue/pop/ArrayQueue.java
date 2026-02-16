@@ -1,6 +1,6 @@
 package com.datastructure.queue.pop;
 
-import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 public class ArrayQueue<E> {
     private int capacity;
@@ -33,7 +33,16 @@ public class ArrayQueue<E> {
         return true;
     }
 
-    public E dequeue() {return null;}
+    public E dequeue() {
+        if (isEmpty()) {
+            throw new NoSuchElementException("Queue is empty");
+        }
+        E result = elements[front];
+        elements[front] = null;
+        front++;
+        shrinkArrayQueue();
+        return result;
+    }
 
     public E poll() {return null;}
 
