@@ -23,4 +23,20 @@ public class LinkedListQueue<E> {
             this.next = next;
         }
     }
+
+    public void enqueue(E element) {
+        Node<E> newNode = new Node<>(element);
+        if (this.front == null) {
+            this.front = newNode;
+        } else {
+            this.rear.setNext(newNode);
+        }
+        this.rear = newNode;
+        size++;
+    }
+
+    public boolean offer(E element) {
+        enqueue(element);
+        return true;
+    }
 }
