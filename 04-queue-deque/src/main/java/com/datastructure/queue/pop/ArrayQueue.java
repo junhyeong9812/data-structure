@@ -44,7 +44,16 @@ public class ArrayQueue<E> {
         return result;
     }
 
-    public E poll() {return null;}
+    public E poll() {
+        if (isEmpty()) {
+            return null;
+        }
+        E result = elements[front];
+        elements[front] = null;
+        front++;
+        shrinkArrayQueue();
+        return result;
+    }
 
     public E peek() {return null;}
 
