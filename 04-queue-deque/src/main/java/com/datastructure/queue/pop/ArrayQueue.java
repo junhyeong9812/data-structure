@@ -1,5 +1,6 @@
 package com.datastructure.queue.pop;
 
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 public class ArrayQueue<E> {
@@ -63,11 +64,15 @@ public class ArrayQueue<E> {
         return peek();
     }
 
-    public boolean isEmpty() {return true;}
+    public boolean isEmpty() {return rear == front;}
 
-    public int size() {return 0;}
+    public int size() {return rear - front;}
 
-    public void clear() {}
+    public void clear() {
+        Arrays.fill(elements, front, rear, null);
+        this.front = 0;
+        this.rear = 0;
+    }
 
     private void growArrayQueue() {
         if (rear >= capacity) {
