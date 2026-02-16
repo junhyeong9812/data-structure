@@ -55,9 +55,13 @@ public class ArrayQueue<E> {
         return result;
     }
 
-    public E peek() {return null;}
+    public E peek() {
+        return isEmpty() ? null : elements[front];
+    }
 
-    public E front() {return null;}
+    public E front() {
+        return peek();
+    }
 
     public boolean isEmpty() {return true;}
 
