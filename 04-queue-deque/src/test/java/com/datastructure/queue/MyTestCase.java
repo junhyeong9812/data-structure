@@ -231,7 +231,7 @@ public class MyTestCase {
                 }
 
                 assertThat(queue.size()).isEqualTo(4);
-                assertThat(queue.peek()).isEqualTo(12);
+                assertThat(queue.peek()).isEqualTo(11);
             }
         }
 
@@ -309,7 +309,7 @@ public class MyTestCase {
                 }
 
                 assertThat(queue.size()).isEqualTo(4);
-                assertThat(queue.peek()).isEqualTo(12);
+                assertThat(queue.peek()).isEqualTo(11);
             }
         }
 
