@@ -6,6 +6,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.NoSuchElementException;
+
 import static org.assertj.core.api.Assertions.*;
 
 public class MyTestCase {
@@ -168,8 +170,7 @@ public class MyTestCase {
             @DisplayName("빈 배열 기반 큐에 dequeue 시 예외가 발생한다.")
             void dequeue_throws_exception_when_empty() {
                 assertThatThrownBy(() -> queue.dequeue())
-                        .isInstanceOf(Exception.class);
-                //큐의 익셉션이 어떤건지 확인할 필요가 있다.
+                        .isInstanceOf(NoSuchElementException.class);
             }
 
             @Test
