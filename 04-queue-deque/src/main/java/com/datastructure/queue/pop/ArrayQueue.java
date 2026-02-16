@@ -28,7 +28,10 @@ public class ArrayQueue<E> {
         rear++;
     }
 
-    public boolean offer(E element) {return false;}
+    public boolean offer(E element) {
+        enqueue(element);
+        return true;
+    }
 
     public E dequeue() {return null;}
 
