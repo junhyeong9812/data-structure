@@ -1,5 +1,7 @@
 package com.datastructure.queue.pop;
 
+import java.util.NoSuchElementException;
+
 public class LinkedListQueue<E> {
     private Node<E> front;
     private Node<E> rear;
@@ -38,5 +40,31 @@ public class LinkedListQueue<E> {
     public boolean offer(E element) {
         enqueue(element);
         return true;
+    }
+
+    public E dequeue() {
+        if (size == 0) {
+            throw new NoSuchElementException("Queue is empty");
+        }
+        E result = front.element;
+        front = front.next;
+        size--;
+        if (size == 0) {
+            rear = null;
+        }
+        return result;
+    }
+
+    public E poll() {
+        if (size == 0) {
+            return null;
+        }
+        E result = front.element;
+        front = front.next;
+        size--;
+        if (size == 0) {
+            rear = null;
+        }
+        return result;
     }
 }
