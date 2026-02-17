@@ -67,5 +67,17 @@ public class LinkedListQueue<E> {
         return peek();
     }
 
+    public boolean isEmpty() {
+        return size == 0;
+    }
 
+    public int size() {
+        return size;
+    }
+
+    public void clear() {
+        front = null;
+        rear = null;
+        size = 0;
+    }
 }
