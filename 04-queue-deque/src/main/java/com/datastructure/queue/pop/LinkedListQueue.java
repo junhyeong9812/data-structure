@@ -56,15 +56,16 @@ public class LinkedListQueue<E> {
     }
 
     public E poll() {
-        if (size == 0) {
-            return null;
-        }
-        E result = front.element;
-        front = front.next;
-        size--;
-        if (size == 0) {
-            rear = null;
-        }
-        return result;
+        return size == 0 ? null : dequeue();
     }
+
+    public E peek() {
+        return size == 0 ? null : front.element;
+    }
+
+    public E front() {
+        return peek();
+    }
+
+
 }
