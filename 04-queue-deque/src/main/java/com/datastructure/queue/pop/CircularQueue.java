@@ -25,6 +25,23 @@ public class CircularQueue<E> {
         this.size = 0;
     }
 
+    public void enqueue(E element) {
+        if (size == capacity) {
+            throw new IllegalStateException("Queue is full");
+        }
+        elements[rear] = element;
+        rear = (rear + 1) % capacity;
+        size++;
+    }
+
+    public boolean offer(E element) {
+        if (size == capacity) {
+            return false;
+        }
+        enqueue(element);
+        return true;
+    }
+
     public boolean isFull() {
         return size == capacity;
     }
