@@ -62,6 +62,14 @@ public class CircularQueue<E> {
         return dequeue();
     }
 
+    public E peek() {
+        return size == 0 ? null : elements[front];
+    }
+
+    public E front() {
+        return peek();
+    }
+
     public boolean isFull() {
         return size == capacity;
     }
