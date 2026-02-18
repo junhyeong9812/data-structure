@@ -1,5 +1,7 @@
 package com.datastructure.queue.pop;
 
+import java.util.NoSuchElementException;
+
 public class CircularQueue<E> {
     private int capacity;
     private E[] elements;
@@ -40,6 +42,24 @@ public class CircularQueue<E> {
         }
         enqueue(element);
         return true;
+    }
+
+    public E dequeue() {
+        if (size == 0) {
+            throw new NoSuchElementException("Queue is Empty");
+        }
+        E result = elements[front];
+        elements[front] = null;
+        front = (front + 1) % capacity;
+        size--;
+        return result;
+    }
+
+    public E poll() {
+        if (size == 0) {
+            return null;
+        }
+        return dequeue();
     }
 
     public boolean isFull() {
