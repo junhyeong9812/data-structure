@@ -626,7 +626,54 @@ public class MyTestCase {
         @Nested
         @DisplayName("offer 메서드 테스트")
         class OfferTest {
+            @Test
+            @DisplayName("빈 큐에 값을 요소를 넣을 수 있다.")
+            void offer_to_empty_queue() {
+                boolean result = queue.offer(0);
 
+                assertThat(result).isTrue();
+                assertThat(queue.size()).isOne();
+                assertThat(queue.isEmpty()).isFalse();
+                assertThat(queue.peek()).isEqualTo(0);
+            }
+
+            @Test
+            @DisplayName("요소가 있는 큐에 요소를 넣을 수 있다.")
+            void offer_to_non_empty_queue() {
+                boolean result0 = queue.offer(0);
+                boolean result1 = queue.offer(1);
+                boolean result2 = queue.offer(2);
+
+                assertThat(result0).isTrue();
+                assertThat(result1).isTrue();
+                assertThat(result2).isTrue();
+                assertThat(queue.size()).isEqualTo(3);
+                assertThat(queue.peek()).isEqualTo(0);
+            }
+
+            @Test
+            @DisplayName("큐에 null 요소를 넣을 수 있다.")
+            void offer_null_element() {
+                boolean result = queue.offer(null);
+
+                assertThat(result).isTrue();
+                assertThat(queue.size()).isOne();
+                assertThat(queue.isEmpty()).isFalse();
+                assertThat(queue.peek()).isNull();
+            }
+
+            @Test
+            @DisplayName("요소가 증가하면 카운트가 증가한다.")
+            void offer_increases_size() {
+                queue.offer(0);
+                assertThat(queue.size()).isEqualTo(1);
+
+                queue.offer(1);
+                assertThat(queue.size()).isEqualTo(2);
+
+                queue.offer(2);
+                assertThat(queue.size()).isEqualTo(3);
+            }
         }
 
         @Nested
