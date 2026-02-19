@@ -1,6 +1,7 @@
 package com.datastructure.queue;
 
 import com.datastructure.queue.pop.ArrayQueue;
+import com.datastructure.queue.pop.LinkedListQueue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -555,16 +556,27 @@ public class MyTestCase {
     @DisplayName("연결 리스트 기반 큐")
     class LinkedListQueueTest {
 
+        LinkedListQueue<Integer> queue;
+
+        @BeforeEach
+        void setUp() {queue = new LinkedListQueue<>();}
+
         @Nested
         @DisplayName("연결 리스트 기반 큐 생성 테스트")
         class CreateTest {
 
+            @Test
+            @DisplayName("연결 리스트 기반 큐를 생성할 수 있다.")
+            void create_linked_list_queue() {
+                assertThat(queue.size()).isZero();
+                assertThat(queue.isEmpty()).isTrue();
+                assertThat(queue).isNotNull();
+            }
         }
 
         @Nested
         @DisplayName("enqueue 메서드 테스트")
         class EnqueueTest {
-
         }
 
         @Nested
