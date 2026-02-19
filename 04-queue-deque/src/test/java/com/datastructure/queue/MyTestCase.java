@@ -577,6 +577,50 @@ public class MyTestCase {
         @Nested
         @DisplayName("enqueue 메서드 테스트")
         class EnqueueTest {
+
+            @Test
+            @DisplayName("빈 큐에 값을 요소를 넣을 수 있다.")
+            void enqueue_to_empty_queue() {
+                queue.enqueue(0);
+
+                assertThat(queue.size()).isOne();
+                assertThat(queue.isEmpty()).isFalse();
+                assertThat(queue.peek()).isEqualTo(0);
+            }
+
+            @Test
+            @DisplayName("요소가 있는 큐에 요소를 넣을 수 있다.")
+            void enqueue_to_non_empty_queue() {
+                queue.enqueue(0);
+                queue.enqueue(1);
+                queue.enqueue(2);
+
+                assertThat(queue.size()).isEqualTo(3);
+                assertThat(queue.peek()).isEqualTo(0);
+            }
+
+            @Test
+            @DisplayName("큐에 null 요소를 넣을 수 있다.")
+            void enqueue_null_element() {
+                queue.enqueue(null);
+
+                assertThat(queue.size()).isOne();
+                assertThat(queue.isEmpty()).isFalse();
+                assertThat(queue.peek()).isNull();
+            }
+
+            @Test
+            @DisplayName("요소가 증가하면 카운트가 증가한다.")
+            void enqueue_increases_size() {
+                queue.enqueue(0);
+                assertThat(queue.size()).isEqualTo(1);
+
+                queue.enqueue(1);
+                assertThat(queue.size()).isEqualTo(2);
+
+                queue.enqueue(2);
+                assertThat(queue.size()).isEqualTo(3);
+            }
         }
 
         @Nested
