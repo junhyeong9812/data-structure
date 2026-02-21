@@ -927,8 +927,19 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("isEmpty 메서드 테스트")
-        class IsEmtpyTest {
+        class IsEmptyTest {
 
+            @Test
+            @DisplayName("빈 큐는 true를 반환한다.")
+            void isEmpty_returns_true_when_empty() {
+                assertThat(queue.isEmpty()).isTrue();
+            }
+            @Test
+            @DisplayName("요소가 있는 큐는 false를 반환한다.")
+            void isEmpty_returns_false_when_not_empty() {
+                queue.enqueue(1);
+                assertThat(queue.isEmpty()).isFalse();
+            }
         }
 
         @Nested
