@@ -738,7 +738,58 @@ public class MyTestCase {
         @Nested
         @DisplayName("poll 메서드 테스트")
         class PollTest {
+            @Test
+            @DisplayName("빈 큐에서 poll 시 null을 반환한다.")
+            void poll_returns_null_when_empty() {
+                assertThat(queue.poll()).isNull();
+            }
 
+            @Test
+            @DisplayName("하나의 요소가 있는 큐에 poll 시 빈 큐가 된다.")
+            void poll_single_element_makes_queues_empty() {
+                queue.enqueue(0);
+
+                int result = queue.poll();
+
+                assertThat(result).isEqualTo(0);
+                assertThat(queue.size()).isEqualTo(0);
+                assertThat(queue.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("poll 후 size가 감소한다.")
+            void poll_decreases_size() {
+                queue.enqueue(0);
+                queue.enqueue(1);
+                queue.enqueue(2);
+                assertThat(queue.size()).isEqualTo(3);
+
+                queue.poll();
+
+                assertThat(queue.size()).isEqualTo(2);
+            }
+
+            @Test
+            @DisplayName("null 요소를 제거할 수 있다.")
+            void poll_removes_null_element() {
+                queue.enqueue(null);
+                assertThat(queue.size()).isEqualTo(1);
+
+                queue.poll();
+                assertThat(queue.size()).isZero();
+                assertThat(queue.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("여러 요소를 순차적으로 제거할 수 있다.")
+            void poll_multiple_elements_fifo_order() {
+                for (int i = 0; i < 5; i++) {
+                    queue.enqueue(i);
+                }
+                for (int i = 0; i < 5; i++) {
+                    assertThat(queue.poll()).isEqualTo(i);
+                }
+            }
         }
 
         @Nested
