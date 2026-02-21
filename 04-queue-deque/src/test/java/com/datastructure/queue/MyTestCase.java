@@ -680,6 +680,59 @@ public class MyTestCase {
         @DisplayName("dequeue 메서드 테스트")
         class DequeueTest {
 
+            @Test
+            @DisplayName("요소가 없는 큐에 dequeue 시 예외가 발생한다.")
+            void dequeue_throws_exception_when_empty() {
+                assertThatThrownBy(() -> queue.dequeue())
+                        .isInstanceOf(NoSuchElementException.class);
+            }
+
+            @Test
+            @DisplayName("하나의 요소가 있는 큐에 dequeue 시 빈 큐가 된다.")
+            void dequeue_single_element_makes_queues_empty() {
+                queue.enqueue(0);
+
+                int result = queue.dequeue();
+
+                assertThat(result).isEqualTo(0);
+                assertThat(queue.size()).isEqualTo(0);
+                assertThat(queue.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("dequeue 후 size가 감소한다.")
+            void dequeue_decreases_size() {
+                queue.enqueue(0);
+                queue.enqueue(1);
+                queue.enqueue(2);
+                assertThat(queue.size()).isEqualTo(3);
+
+                queue.dequeue();
+
+                assertThat(queue.size()).isEqualTo(2);
+            }
+
+            @Test
+            @DisplayName("null 요소를 제거할 수 있다.")
+            void dequeue_removes_null_element() {
+                queue.enqueue(null);
+                assertThat(queue.size()).isEqualTo(1);
+
+                queue.dequeue();
+                assertThat(queue.size()).isZero();
+                assertThat(queue.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("여러 요소를 순차적으로 제거할 수 있다.")
+            void dequeue_multiple_elements_fifo_order() {
+                for (int i = 0; i < 5; i++) {
+                    queue.enqueue(i);
+                }
+                for (int i = 0; i < 5; i++) {
+                    assertThat(queue.dequeue()).isEqualTo(i);
+                }
+            }
         }
 
         @Nested
