@@ -946,6 +946,48 @@ public class MyTestCase {
         @DisplayName("size 메서드 테스트")
         class SizeTest {
 
+            @Test
+            @DisplayName("빈 큐는 0이다.")
+            void size_returns_zero_when_empty() {
+                assertThat(queue.size()).isZero();
+            }
+
+            @Test
+            @DisplayName("요소가 있는 큐는 요소의 갯수이다.")
+            void size_returns_number_of_elements() {
+                for (int i = 0; i < 5; i++) {
+                    queue.enqueue(i);
+                }
+
+                assertThat(queue.size()).isEqualTo(5);
+            }
+
+            @Test
+            @DisplayName("enqueue 후 size가 증가한다.")
+            void size_increases_after_enqueue() {
+                for (int i = 0; i < 5; i++) {
+                    queue.enqueue(i);
+                }
+                assertThat(queue.size()).isEqualTo(5);
+
+                queue.enqueue(6);
+
+                assertThat(queue.size()).isEqualTo(6);
+            }
+
+            @Test
+            @DisplayName("dequeue 후 size가 감소한다.")
+            void size_decreases_after_dequeue() {
+                for (int i = 0; i < 5; i++) {
+                    queue.enqueue(i);
+                }
+                assertThat(queue.size()).isEqualTo(5);
+
+                queue.dequeue();
+
+                assertThat(queue.size()).isEqualTo(4);
+            }
+
         }
 
         @Nested
