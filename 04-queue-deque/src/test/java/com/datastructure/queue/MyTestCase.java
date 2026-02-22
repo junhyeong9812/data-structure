@@ -994,6 +994,42 @@ public class MyTestCase {
         @DisplayName("clear 메서드 테스트")
         class ClearTest {
 
+            @Test
+            @DisplayName("빈 큐에 clear를 적용할 수 있다.")
+            void clear_empty_queue_remains_empty() {
+                assertThatNoException().isThrownBy(() -> queue.clear());
+            }
+
+            @Test
+            @DisplayName("clear 후 빈 큐가 된다.")
+            void clear_removes_all_elements() {
+                queue.enqueue(0);
+
+                queue.clear();
+
+                assertThat(queue.size()).isEqualTo(0);
+                assertThat(queue.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("clear 후 size는 0을 반환한다.")
+            void clear_resets_size_to_zero() {
+                queue.enqueue(0);
+
+                queue.clear();
+
+                assertThat(queue.size()).isEqualTo(0);
+            }
+
+            @Test
+            @DisplayName("clear 후 isEmpty는 true를 반환한다.")
+            void clear_makes_queue_empty() {
+                queue.enqueue(0);
+
+                queue.clear();
+
+                assertThat(queue.isEmpty()).isTrue();
+            }
         }
     }
 
