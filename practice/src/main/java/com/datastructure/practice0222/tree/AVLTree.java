@@ -52,6 +52,28 @@ public class AVLTree<E extends Comparable<E>> extends AbstractTree<E> {
         return rebalance(node);
     }
 
+    // -- 삭제 --
+    private Node<E> delete(Node<E> node, E element) {
+        if (node == null) return null;
+
+        int cmp = element.compareTo(node.value);
+        if (cmp < 0) {
+            node.left = delete(node.left, element);
+        } else if (cmp > 0) {
+            node.right = delete(node.right, element);
+        } else {
+            size--;
+            if (node.left == null) return node.right;
+            if (node.right == null) return node.left;
+
+            Node<E> successor = findMax(node.right);
+            node.value = successor.value;
+            size++;
+            node.right = delete(node.right, successor.value);
+        }
+        return rebalance(node);
+    }
+
     // -- AVL 회전 --
     private Node<E> rebalance(Node<E> node) {
         updateHeight(node);
