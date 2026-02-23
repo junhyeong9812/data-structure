@@ -15,16 +15,23 @@ public class AVLTree<E extends Comparable<E>> extends AbstractTree<E> {
 
     @Override
     public void add(E element) {
+        Objects.requireNonNull(element);
+        root = insert(root, element);
     }
 
     @Override
     public E remove(E element) {
-
+        Objects.requireNonNull(element);
+        Node<E> target = findNode(root, element);
+        if (target == null) return null;
+        E removed = target.value;
+        root = delete(root, element);
+        return removed;
     }
 
     @Override
     public int height() {
-
+        return nodeHeight(root);
     }
 
     // -- 삽입 --
