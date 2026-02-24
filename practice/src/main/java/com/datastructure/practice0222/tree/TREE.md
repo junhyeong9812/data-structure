@@ -272,7 +272,26 @@ node.left = 6, node.right == null
 4. 오른쪽 서브트리에서 후속자(4) 삭제: node.right = delete(node.right, 4)
 ```
 
-재귀 흐름
+재귀 흐름 (delete(root, 3));
+```commandline
+delete(5, 3)
+    3 < 5 -> node.left = delete(3, 3)
+        cmp == 0 -> 삭제 대상 발견
+        자식 2개 -> 후속자 = findMin(node.right) = 4
+        node.value = 4로 대체
+        size++ (보정: 아래 delete에서 또 size--하므로)
+        node.right = delete(4,4)
+            cmp == 0, 리프 노드 -> return null
+        return node (값이 4로 바뀐 노드)
+    retunr node (5)
+```
+
+> **size++ 보정이유**: delete 메서드 진입 시 `size--`를 하는데, 
+    후속자를 재귀 삭제할 때 `delete`가 한 번 더 호출되어 `size--`가 중복 실행된다.
+    실제로는 노드 1개만 삭제하므로 미리 `size++`로 보정하는 것이다.
+
+---
+
 
 
 
