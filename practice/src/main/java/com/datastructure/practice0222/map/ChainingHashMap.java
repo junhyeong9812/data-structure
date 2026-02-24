@@ -99,6 +99,33 @@ public class ChainingHashMap<K, V> implements Map<K, V> {
         return node != null ? node.value : null;
     }
 
+    @Override
+    public V getOrDefault(K key, V defaultValue) {
+        Node<K, V> node = findNode(key);
+        return node != null ? node.value : defaultValue;
+    }
+
+    @Override
+    public V remove(K key) {
+        int hash = hash(key);
+        int idx = index(hash);
+
+        Node<K, V> prev = null;
+        for (Node<K, V> node = buckets[idx]; node != null;
+             prev = node, node = node.next ) {
+            if (node.hash == hash && Objects.equals(node.key, key)) {
+                if (prev == null) {
+                    buckets[idx] = node.next;
+                } else {
+                    prev.next = node.next;
+                }
+                size--;
+                return node.value;
+            }
+        }
+        return null;
+    }
+
     // 내부 유틸리티
     private int hash(K key) {
         if (key == null) return 0;
