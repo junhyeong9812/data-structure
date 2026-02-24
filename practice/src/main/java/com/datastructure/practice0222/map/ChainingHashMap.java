@@ -1,5 +1,7 @@
 package com.datastructure.practice0222.map;
 
+import java.util.Objects;
+
 /**
  * 체이닝(Separate Chaining) 방식 해시맵
  *
@@ -65,5 +67,57 @@ public class ChainingHashMap<K, V> implements Map<K, V> {
         if (loadFactor <= 0 || Float.isNaN(loadFactor)) throw new IllegalArgumentException("적재율이 올바르지 않습니다.");
         this.buckets = new Node[initialCapacity];
         this.loadFactor = loadFactor;
+    }
+
+    // 핵심 연산
+
+    @Override
+    public void put(K key, V value) {
+        int hash = hash(key);
+        int idx = index(hash);
+
+        // 기존 키가 있으면 값 덮어쓰기
+        for (Node<K, V> node = buckets[idx]; node != null; node = node.next) {
+            if(node.hash == hash && Objects.equals(node.key, key)) {
+                node.value = value;
+                return;
+            }
+        }
+
+        // 새 노드를 버킷 앞에 삽입
+        buckets[idx] = new Node<>(hash, key, value, buckets[idx]);
+        size++;
+
+        if (size > buckets.length * loadFactor) {
+            resize();
+        }
+    }
+
+    // 내부 유틸리티
+    private int hash(K key) {
+        if (key == null) return 0;
+        int h = key.hashCode();
+        // 상위 비트를 하위 비트에 섞어서 분포를 개선
+        return h ^ (h >>> 16);
+    }
+
+    private int index(int hash) {
+        return hash & (buckets.length - 1);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void resize() {
+        Node<K, V>[] oldBuckets = buckets;
+        buckets = new Node[oldBuckets.length * 2];
+
+        for (Node<K, V> bucket : oldBuckets) {
+            for (Node<K, V> node = bucket; node != null;) {
+                Node<K, V> next = node.next;
+                int idx = index(node.hash);
+                node.next = buckets[idx];
+                buckets[idx] = node;
+                node = next;
+            }
+        }
     }
 }
