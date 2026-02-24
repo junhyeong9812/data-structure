@@ -382,7 +382,33 @@ BST와 동일하게 재귀 삭제 후, 돌아오면서 "rebalance" 호출
 ```
 
 ### rebalance() 재귀 흐름
+```commandline
+insert 또는 delete 재귀가 콜스택을 타고 올라오면서
+매 노드마다:
+  1. updateHeight(node)  ← 높이 갱신
+  2. balanceFactor(node) ← BF 계산
+  3. |BF| > 1이면 → 적절한 회전 수행
+  4. 아니면 → 그냥 node 반환
 
+이 과정이 루트까지 반복되므로 트리 전체 균형이 유지된다.
+```
+
+### BST vs AVL 삽입 비교
+```commandline
+1, 2, 3, 4, 5 순서로 삽입 시:
+
+BST (편향):           AVL (균형):
+1                          2
+ \                        / \
+  2                      1   4
+   \                        / \
+    3                      3   5
+     \
+      4
+       \
+        5
+→ O(n)                → O(log n)
+```
 
 
 
