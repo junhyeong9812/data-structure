@@ -93,6 +93,12 @@ public class ChainingHashMap<K, V> implements Map<K, V> {
         }
     }
 
+    @Override
+    public V get(K key) {
+        Node<K, V> node = findNode(key);
+        return node != null ? node.value : null;
+    }
+
     // 내부 유틸리티
     private int hash(K key) {
         if (key == null) return 0;
@@ -103,6 +109,17 @@ public class ChainingHashMap<K, V> implements Map<K, V> {
 
     private int index(int hash) {
         return hash & (buckets.length - 1);
+    }
+
+    private Node<K, V> findNode(K key) {
+        int hash = hash(key);
+        int idx = index(hash);
+        for (Node<K, V> node = buckets[idx]; node != null; node = node.next) {
+            if (node.hash == hash && Objects.equals(node.key, key)) {
+                return node;
+            }
+        }
+        return null;
     }
 
     @SuppressWarnings("unchecked")
