@@ -1,9 +1,8 @@
 package com.datastructure.practice0222.tree;
 
-import java.util.Iterator;
 import java.util.List;
 
-public interface Tree<E extends Comparable<E>> extends Iterator<E> {
+public interface Tree<E extends Comparable<E>> extends Iterable<E> {
     /**
      * Comparable<E>를 해야되는 이유는
      * CompareTo() 메서드를 통해 하위 엘리멘트가 추가될 때 비교 가능하도록 하기 위함이야.
