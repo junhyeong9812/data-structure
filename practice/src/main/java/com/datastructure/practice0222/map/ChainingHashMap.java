@@ -51,4 +51,19 @@ public class ChainingHashMap<K, V> implements Map<K, V> {
             return key+ "=" + value;
         }
     }
+
+    // -- 생성자 --
+    @SuppressWarnings("unchecked")
+    public ChainingHashMap() {
+        this.buckets = new Node[DEFAULT_CAPACITY];
+        this.loadFactor = DEFAULT_LOAD_FACTOR;
+    }
+
+    @SuppressWarnings("unchecked")
+    public ChainingHashMap(int initialCapacity, float loadFactor) {
+        if(initialCapacity < 1) throw new IllegalArgumentException("용량은 1 이상이어야 합니다.");
+        if (loadFactor <= 0 || Float.isNaN(loadFactor)) throw new IllegalArgumentException("적재율이 올바르지 않습니다.");
+        this.buckets = new Node[initialCapacity];
+        this.loadFactor = loadFactor;
+    }
 }
