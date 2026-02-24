@@ -145,3 +145,149 @@ postOrder(5)
     result.add(5)
 ```
 결과: [1, 4, 3, 7, 5] -> 정렬이 아닌 자식 먼저 부모 나중 순서
+
+## 레벨 순회 (levelOrder Traversal /BFS)
+
+### 동작 원리
+- 트리를 **층별로 왼쪽에서 오른쪽으로** 읽는 방식(너비 우선 탐색,BFS).
+- 큐(Queue)의 FIFO 특성을 이용해 같은 레벨의 노드를 먼저 처리하고, 그 다음 레벨로 넘어간다.
+- 앞선 순회들(inOrder, preOrder, postOrder)은 재귀(스택)를 사용하는 **DFS**, 이건 큐를 사용하는 BFS
+
+### 시각화 예시
+```commandline
+        5          ← level 0
+       / \
+      3    7       ← level 1
+     / \
+    1   4          ← level 2
+```
+
+큐의 흐름:
+```commandline
+큐: [5]        → poll 5, add(5)  → 자식 3,7 넣음
+큐: [3, 7]     → poll 3, add(3)  → 자식 1,4 넣음
+큐: [7, 1, 4]  → poll 7, add(7)  → 자식 없음
+큐: [1, 4]     → poll 1, add(1)  → 자식 없음
+큐: [4]        → poll 4, add(4)  → 자식 없음
+```
+
+결과: '[5, 3, 7, 1, 4]' -> 위에서 아래로, 왼쪽에서 오른쪽으로.
+
+### 순회 방식 비교(DFS VS BFS)
+| 구분 | inOrder / preOrder / postOrder | levelOrder |
+|------|-------------------------------|------------|
+| 탐색 방식 | DFS (깊이 우선) | BFS (너비 우선) |
+| 사용 자료구조 | 재귀 (콜스택) | 큐 (Queue) |
+| 탐색 방향 | 위→아래로 깊이 파고듦 | 층별로 옆으로 훑음 |
+
+## BST 삽입(insert)과 삭제(delete) 시각화
+
+### 삽입(insert) - 5, 3, 7, 1, 4 순서로 삽입
+```commandline
+insert(5): 루트가 null → 새 노드 생성
+        5
+
+insert(3): 3 < 5 → 왼쪽으로
+        5
+       /
+      3
+
+insert(7): 7 > 5 → 오른쪽으로
+        5
+       / \
+      3   7
+
+insert(1): 1 < 5 → 왼쪽, 1 < 3 → 왼쪽
+        5
+       / \
+      3   7
+     /
+    1
+
+insert(4): 4 < 5 → 왼쪽, 4 > 3 → 오른쪽
+        5
+       / \
+      3   7
+     / \
+    1   4
+```
+
+재귀 흐름 (insert(root, 4) 예시):
+```commandline
+insert(5, 4)
+  4 < 5 → node.left = insert(3, 4)
+    4 > 3 → node.right = insert(null, 4)
+      null이므로 new Node(4) 반환 ← 여기서 노드 생성
+    node.right = Node(4) ← 3의 오른쪽에 연결
+    return node(3)
+  node.left = node(3) ← 기존 연결 유지
+  return node(5)
+```
+> 핵심: 재귀가 올라면서 `node.left = ...` / `node.right = ...`로 부모-자식 연결을 갱신한다.
+> 새 노드가 생기는 곳만 실제 변경되고, 나머지는 기존 참조를 그대로 다시 넣는 것. 
+
+### 삭제 (delete) - 3가지 경우
+
+#### Case 1: 자식이 0개 (리프 노드 삭제) - delete(1)
+```commandline
+삭제 전:              삭제 후:
+        5                     5
+       / \                   / \
+      3   7                 3   7
+     / \                     \
+    1   4                     4
+
+1을 찾아감: 1 < 5 → 왼쪽, 1 < 3 → 왼쪽
+node.left == null, node.right == null
+→ return null (부모의 left가 null이 됨)
+```
+
+#### Case 2: 자식이 1개 - delete(7) (7에서 왼쪽 자식만 있고 6만 있다고 가정)
+```commandline
+삭제 전:              삭제 후:
+        5                     5
+       / \                   / \
+      3   7                 3   6
+     / \  /                / \
+    1  4  6               1   4
+
+7을 찾아감: 7 > 5 → 오른쪽
+node.left = 6, node.right == null
+→ return node.left (6이 7의 자리를 대체)
+```
+
+#### Case 3: 자식이 2개 - delete(3)
+```commandline
+삭제 전:              후속자 찾기:           대체 후:
+        5             오른쪽 서브트리에서         5
+       / \            최솟값 = 4              / \
+      3   7                                 4   7
+     / \                                   /
+    1   4                                 1
+
+과정:
+1. 삭제 대상 노드(3) 발견
+2. 오른쪽 서브트리에서 최솟값(후속자) 찾기 → findMin(node.right) → 4
+3. 노드 값을 후속자 값으로 대체: node.value = 4
+4. 오른쪽 서브트리에서 후속자(4) 삭제: node.right = delete(node.right, 4)
+```
+
+재귀 흐름
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
