@@ -126,6 +126,21 @@ public class ChainingHashMap<K, V> implements Map<K, V> {
         return null;
     }
 
+    @Override
+    public boolean containsKey(K key) {
+        return findNode(key) != null;
+    }
+
+    @Override
+    public boolean containsValue(V value) {
+        for (Node<K, V> bucket : buckets) {
+            for (Node<K, V> node = bucket; node != null; node = node.next) {
+                if (Objects.equals(node.value, value)) return true;
+            }
+        }
+        return false;
+    }
+
     // 내부 유틸리티
     private int hash(K key) {
         if (key == null) return 0;
