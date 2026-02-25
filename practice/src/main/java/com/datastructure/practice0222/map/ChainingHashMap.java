@@ -192,6 +192,26 @@ public class ChainingHashMap<K, V> implements Map<K, V> {
         return entries;
     }
 
+    // -- Iterator (Entry 단위) --\
+    @Override
+    public Iterator<Entry<K, V>> iterator() {
+        return entrySet().iterator();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("{");
+        boolean first = true;
+        for (Node<K, V> bucket: buckets) {
+            for (Node<K, V> node = bucket; node != null; node = node.next) {
+                if (!first) sb.append(",");
+                sb.append(node.key).append("=").append(node.value);
+                first = false;
+            }
+        }
+        return sb.append("}").toString();
+    }
+
     // 내부 유틸리티
     private int hash(K key) {
         if (key == null) return 0;
