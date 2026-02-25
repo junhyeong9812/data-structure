@@ -151,6 +151,15 @@ public class ChainingHashMap<K, V> implements Map<K, V> {
         return size == 0;
     }
 
+    @Override
+    @SuppressWarnings("unchecked")
+    public void clear() {
+        buckets = new Node[DEFAULT_CAPACITY];
+        size = 0;
+    }
+
+
+
     // 내부 유틸리티
     private int hash(K key) {
         if (key == null) return 0;
