@@ -141,6 +141,16 @@ public class ChainingHashMap<K, V> implements Map<K, V> {
         return false;
     }
 
+    @Override
+    public int size() {
+        return size;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
     // 내부 유틸리티
     private int hash(K key) {
         if (key == null) return 0;
