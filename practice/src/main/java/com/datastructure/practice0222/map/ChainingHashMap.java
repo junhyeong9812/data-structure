@@ -1,6 +1,6 @@
 package com.datastructure.practice0222.map;
 
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 체이닝(Separate Chaining) 방식 해시맵
@@ -158,7 +158,39 @@ public class ChainingHashMap<K, V> implements Map<K, V> {
         size = 0;
     }
 
+    // -- 뷰 --
+    @Override
+    public Set<K> keySet() {
+        Set<K> keys = new LinkedHashSet<>();
+        for (Node<K, V> bucket : buckets) {
+            for (Node<K, V> node = bucket; node != null; node = node.next) {
+                keys.add(node.key);
+            }
+        }
+        return keys;
+    }
 
+    @Override
+    public Collection<V> values() {
+        List<V> vals = new ArrayList<>();
+        for (Node<K, V> bucket: buckets) {
+            for (Node<K, V> node = bucket; node != null; node = node.next) {
+                vals.add(node.value);
+            }
+        }
+        return vals;
+    }
+
+    @Override
+    public Set<Entry<K, V>> entrySet() {
+        Set<Entry<K, V>> entries = new LinkedHashSet<>();
+        for (Node<K, V> bucket: buckets) {
+            for (Node<K, V> node = bucket; node != null; node = node.next) {
+                entries.add(node);
+            }
+        }
+        return entries;
+    }
 
     // 내부 유틸리티
     private int hash(K key) {
