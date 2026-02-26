@@ -1,7 +1,9 @@
 package com.datastructure.practice0222.map;
 
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * 개방 주소법(Open Addressing) - 선형 탐사(Linear Probing) 방식 해시맵
@@ -80,6 +82,27 @@ public class LinearProbingHashMap<K, V> implements Map<K, V> {
     public V get(K key) {
         int idx = findExisting(key);
         return idx == -1 ? null : values[idx];
+    }
+
+    @Override
+    public Set<Entry<K, V>> entrySet() {
+        Set<Entry<K, V>> set = new LinkedHashSet<>();
+        for (int i = 0; i < capacity; i++) {
+            if (occupied[i] && !deleted[i]) {
+                final int idx = i;
+                set.add(new Entry<K, V>() {
+                    @Override public K getKey() { return keys[idx]; }
+                    @Override public V getValue() { return values[idx]; }
+                    @Override public V setValue(V value) {
+                        V old = values[idx];
+                        values[idx] = value;
+                        return old;
+                    }
+                    @Override public String toString() { return keys[idx] + "=" + values[idx]; }
+                });
+            }
+        }
+        return set;
     }
 
     @Override
