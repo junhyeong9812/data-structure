@@ -120,7 +120,26 @@ public class LinearProbingHashMap<K, V> implements Map<K, V> {
         return false;
     }
 
+    @Override
+    public int size() {
+        return size;
+    }
 
+    @Override
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public void clear() {
+        capacity = DEFAULT_CAPACITY;
+        keys = (K[]) new Object[capacity];
+        values = (V[]) new Object[capacity];
+        occupied = new boolean[capacity];
+        deleted = new boolean[capacity];
+        size = 0;
+    }
 
     // -- 뷰 --
 
