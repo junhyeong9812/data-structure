@@ -105,6 +105,20 @@ public class LinearProbingHashMap<K, V> implements Map<K, V> {
         return old;
     }
 
+    @Override
+    public boolean containsKey(K key) {
+        return findExisting(key) != -1;
+    }
+
+    @Override
+    public boolean containsValue(V value) {
+        for (int i = 0; i < capacity; i++) {
+            if (occupied[i] && !deleted[i] && Objects.equals(values[i], value)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 
