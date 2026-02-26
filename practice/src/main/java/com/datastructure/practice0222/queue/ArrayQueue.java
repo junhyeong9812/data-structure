@@ -1,5 +1,7 @@
 package com.datastructure.practice0222.queue;
 
+import java.util.NoSuchElementException;
+
 /***
  * 원형 배열 기반 큐 (Circular Array Queue)
  *
@@ -34,6 +36,21 @@ public class ArrayQueue<E> implements Queue<E> {
         elements[tail] = element;
         tail = (tail + 1) % elements.length;
         size++;
+    }
+
+    @Override
+    public E dequeue() {
+        if (isEmpty()) throw new NoSuchElementException("큐가 비어있습니다.");
+        E value = elements[head];
+        elements[head] = null;
+        head = (head + 1) % elements.length;
+        size--;
+
+        // 사용률이 1/4 이하이고 기본 용량보다 크면 축소
+        if (size > 0 && size <= elements.length / 4 && elements.length > DEFAULT_CAPACITY) {
+            resize(Math.max(elements.length / 2, DEFAULT_CAPACITY));
+        }
+        return value;
     }
 
     // 내부 유틸리티 메서드
