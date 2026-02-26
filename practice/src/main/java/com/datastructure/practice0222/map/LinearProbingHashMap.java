@@ -81,6 +81,31 @@ public class LinearProbingHashMap<K, V> implements Map<K, V> {
         return idx == -1 ? null : values[idx];
     }
 
+    @Override
+    public V getOrDefault(K key, V defaultValue) {
+        int idx = findExisting(key);
+        return idx == -1 ? defaultValue : values[idx];
+    }
+
+    @Override
+    public V remove(K key) {
+        int idx = findExisting(key);
+        if (idx == -1) return null;
+
+        V old = values[idx];
+        // tombstone 처리: 키/값은 남겨두고 deleted 마킹
+        deleted[idx] = true;
+        size--;
+
+        // 적재율이 너무 낮아지면 축소
+        if (capacity > DEFAULT_CAPACITY && size <= capacity * loadFactor/4) {
+            resize(Math.max(capacity / 2, DEFAULT_CAPACITY));
+        }
+
+        return old;
+    }
+
+
 
 
     // -- 뷰 --
