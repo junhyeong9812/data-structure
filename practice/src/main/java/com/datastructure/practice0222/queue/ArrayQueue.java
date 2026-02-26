@@ -53,6 +53,22 @@ public class ArrayQueue<E> implements Queue<E> {
         return value;
     }
 
+    @Override
+    public E peek() {
+        if (isEmpty()) throw new NoSuchElementException("큐가 비어있습니다.");
+        return elements[head];
+    }
+
+    @Override
+    public int size() {
+        return size;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
     // 내부 유틸리티 메서드
     @SuppressWarnings("unchecked")
     private void resize(int newCapacity) {
