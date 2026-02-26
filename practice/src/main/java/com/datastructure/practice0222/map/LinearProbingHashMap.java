@@ -75,6 +75,12 @@ public class LinearProbingHashMap<K, V> implements Map<K, V> {
         size++;
     }
 
+    @Override
+    public V get(K key) {
+        int idx = findExisting(key);
+        return idx == -1 ? null : values[idx];
+    }
+
     // -- 내부 유틸리티 --
     private int hash(K key) {
         if (key == null) return 0;
@@ -110,6 +116,26 @@ public class LinearProbingHashMap<K, V> implements Map<K, V> {
             }
         }
         return firstDeleted;
+    }
+
+    /**
+     * get/remove/containsKey용: 키가 존재하면 인덱스, 없으면 -1
+     * */
+    public int findExisting(K key) {
+        int hash = hash(key);
+        int idx = index(hash);
+
+        for (int i = 0; i < capacity; i++) {
+            int probe = (idx + i) % capacity;
+
+            if (!occupied[probe] && !deleted[probe]) {
+                return -1;
+            }
+            if (!deleted[probe] && occupied[probe] && Objects.equals(keys[probe], key)) {
+                return probe;
+            }
+        }
+        return -1;
     }
 
     @SuppressWarnings("unchecked")
