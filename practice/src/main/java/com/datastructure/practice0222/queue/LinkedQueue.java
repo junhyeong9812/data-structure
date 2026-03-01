@@ -91,4 +91,15 @@ public class LinkedQueue<E> implements Queue<E> {
         };
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("[");
+        Node<E> n = head;
+        while (n != null) {
+            sb.append(n.value);
+            if (n.next != null) sb.append(", ");
+            n = n.next;
+        }
+        return sb.append("]").toString();
+    }
 }
