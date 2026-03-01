@@ -1,5 +1,7 @@
 package com.datastructure.practice0222.queue;
 
+import java.util.NoSuchElementException;
+
 /**
  * 연결 리스트 기반 큐 (inked Queue)
  *
@@ -30,4 +32,16 @@ public class LinkedQueue<E> implements Queue<E> {
         tail = node;
         size++;
     }
+
+    @Override
+    public E dequeue() {
+        if (isEmpty()) throw new NoSuchElementException("큐가 비어있습니다.");
+        E value = head.value;
+        head = head.next;
+        if (head == null) tail = null;
+        size--;
+        return value;
+    }
+
+
 }
