@@ -1,6 +1,7 @@
 package com.datastructure.practice0222.queue;
 
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 /**
  * 연결 리스트 기반 큐 (inked Queue)
@@ -55,4 +56,18 @@ public class LinkedQueue<E> implements Queue<E> {
     @Override
     public boolean isEmpty() {return size ==0;}
 
+    @Override
+    public boolean contains(E element) {
+        for (Node<E> n = head; n != null; n = n.next) {
+            if (Objects.equals(n.value, element)) return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void clear() {
+        head = null;
+        tail = null;
+        size = 0;
+    }
 }
