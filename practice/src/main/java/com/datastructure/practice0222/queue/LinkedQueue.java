@@ -18,4 +18,16 @@ public class LinkedQueue<E> implements Queue<E> {
     private Node<E> head;
     private Node<E> tail;
     private int size;
+
+    @Override
+    public void enqueue(E element) {
+        Node<E> node = new Node<>(element);
+        if (tail != null) {
+            tail.next = node;
+        } else {
+            head = node;
+        }
+        tail = node;
+        size++;
+    }
 }
