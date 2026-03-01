@@ -1,5 +1,6 @@
 package com.datastructure.practice0222.queue;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -70,4 +71,24 @@ public class LinkedQueue<E> implements Queue<E> {
         tail = null;
         size = 0;
     }
+
+    @Override
+    public Iterator<E> iterator() {
+        return new Iterator<E>() {
+            private Node<E> cursor = head;
+            @Override
+            public boolean hasNext() {
+                return cursor != null;
+            }
+
+            @Override
+            public E next() {
+                if (!hasNext()) throw new NoSuchElementException();
+                E value = cursor.value;;
+                cursor = cursor.next;
+                return value;
+            }
+        };
+    }
+
 }
