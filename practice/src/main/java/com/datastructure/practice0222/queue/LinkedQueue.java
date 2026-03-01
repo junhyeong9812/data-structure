@@ -43,5 +43,16 @@ public class LinkedQueue<E> implements Queue<E> {
         return value;
     }
 
+    @Override
+    public E peek() {
+        if (isEmpty()) throw new NoSuchElementException("큐가 비어있습니다.");
+        return head.value;
+    }
+
+    @Override
+    public int size() {return size;}
+
+    @Override
+    public boolean isEmpty() {return size ==0;}
 
 }
