@@ -26,4 +26,35 @@ public class ArrayDeque<E> implements Deque<E> {
         if (capacity < 1) throw new IllegalArgumentException("용량은 1 이상이여아 합니다.");
         this.elements = (E[]) new Object[capacity];
     }
+
+    // Deque 연산
+
+    @Override
+    public void addFirst(E element) {
+        if (size == elements.length) resize(elements.length * 2);
+        head =dec(head);
+        elements[head] = element;
+        size++;
+    }
+
+    @Override
+    public void addLast(E element) {
+        if (size == elements.length) resize(elements.length * 2);
+    }
+
+    // 인덱스를 한 칸 뒤로 (순환)
+    private int dec(int idx) {
+        return (idx - 1 + elements.length) % elements.length;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void resize(int newCapacity) {
+        E[] newElements = (E[]) new Object[newCapacity];
+        for (int i = 0; i <size; i++) {
+            newElements[i] = elements[(head + i) % elements.length];
+        }
+        elements = newElements;
+        head = 0;
+        tail = size;
+    }
 }
