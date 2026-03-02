@@ -77,4 +77,16 @@ public class LinkedDeque<E> implements Deque<E> {
         size--;
         return value;
     }
+
+    @Override
+    public E peekFirst() {
+        if (isEmpty()) throw new NoSuchElementException("덱이 비어있습니다.");
+        return head.value;
+    }
+
+    @Override
+    public E peekLast() {
+        if (isEmpty()) throw new NoSuchElementException("덱이 비어있습니다.");
+        return tail.value;
+    }
 }
