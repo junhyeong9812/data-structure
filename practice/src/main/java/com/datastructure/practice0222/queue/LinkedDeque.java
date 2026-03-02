@@ -89,4 +89,23 @@ public class LinkedDeque<E> implements Deque<E> {
         if (isEmpty()) throw new NoSuchElementException("덱이 비어있습니다.");
         return tail.value;
     }
+
+    // Queue 인터페이스 매핑 (FIFO)
+
+    @Override
+    public void enqueue(E element) {
+        addLast(element);
+    }
+
+    @Override
+    public E dequeue() {
+        return removeFirst();
+    }
+
+    @Override
+    public E peek() {
+        return peekFirst();
+    }
+
+
 }
