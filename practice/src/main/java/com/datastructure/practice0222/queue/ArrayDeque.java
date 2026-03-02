@@ -1,5 +1,7 @@
 package com.datastructure.practice0222.queue;
 
+import java.util.NoSuchElementException;
+
 /**
  * 원형 배열 기반 덱(Circular Array Deque)
  *
@@ -42,9 +44,42 @@ public class ArrayDeque<E> implements Deque<E> {
         if (size == elements.length) resize(elements.length * 2);
     }
 
+    @Override
+    public E removeFirst() {
+        if (isEmpty()) throw new NoSuchElementException("덱이 비어있습니다.");
+        E value = elements[head];
+        elements[head] = null;
+        head = inc(head);
+        size--;
+        shrinkIfNeeded();
+        return value;
+    }
+
+    @Override
+    public E removeLast() {
+        if (isEmpty()) throw new NoSuchElementException("덱이 비어있습니다.");
+        tail = dec(tail);
+        E value = elements[tail];
+        elements[tail] = null;
+        size--;
+        shrinkIfNeeded();
+        return value;
+    }
+
+    // 내부 유틸리티
+    // 인덱스를 한 칸 앞으로 (순환)
+    private int inc(int idx) {
+        return (idx + 1) % elements.length;
+    }
     // 인덱스를 한 칸 뒤로 (순환)
     private int dec(int idx) {
         return (idx - 1 + elements.length) % elements.length;
+    }
+
+    private void shrinkIfNeeded() {
+        if (size > 0 && size <= elements.length / 4 && elements.length > DEFAULT_CAPACITY) {
+            resize((Math.max(elements.length / 2, DEFAULT_CAPACITY)));
+        }
     }
 
     @SuppressWarnings("unchecked")
