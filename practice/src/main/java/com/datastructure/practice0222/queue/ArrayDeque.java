@@ -66,6 +66,18 @@ public class ArrayDeque<E> implements Deque<E> {
         return value;
     }
 
+    @Override
+    public E peekFirst() {
+        if(isEmpty()) throw new NoSuchElementException("덱이 비어있습니다.");
+        return elements[head];
+    }
+
+    @Override
+    public E peekLast() {
+        if (isEmpty()) throw new NoSuchElementException("덱이 비어있습니다.");
+        return elements[dec(tail)];
+    }
+
     // 내부 유틸리티
     // 인덱스를 한 칸 앞으로 (순환)
     private int inc(int idx) {
