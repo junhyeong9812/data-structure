@@ -1,6 +1,8 @@
 package com.datastructure.practice0222.queue;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 /**
  * 원형 배열 기반 덱(Circular Array Deque)
@@ -93,6 +95,62 @@ public class ArrayDeque<E> implements Deque<E> {
     @Override
     public E peek() {
         return peekFirst();
+    }
+
+    // 공통
+    @Override
+    public int size() {
+        return size;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    @Override
+    public boolean contains(E element) {
+        for (int i = 0; i < size; i++ ) {
+            if (Objects.equals(elements[(head + i) % elements.length], element)) return true;
+        }
+        return false;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public void clear() {
+        elements = (E[]) new Object[DEFAULT_CAPACITY];
+        head = 0;
+        tail = 0;
+        size = 0;
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+        return new Iterator<E>() {
+            private int cursor = 0;
+
+            @Override
+            public boolean hasNext() {
+                return cursor < size;
+            }
+
+            @Override
+            public E next() {
+                if (!hasNext()) throw new NoSuchElementException();
+                return elements[(head + cursor++) % elements.length];
+            }
+        };
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < size; i++) {
+            if (i > 0) sb.append(", ");
+            sb.append(elements[(head + i) % elements.length]);
+        }
+        return sb.append("]").toString();
     }
 
     // 내부 유틸리티
