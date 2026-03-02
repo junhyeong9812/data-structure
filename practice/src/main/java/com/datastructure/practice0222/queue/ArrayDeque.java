@@ -78,6 +78,23 @@ public class ArrayDeque<E> implements Deque<E> {
         return elements[dec(tail)];
     }
 
+    // Queue 인터페이스 매핑 (FIFO)
+
+    @Override
+    public void enqueue(E element) {
+        addLast(element);
+    }
+
+    @Override
+    public E dequeue() {
+        return removeFirst();
+    }
+
+    @Override
+    public E peek() {
+        return peekFirst();
+    }
+
     // 내부 유틸리티
     // 인덱스를 한 칸 앞으로 (순환)
     private int inc(int idx) {
