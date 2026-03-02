@@ -1,6 +1,8 @@
 package com.datastructure.practice0222.queue;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 /***
  * 이중 연결 리스트 기반 덱 (Doubly Linked Deque)
@@ -107,5 +109,61 @@ public class LinkedDeque<E> implements Deque<E> {
         return peekFirst();
     }
 
+    // 공통
 
+    @Override
+    public int size() {
+        return size;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    @Override
+    public boolean contains(E element) {
+        for ( Node<E> n = head; n != null; n = n.next) {
+            if (Objects.equals(n.value, element)) return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void clear() {
+        head = null;
+        tail = null;
+        size = 0;
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+        return new Iterator<E>() {
+            private Node<E> cursor = head;
+            @Override
+            public boolean hasNext() {
+                return cursor != null;
+            }
+
+            @Override
+            public E next() {
+                if (!hasNext()) throw new NoSuchElementException();
+                E value = cursor.value;;
+                cursor = cursor.next;
+                return value;
+            }
+        };
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("[");
+        Node<E> n = head;
+        while (n != null) {
+            sb.append(n.value);
+            if (n.next != null) sb.append(", ");
+            n = n.next;
+        }
+        return sb.append("]").toString();
+    }
 }
