@@ -17,10 +17,35 @@ public class LinkedDeque<E> implements Deque<E> {
         }
     }
 
-    private Node<E> haed;
+    private Node<E> head;
     private Node<E> tail;
     private int size;
     
     // Deque 연산
+    @Override
+    public void addFirst(E element) {
+        Node<E> node = new Node<>(element);
+        if (head == null) {
+            head = tail = node;
+        } else {
+            node.next = head;
+            head.prev = node;
+            head = node;
+        }
+        size++;
+    }
+
+    @Override
+    public void addLast(E element) {
+        Node<E> node = new Node<>(element);
+        if (tail == null) {
+            head = tail = node;
+        } else {
+            node.prev = tail;
+            tail.next = node;
+            tail = node;
+        }
+        size++;
+    }
 
 }
