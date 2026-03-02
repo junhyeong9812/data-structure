@@ -1,5 +1,7 @@
 package com.datastructure.practice0222.queue;
 
+import java.util.NoSuchElementException;
+
 /***
  * 이중 연결 리스트 기반 덱 (Doubly Linked Deque)
  *
@@ -48,4 +50,31 @@ public class LinkedDeque<E> implements Deque<E> {
         size++;
     }
 
+    @Override
+    public E removeFirst() {
+        if (isEmpty()) throw new NoSuchElementException("덱이 비어있습니다.");
+        E value = head.value;
+        head = head.next;
+        if (head == null) {
+            tail = null;
+        } else {
+            head.prev = null;
+        }
+        size--;
+        return value;
+    }
+
+    @Override
+    public E removeLast() {
+        if (isEmpty()) throw new NoSuchElementException("덱이 비어있습니다.");
+        E value = tail.value;
+        tail = tail.prev;
+        if (tail == null) {
+            head = null;
+        } else {
+            tail.next = null;
+        }
+        size--;
+        return value;
+    }
 }
