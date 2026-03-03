@@ -1145,6 +1145,78 @@ public class MyTestCase {
         @DisplayName("offer 메서드 테스트")
         class OfferTest {
 
+            @Test
+            @DisplayName("빈 큐에 요소를 추가하면 true를 반환한다.")
+            void offer_to_empty_queue_returns_true() {
+                boolean result = queue.offer(1);
+
+                assertThat(result).isTrue();
+                assertThat(queue.size()).isEqualTo(1);
+                assertThat(queue.isEmpty()).isFalse();
+            }
+
+            @Test
+            @DisplayName("요소가 있는 큐에 요소를 추가하면 true를 반환한다.")
+            void offer_to_non_empty_queue_returns_true() {
+                queue.offer(1);
+                queue.offer(2);
+                queue.offer(3);
+
+                boolean result = queue.offer(4);
+
+                assertThat(result).isTrue();
+                assertThat(queue.size()).isEqualTo(4);
+            }
+
+            @Test
+            @DisplayName("null 요소를 추가하면 true를 반환한다.")
+            void offer_null_element_returns_true() {
+                boolean result = queue.offer(null);
+
+                assertThat(result).isTrue();
+                assertThat(queue.size()).isEqualTo(1);
+                assertThat(queue.isEmpty()).isFalse();
+                assertThat(queue.peek()).isNull();
+            }
+
+            @Test
+            @DisplayName("가득찬 큐는 요소를 추가하면 false를 반환한다.")
+            void offer_returns_false_when_full() {
+                queue = new CircularQueue<>(10);
+                for (int i = 0; i < 10; i++) {
+                    queue.offer(i);
+                }
+
+                boolean result = queue.offer(11);
+
+                assertThat(result).isFalse();
+            }
+
+            @Test
+            @DisplayName("dequeue 후 빈 자리에 요소를 추가하면 true를 반환한다.")
+            void offer_after_dequeue_reuses_space() {
+                queue = new CircularQueue<>(10);
+                for (int i = 0; i < 10; i++) {
+                    queue.offer(i);
+                }
+
+                queue.dequeue();
+
+                boolean result = queue.offer(11);
+
+                assertThat(result).isTrue();
+            }
+
+            @Test
+            @DisplayName("true를 반환하면 size가 증가한다.")
+            void offer_increase_size_on_success() {
+                assertThat(queue.size()).isZero();
+
+                boolean result = queue.offer(1);
+
+                assertThat(result).isTrue();
+                assertThat(queue.size()).isOne();
+            }
         }
 
         @Nested
