@@ -1,6 +1,8 @@
 package com.datastructure.queue;
 
+import com.datastructure.queue.oop.Queue;
 import com.datastructure.queue.pop.ArrayQueue;
+import com.datastructure.queue.pop.CircularQueue;
 import com.datastructure.queue.pop.LinkedListQueue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -1037,10 +1039,36 @@ public class MyTestCase {
     @DisplayName("원형 큐")
     class CircularQueueTest {
 
+        CircularQueue<Integer> queue;
+
+        @BeforeEach
+        void setup() {
+            queue  = new CircularQueue<>();
+        }
+
         @Nested
         @DisplayName("원형 큐 생성 테스트")
         class CreateTest {
 
+            @Test
+            @DisplayName("생성된 원형 큐의 사이즈는 0이다.")
+            void create_circular_queue_size_is_zero() {
+                assertThat(queue.size()).isZero();
+            }
+
+            @Test
+            @DisplayName("생성된 원형 큐의 isEmpty는 True이다.")
+            void create_circular_queue_isEmpty_is_true() {
+                assertThat(queue.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("초기 용량을 지정하여 원형 큐를 생성한다.")
+            void create_circular_queue_with_capacity() {
+                CircularQueue<Integer> customQueue = new CircularQueue<>(20);
+                assertThat(customQueue.isEmpty()).isTrue();
+                assertThat(customQueue.size()).isZero();
+            }
         }
 
         @Nested
