@@ -1075,6 +1075,70 @@ public class MyTestCase {
         @DisplayName("enqueue 메서드 테스트")
         class EnqueueTest {
 
+            @Test
+            @DisplayName("빈 큐에 요소가 추가된다.")
+            void enqueue_to_empty_queue() {
+                queue.enqueue(1);
+
+                assertThat(queue.size()).isEqualTo(1);
+                assertThat(queue.isEmpty()).isFalse();
+            }
+
+            @Test
+            @DisplayName("요소가 있는 큐에 요소가 추가된다.")
+            void enqueue_to_non_empty_queue() {
+                queue.enqueue(1);
+                queue.enqueue(2);
+                queue.enqueue(3);
+
+                queue.enqueue(4);
+
+                assertThat(queue.size()).isEqualTo(4);
+                assertThat(queue.peek()).isEqualTo(1);
+            }
+
+            @Test
+            @DisplayName("null 요소가 추가된다.")
+            void enqueue_null_element() {
+                queue.enqueue(null);
+
+                assertThat(queue.size()).isEqualTo(1);
+                assertThat(queue.isEmpty()).isFalse();
+                assertThat(queue.peek()).isNull();
+            }
+
+            @Test
+            @DisplayName("요소가 가득 찬 큐에는 예외가 발생한다.")
+            void enqueue_throws_exception_when_full() {
+                queue = new CircularQueue<>(10);
+                for (int i = 0; i < 10; i++) {
+                    queue.enqueue(i);
+                }
+
+                assertThatThrownBy(() -> queue.enqueue(11))
+                        .isInstanceOf(IllegalStateException.class);
+            }
+
+            @Test
+            @DisplayName("dequeue 후 빈 자리에 요소를 추가할 수 있다.")
+            void enqueue_after_dequeue_reuses_space() {
+                for (int i = 0; i < 10; i++) {
+                    queue.enqueue(i);
+                }
+                queue.dequeue();
+                queue.enqueue(11);
+                assertThat(queue.size()).isEqualTo(10);
+                assertThat(queue.peek()).isEqualTo(1);
+            }
+
+            @Test
+            @DisplayName("enqueue 후 size가 증가한다.")
+            void enqueue_increase_size() {
+                assertThat(queue.size()).isEqualTo(0);
+                queue.enqueue(1);
+
+                assertThat(queue.size()).isEqualTo(1);
+            }
         }
 
         @Nested
