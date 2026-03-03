@@ -1223,6 +1223,82 @@ public class MyTestCase {
         @DisplayName("dequeue 메서드 테스트")
         class DequeueTest {
 
+            @Test
+            @DisplayName("요소가 없는 큐에 dequeue 시 예외가 발생한다.")
+            void dequeue_throws_exception_when_empty() {
+                assertThatThrownBy(() -> queue.dequeue())
+                        .isInstanceOf(NoSuchElementException.class);
+            }
+
+            @Test
+            @DisplayName("요소가 존재하는 큐에 dequeue 시 맨 앞 요소가 삭제된다.")
+            void dequeue_removes_front_element() {
+                queue.enqueue(0);
+                queue.enqueue(1);
+                queue.enqueue(2);
+
+                int removed = queue.dequeue();
+
+                assertThat(removed).isEqualTo(0);
+                assertThat(queue.size()).isEqualTo(2);
+                assertThat(queue.peek()).isEqualTo(1);
+            }
+
+            @Test
+            @DisplayName("null요소가 삭제된다.")
+            void dequeue_removes_null_element() {
+                queue.enqueue(null);
+
+                Object removed = queue.dequeue();
+
+                assertThat(removed).isNull();
+                assertThat(queue.size()).isEqualTo(0);
+                assertThat(queue.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("요소가 삭제되면 사이즈가 줄어든다.")
+            void dequeue_decrease_size() {
+                queue.enqueue(0);
+                queue.enqueue(1);
+                queue.enqueue(2);
+
+                assertThat(queue.size()).isEqualTo(3);
+
+                queue.dequeue();
+
+                assertThat(queue.size()).isEqualTo(2);
+            }
+
+            @Test
+            @DisplayName("요소가 하나인 큐의 요소가 삭제되면 빈 큐가 된다.")
+            void dequeue_single_element_makes_queue_empty() {
+                queue.enqueue(1);
+
+                int removed = queue.dequeue();
+
+                assertThat(removed).isEqualTo(1);
+                assertThat(queue.size()).isEqualTo(0);
+                assertThat(queue.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("여러 요소를 순차적으로 제거하면 FIFO 순서를 따른다.")
+            void dequeue_multiple_elements_in_fifo_order() {
+                for (int i = 0; i < 3; i++) {
+                    queue.enqueue(i);
+                }
+
+                int removedFirst = queue.dequeue();
+                int removedSecond = queue.dequeue();
+                int removedThird = queue.dequeue();
+
+                assertThat(removedFirst).isEqualTo(0);
+                assertThat(removedSecond).isEqualTo(1);
+                assertThat(removedThird).isEqualTo(2);
+                assertThat(queue.size()).isEqualTo(0);
+                assertThat(queue.isEmpty()).isTrue();
+            }
         }
 
         @Nested
