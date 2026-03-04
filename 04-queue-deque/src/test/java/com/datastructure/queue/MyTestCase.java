@@ -1305,6 +1305,84 @@ public class MyTestCase {
         @DisplayName("poll 메서드 테스트")
         class PollTest {
 
+            @Test
+            @DisplayName("요소가 없는 큐에 poll 시 null을 반환한다.")
+            void poll_returns_null_when_empty() {
+                Integer result = queue.poll();
+
+                assertThat(result).isNull();
+                assertThat(queue.size()).isEqualTo(0);
+                assertThat(queue.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("요소가 존재하는 큐에 poll 시 맨 앞 요소가 삭제된다.")
+            void poll_removes_front_element() {
+                queue.enqueue(1);
+                queue.enqueue(2);
+                queue.enqueue(3);
+
+                int removed = queue.poll();
+                assertThat(removed).isEqualTo(1);
+                assertThat(queue.size()).isEqualTo(2);
+                assertThat(queue.isEmpty()).isFalse();
+            }
+
+            @Test
+            @DisplayName("null 요소가 삭제된다.")
+            void poll_removes_null_element() {
+                queue.enqueue(null);
+
+                Integer removed = queue.poll();
+
+                assertThat(removed).isNull();
+                assertThat(queue.size()).isEqualTo(0);
+                assertThat(queue.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("요소가 삭제되면 사이즈가 줄어든다.")
+            void poll_decreases_size() {
+                queue.enqueue(0);
+                queue.enqueue(1);
+                queue.enqueue(2);
+
+                assertThat(queue.size()).isEqualTo(3);
+
+                queue.poll();
+
+                assertThat(queue.size()).isEqualTo(2);
+            }
+
+            @Test
+            @DisplayName("요소가 하나인 큐의 요소가 삭제되면 빈 큐가 된다.")
+            void poll_single_element_makes_queue_empty() {
+                queue.enqueue(1);
+
+                Integer removed = queue.poll();
+
+                assertThat(removed).isEqualTo(1);
+                assertThat(queue.size()).isEqualTo(0);
+                assertThat(queue.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("여러 요소를 순차적으로 제거하면 FIFO 순서를 따른다.")
+            void poll_multiple_elements_in_fifo_order() {
+                for (int i = 0; i < 3; i++) {
+                    queue.enqueue(i);
+                }
+
+                int removedFirst = queue.poll();
+                int removedSecond = queue.poll();
+                int removedThird = queue.poll();
+
+                assertThat(removedFirst).isEqualTo(0);
+                assertThat(removedSecond).isEqualTo(1);
+                assertThat(removedThird).isEqualTo(2);
+                assertThat(queue.size()).isEqualTo(0);
+                assertThat(queue.isEmpty()).isTrue();
+            }
         }
 
         @Nested
