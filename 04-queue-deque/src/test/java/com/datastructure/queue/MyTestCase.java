@@ -1389,6 +1389,64 @@ public class MyTestCase {
         @DisplayName("peek 메서드 테스트")
         class PeekTest {
 
+            @Test
+            @DisplayName("빈 큐에 peek 시 null을 반환한다.")
+            void peek_returns_null_when_empty() {
+                Integer result = queue.peek();
+
+                assertThat(queue.size()).isZero();
+                assertThat(queue.isEmpty()).isTrue();
+                assertThat(result).isNull();
+            }
+
+            @Test
+            @DisplayName("요소가 있는 큐는 첫 요소를 반환한다.")
+            void peek_returns_front_element() {
+                queue.enqueue(1);
+                queue.enqueue(2);
+                queue.enqueue(3);
+
+                int peekResult = queue.peek();
+
+                assertThat(peekResult).isEqualTo(1);
+                assertThat(queue.size()).isEqualTo(3);
+            }
+
+            @Test
+            @DisplayName("null인 요소를 반환할 수 있다.")
+            void peek_returns_null_element() {
+                queue.enqueue(null);
+
+                Integer peekResult = queue.peek();
+
+                assertThat(queue.size()).isEqualTo(1);
+                assertThat(queue.isEmpty()).isFalse();
+                assertThat(peekResult).isNull();
+            }
+
+            @Test
+            @DisplayName("여러번 peek()을 해도 같은 데이터를 반환한다.")
+            void peek_multiple_time_returns_same_element() {
+                queue.enqueue(1);
+                queue.enqueue(2);
+                queue.enqueue(3);
+
+                assertThat(queue.peek()).isEqualTo(1);
+                assertThat(queue.peek()).isEqualTo(1);
+                assertThat(queue.peek()).isEqualTo(1);
+            }
+
+            @Test
+            @DisplayName("peek 후 큐가 변경되지 않는다.")
+            void peek_does_not_modify_queue() {
+                queue.enqueue(1);
+                queue.enqueue(2);
+                queue.enqueue(3);
+
+                assertThat(queue.peek()).isEqualTo(1);
+                assertThat(queue.size()).isEqualTo(3);
+                assertThat(queue.isEmpty()).isFalse();
+            }
         }
 
         @Nested
