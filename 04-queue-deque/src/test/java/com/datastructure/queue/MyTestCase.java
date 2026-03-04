@@ -1,6 +1,7 @@
 package com.datastructure.queue;
 
 import com.datastructure.queue.oop.Queue;
+import com.datastructure.queue.pop.ArrayDeque;
 import com.datastructure.queue.pop.ArrayQueue;
 import com.datastructure.queue.pop.CircularQueue;
 import com.datastructure.queue.pop.LinkedListQueue;
@@ -1619,10 +1620,22 @@ public class MyTestCase {
     @DisplayName("배열 기반 덱")
     class ArrayDequeTest {
 
+        ArrayDeque<Integer> deque;
+
+        @BeforeEach
+        void setup() {
+            deque = new ArrayDeque<>();
+        }
+
         @Nested
         @DisplayName("배열 기반 덱 생성 테스트")
         class CreateTest {
-
+            @Test
+            @DisplayName("덱을 생성할 수 있다.")
+            void create_empty_deque() {
+                assertThat(deque.isEmpty()).isTrue();
+                assertThat(deque.size()).isZero();
+            }
         }
 
         @Nested
