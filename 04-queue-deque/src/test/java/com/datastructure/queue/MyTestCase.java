@@ -1453,24 +1453,165 @@ public class MyTestCase {
         @DisplayName("front 메서드 테스트")
         class FrontTest {
 
+            @Test
+            @DisplayName("빈 큐에 front 시 null을 반환한다.")
+            void front_returns_null_when_empty() {
+                Integer frontResult = queue.front();
+
+                assertThat(frontResult).isNull();
+                assertThat(queue.isEmpty()).isTrue();
+                assertThat(queue.size()).isZero();
+            }
+
+            @Test
+            @DisplayName("요소가 있는 큐는 첫 요소를 반환한다.")
+            void front_returns_front_element() {
+                queue.enqueue(1);
+                queue.enqueue(2);
+                queue.enqueue(3);
+
+                int frontResult = queue.front();
+
+                assertThat(frontResult).isEqualTo(1);
+                assertThat(queue.size()).isEqualTo(3);
+            }
+
+            @Test
+            @DisplayName("null인 요소를 반환할 수 있다.")
+            void front_returns_null_element() {
+                queue.enqueue(null);
+
+                Integer frontResult = queue.front();
+
+                assertThat(frontResult).isNull();
+                assertThat(queue.size()).isEqualTo(1);
+                assertThat(queue.isEmpty()).isFalse();
+            }
+
+            @Test
+            @DisplayName("여러번 front()을 해도 같은 데이터를 반환한다.")
+            void front_multiple_times_returns_same_element() {
+                queue.enqueue(1);
+                queue.enqueue(2);
+                queue.enqueue(3);
+
+                assertThat(queue.front()).isEqualTo(1);
+                assertThat(queue.front()).isEqualTo(1);
+                assertThat(queue.front()).isEqualTo(1);
+            }
+
+            @Test
+            @DisplayName("front 후 큐가 변경되지 않는다.")
+            void front_does_not_modify_queue() {
+                queue.enqueue(1);
+                queue.enqueue(2);
+                queue.enqueue(3);
+
+                assertThat(queue.front()).isEqualTo(1);
+                assertThat(queue.size()).isEqualTo(3);
+                assertThat(queue.isEmpty()).isFalse();
+            }
         }
 
         @Nested
         @DisplayName("isEmpty 메서드 테스트")
         class IsEmptyTest {
 
+            @Test
+            @DisplayName("빈 큐는 True를 반환한다.")
+            void isEmpty_returns_true_when_empty() {
+                assertThat(queue.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("요소가 있는 큐는 False를 반환한다.")
+            void isEmpty_returns_false_when_not_empty() {
+                queue.enqueue(1);
+
+                assertThat(queue.isEmpty()).isFalse();
+            }
         }
 
         @Nested
         @DisplayName("size 메서드 테스트")
         class SizeTest {
+            @Test
+            @DisplayName("빈 큐는 0을 반환한다.")
+            void size_returns_zero_when_empty() {
+                assertThat(queue.size()).isZero();
+            }
 
+            @Test
+            @DisplayName("enqueue 후 size가 증가한다.")
+            void size_increase_after_enqueue() {
+                queue.enqueue(1);
+
+                assertThat(queue.size()).isEqualTo(1);
+            }
+
+            @Test
+            @DisplayName("dequeue 후 size가 감소한다.")
+            void size_decreases_after_dequeue() {
+                queue.enqueue(1);
+
+                assertThat(queue.size()).isEqualTo(1);
+
+                queue.dequeue();
+
+                assertThat(queue.size()).isZero();
+            }
+
+            @Test
+            @DisplayName("요소가 있는 큐는 요소의 갯수를 반환한다.")
+            void size_returns_number_of_elements() {
+                queue.enqueue(1);
+                queue.enqueue(2);
+                queue.enqueue(3);
+
+                assertThat(queue.size()).isEqualTo(3);
+            }
         }
 
         @Nested
         @DisplayName("clear 메서드 테스트")
         class ClearTest {
+            @Test
+            @DisplayName("빈 큐에 clear 시 변화가 없다.")
+            void clear_empty_queue_remains_empty() {
+                queue.clear();
 
+                assertThat(queue.size()).isZero();
+                assertThat(queue.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("요소가 있는 큐가 clear 시 빈 큐가 된다.")
+            void clear_removes_all_elements() {
+
+                queue.enqueue(1);
+
+                queue.clear();
+
+                assertThat(queue.size()).isZero();
+                assertThat(queue.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("clear 후 다시 요소를 추가할 수 있다.")
+            void clear_allows_enqueue_after_clear() {
+
+                queue.enqueue(1);
+
+                queue.clear();
+
+                assertThat(queue.size()).isZero();
+                assertThat(queue.isEmpty()).isTrue();
+
+                queue.enqueue(1);
+
+                assertThat(queue.size()).isEqualTo(1);
+                assertThat(queue.isEmpty()).isFalse();
+            }
         }
     }
 
