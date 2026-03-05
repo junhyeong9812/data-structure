@@ -1823,7 +1823,65 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("removeLast 메서드 테스트")
-        class RemoveLastTest {}
+        class RemoveLastTest {
+
+            @Test
+            @DisplayName("빈 덱에 removeLast 시 예외를 발생시킨다.")
+            void removeLast_throws_exception_when_empty() {
+                assertThatThrownBy(() -> deque.removeLast())
+                        .isInstanceOf(NoSuchElementException.class);
+            }
+
+            @Test
+            @DisplayName("요소가 있는 덱의 마지막 요소가 삭제된다.")
+            void removeLast_removes_last_element() {
+                deque.addLast(1);
+                deque.addLast(2);
+                deque.addLast(3);
+
+                int result = deque.removeLast();
+
+                assertThat(result).isEqualTo(3);
+                assertThat(deque.size()).isEqualTo(2);
+            }
+
+            @Test
+            @DisplayName("null 요소가 삭제된다.")
+            void removeLast_remove_null_element() {
+                deque.addLast(null);
+
+                Integer result = deque.removeLast();
+
+                assertThat(result).isNull();
+                assertThat(deque.isEmpty()).isTrue();
+                assertThat(deque.size()).isZero();
+            }
+
+            @Test
+            @DisplayName("removeLast 시 size가 감소한다.")
+            void removeLast_decreases_size() {
+                deque.addLast(1);
+                deque.addLast(2);
+                deque.addLast(3);
+                assertThat(deque.size()).isEqualTo(3);
+
+                deque.removeLast();
+
+                assertThat(deque.size()).isEqualTo(2);
+            }
+
+            @Test
+            @DisplayName("여러 요소를 삭제하면 뒤부터 순차적으로 삭제된다.")
+            void removeLast_multiple_elements_in_reverses_order() {
+                deque.addLast(1);
+                deque.addLast(2);
+                deque.addLast(3);
+
+                assertThat(deque.removeLast()).isEqualTo(3);
+                assertThat(deque.removeLast()).isEqualTo(2);
+                assertThat(deque.removeLast()).isEqualTo(1);
+            }
+        }
 
         @Nested
         @DisplayName("peekFirst 메서드 테스트")
