@@ -1640,7 +1640,65 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("addFirst 메서드 테스트")
-        class AddFirstTest {}
+        class AddFirstTest {
+
+            @Test
+            @DisplayName("빈 덱에 요소를 추가할 수 있다.")
+            void addFirst_to_empty_deque() {
+
+                deque.addFirst(1);
+
+                assertThat(deque.size()).isEqualTo(1);
+                assertThat(deque.isEmpty()).isFalse();
+            }
+
+            @Test
+            @DisplayName("요소가 있는 덱의 앞에 요소를 추가할 수 있다.")
+            void addFirst_to_non_empty_deque() {
+
+                deque.addFirst(1);
+                deque.addFirst(2);
+                deque.addFirst(3);
+
+                assertThat(deque.size()).isEqualTo(3);
+                assertThat(deque.peekFirst()).isEqualTo(3);
+                assertThat(deque.peekLast()).isEqualTo(1);
+            }
+
+            @Test
+            @DisplayName("null인 요소를 추가할 수 있다.")
+            void addFirst_null_element() {
+
+                deque.addFirst(null);
+
+                assertThat(deque.size()).isEqualTo(1);
+                assertThat(deque.isEmpty()).isFalse();
+                assertThat(deque.peekFirst()).isNull();
+            }
+
+            @Test
+            @DisplayName("addFirst 후 size가 증가한다.")
+            void addFirst_increase_size() {
+
+                assertThat(deque.size()).isZero();
+                deque.addFirst(1);
+
+                assertThat(deque.size()).isEqualTo(1);
+            }
+
+            @Test
+            @DisplayName("여러 요소를 앞에 추가하면 역순으로 쌓인다.")
+            void addFirst_multiple_elements_in_reverse_order() {
+
+                deque.addFirst(3);
+                deque.addFirst(2);
+                deque.addFirst(1);
+
+                assertThat(deque.removeFirst()).isEqualTo(1);
+                assertThat(deque.removeFirst()).isEqualTo(2);
+                assertThat(deque.removeFirst()).isEqualTo(3);
+            }
+        }
 
         @Nested
         @DisplayName("addLast 메서드 테스트")
