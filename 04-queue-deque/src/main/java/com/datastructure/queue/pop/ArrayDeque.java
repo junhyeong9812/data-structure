@@ -2,7 +2,28 @@ package com.datastructure.queue.pop;
 
 public class ArrayDeque<E> {
 
-    public void addFirst(E element) {}
+    private int capacity;
+    private E[] elements;
+    private int front;
+    private int rear;
+
+    public ArrayDeque() {
+        this.capacity = 10;
+        this.elements = (E[])(new Object[capacity]);
+        this.front = 0;
+        this.rear = 0;
+    }
+
+    public ArrayDeque(int capacity) {
+        this.capacity = capacity;
+        this.elements = (E[])(new Object[capacity]);
+        this.front = 0;
+        this.rear = 0;
+    }
+
+    public void addFirst(E element) {
+
+    }
 
     public void addLast(E element) {}
 
@@ -19,4 +40,19 @@ public class ArrayDeque<E> {
     public boolean isEmpty() { return true; }
 
     public void clear() {}
+
+    private void growArrayDeque() {
+        if (rear >= capacity) {
+            int newCapacity = (int)(capacity * 1.5);
+            E[] newElements = (E[])(new Object[newCapacity]);
+
+            int size = rear - front;
+            System.arraycopy(elements, front, newElements, 0, size);
+
+            elements = newElements;
+            capacity = newCapacity;
+            front = 0;
+            rear = size;
+        }
+    }
 }
