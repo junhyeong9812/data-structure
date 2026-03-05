@@ -1702,7 +1702,63 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("addLast 메서드 테스트")
-        class AddLastTest {}
+        class AddLastTest {
+
+            @Test
+            @DisplayName("빈 덱에 요소를 추가할 수 있다.")
+            void addLast_to_empty_deque() {
+                deque.addLast(1);
+
+                assertThat(deque.size()).isEqualTo(1);
+                assertThat(deque.isEmpty()).isFalse();
+                assertThat(deque.peekLast()).isEqualTo(1);
+            }
+
+            @Test
+            @DisplayName("요소가 있는 덱의 뒤에 요소를 추가할 수 있다.")
+            void addLast_to_non_empty_deque() {
+                deque.addLast(1);
+                deque.addLast(2);
+                deque.addLast(3);
+
+                assertThat(deque.size()).isEqualTo(3);
+                assertThat(deque.peekLast()).isEqualTo(3);
+            }
+
+            @Test
+            @DisplayName("null인 요소를 추가할 수 있다.")
+            void addLast_null_element() {
+                deque.addLast(null);
+
+                assertThat(deque.peekLast()).isNull();
+                assertThat(deque.size()).isEqualTo(1);
+                assertThat(deque.isEmpty()).isFalse();
+            }
+
+            @Test
+            @DisplayName("addLast 후 size가 증가한다.")
+            void addLast_increases_size() {
+                deque.addLast(1);
+
+                assertThat(deque.size()).isEqualTo(1);
+
+                deque.addLast(2);
+
+                assertThat(deque.size()).isEqualTo(2);
+            }
+
+            @Test
+            @DisplayName("여러 요소를 뒤에 추가하면 순차적으로 쌓인다.")
+            void addLast_multiple_elements_in_order() {
+                deque.addLast(1);
+                deque.addLast(2);
+                deque.addLast(3);
+
+                assertThat(deque.removeLast()).isEqualTo(3);
+                assertThat(deque.removeLast()).isEqualTo(2);
+                assertThat(deque.removeLast()).isEqualTo(1);
+            }
+        }
 
         @Nested
         @DisplayName("removeFirst 메서드 테스트")
