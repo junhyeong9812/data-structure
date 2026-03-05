@@ -1940,7 +1940,54 @@ public class MyTestCase {
         @Nested
         @DisplayName("peekLast 메서드 테스트")
         class PeekLastTest {
+            @Test
+            @DisplayName("빈 덱은 null을 반환한다.")
+            void peekLast_returns_null_when_empty() {
+                Integer result = deque.peekLast();
 
+                assertThat(result).isNull();
+                assertThat(deque.size()).isZero();
+                assertThat(deque.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("요소가 존재하는 덱의 마지막 요소가 반환된다.")
+            void peekLast_returns_last_element() {
+                deque.addLast(1);
+                deque.addLast(2);
+                deque.addLast(3);
+
+                int result = deque.peekLast();
+
+                assertThat(result).isEqualTo(3);
+                assertThat(deque.size()).isEqualTo(3);
+            }
+
+            @Test
+            @DisplayName("null인 요소가 반환된다.")
+            void peekLast_returns_null_element() {
+                deque.addLast(null);
+
+                Integer result = deque.peekLast();
+
+                assertThat(result).isNull();
+                assertThat(deque.size()).isEqualTo(1);
+                assertThat(deque.isEmpty()).isFalse();
+            }
+
+            @Test
+            @DisplayName("peekLast 시 덱에 변화가 없다.")
+            void peekLast_does_not_modify_deque() {
+                deque.addLast(1);
+                deque.addLast(2);
+                deque.addLast(3);
+                assertThat(deque.size()).isEqualTo(3);
+
+                int result = deque.peekLast();
+
+                assertThat(result).isEqualTo(3);
+                assertThat(deque.size()).isEqualTo(3);
+            }
         }
     }
 
