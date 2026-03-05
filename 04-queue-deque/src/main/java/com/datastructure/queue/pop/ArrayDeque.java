@@ -55,4 +55,19 @@ public class ArrayDeque<E> {
             rear = size;
         }
     }
+
+    private void shrinkArrayDeque() {
+        int size = rear - front;
+        if (size <= capacity/4 && capacity > 10) {
+            int newCapacity = Math.max(capacity/2, 10);
+            E[] newElements = (E[])(new Object[newCapacity]);
+
+            System.arraycopy(elements, front, newElements, 0, size);
+
+            elements = newElements;
+            capacity = newCapacity;
+            front = 0;
+            rear = size;
+        }
+    }
 }
