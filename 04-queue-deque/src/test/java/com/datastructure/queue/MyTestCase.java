@@ -1,10 +1,7 @@
 package com.datastructure.queue;
 
 import com.datastructure.queue.oop.Queue;
-import com.datastructure.queue.pop.ArrayDeque;
-import com.datastructure.queue.pop.ArrayQueue;
-import com.datastructure.queue.pop.CircularQueue;
-import com.datastructure.queue.pop.LinkedListQueue;
+import com.datastructure.queue.pop.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -1995,9 +1992,18 @@ public class MyTestCase {
     @DisplayName("연결 리스트 기반 덱")
     class LinkedListDequeTest {
 
+        LinkedListDeque<Integer> deque;
+
+        @BeforeEach
+        void setup() {
+            deque = new LinkedListDeque<>();
+        }
+
         @Nested
         @DisplayName("연결 리스트 기반 덱")
-        class CreateTest {}
+        class CreateTest {
+
+        }
 
         @Nested
         @DisplayName("addFirst 메서드 테스트")
