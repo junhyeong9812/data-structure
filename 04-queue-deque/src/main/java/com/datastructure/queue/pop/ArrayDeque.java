@@ -35,7 +35,12 @@ public class ArrayDeque<E> {
     }
 
     public void addLast(E element) {
-
+        if (size >= capacity) {
+            growArrayDeque();
+        }
+        elements[rear] = element;
+        rear = (rear + 1) % capacity;
+        size++;
     }
 
     public E removeFirst() { return null; }
