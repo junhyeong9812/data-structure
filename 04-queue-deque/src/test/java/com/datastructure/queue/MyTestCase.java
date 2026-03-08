@@ -2026,7 +2026,7 @@ public class MyTestCase {
             }
 
             @Test
-            @DisplayName("요소가 있는 덱에 요소를 추가할 수 있다.")
+            @DisplayName("요소가 있는 덱의 앞에 요소를 추가할 수 있다.")
             void addFirst_to_non_empty_deque() {
                 deque.addFirst(1);
                 deque.addFirst(2);
@@ -2063,7 +2063,54 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("addLast 메서드 테스트")
-        class AddLastTest {}
+        class AddLastTest {
+
+            @Test
+            @DisplayName("빈 덱에 요소를 추가할 수 있다.")
+            void addLast_to_empty_deque() {
+                deque.addLast(1);
+
+                assertThat(deque.size()).isOne();
+                assertThat(deque.isEmpty()).isFalse();
+                assertThat(deque.peekLast()).isEqualTo(1);
+            }
+
+            @Test
+            @DisplayName("요소가 있는 덱의 뒤에 요소를 추가할 수 있다.")
+            void addLast_to_non_empty_deque() {
+                deque.addLast(1);
+                deque.addLast(2);
+                deque.addLast(3);
+
+                assertThat(deque.size()).isEqualTo(3);
+                assertThat(deque.isEmpty()).isFalse();
+                assertThat(deque.peekLast()).isEqualTo(3);
+            }
+
+            @Test
+            @DisplayName("null 요소를 추가할 수 있다.")
+            void addLast_null_element() {
+                deque.addLast(null);
+
+                assertThat(deque.size()).isOne();
+                assertThat(deque.isEmpty()).isFalse();
+                assertThat(deque.peekLast()).isNull();
+            }
+
+            @Test
+            @DisplayName("데이터가 순차적으로 추가된다.")
+            void addLast_multiple_elements_in_order() {
+                for (int i = 0; i < 5; i++) {
+                    deque.addLast(i);
+                }
+
+                assertThat(deque.removeLast()).isEqualTo(4);
+                assertThat(deque.removeLast()).isEqualTo(3);
+                assertThat(deque.removeLast()).isEqualTo(2);
+                assertThat(deque.removeLast()).isEqualTo(1);
+                assertThat(deque.removeLast()).isEqualTo(0);
+            }
+        }
 
         @Nested
         @DisplayName("removeFirst 메서드 테스트")
