@@ -1,6 +1,5 @@
 package com.datastructure.queue.pop;
 
-import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 public class ArrayDeque<E> {
@@ -24,6 +23,7 @@ public class ArrayDeque<E> {
         this.elements = (E[])(new Object[capacity]);
         this.front = 0;
         this.rear = 0;
+        this.size = 0;
     }
 
     public void addFirst(E element) {
@@ -78,11 +78,16 @@ public class ArrayDeque<E> {
         return elements[(rear - 1 + capacity) % capacity];
     }
 
-    public int size() { return 0; }
+    public int size() { return size; }
 
-    public boolean isEmpty() { return true; }
+    public boolean isEmpty() { return size==0; }
 
-    public void clear() {}
+    public void clear() {
+        this.elements = (E[])(new Object[capacity]);
+        this.front = 0;
+        this.rear = 0;
+        this.size = 0;
+    }
 
     private void growArrayDeque() {
         if (size >= capacity) {
