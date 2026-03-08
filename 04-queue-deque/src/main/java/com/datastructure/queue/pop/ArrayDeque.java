@@ -55,7 +55,16 @@ public class ArrayDeque<E> {
         return result;
     }
 
-    public E removeLast() { return null; }
+    public E removeLast() {
+        if (size == 0) {
+            throw new NoSuchElementException();
+        }
+        rear = (rear - 1 + capacity) % capacity;
+        E result = elements[rear];
+        elements[rear] = null;
+        size--;
+        return result;
+    }
 
     public E peekFirst() { return null; }
 
