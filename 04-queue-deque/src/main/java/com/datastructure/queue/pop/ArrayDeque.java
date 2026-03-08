@@ -1,6 +1,7 @@
 package com.datastructure.queue.pop;
 
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 public class ArrayDeque<E> {
 
@@ -43,7 +44,16 @@ public class ArrayDeque<E> {
         size++;
     }
 
-    public E removeFirst() { return null; }
+    public E removeFirst() {
+        if (size == 0) {
+            throw new NoSuchElementException();
+        }
+        E result = elements[front];
+        elements[front] = null;
+        front = (front + 1) % capacity;
+        size--;
+        return result;
+    }
 
     public E removeLast() { return null; }
 
