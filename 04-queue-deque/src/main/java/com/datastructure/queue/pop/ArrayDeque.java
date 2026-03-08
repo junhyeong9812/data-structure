@@ -68,9 +68,15 @@ public class ArrayDeque<E> {
         return result;
     }
 
-    public E peekFirst() { return null; }
+    public E peekFirst() {
+        if (size == 0) return null;
+        return elements[front];
+    }
 
-    public E peekLast() { return null; }
+    public E peekLast() {
+        if (size == 0) return null;
+        return elements[(rear - 1 + capacity) % capacity];
+    }
 
     public int size() { return 0; }
 
