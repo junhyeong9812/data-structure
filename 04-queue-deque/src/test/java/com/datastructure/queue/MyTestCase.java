@@ -2003,6 +2003,12 @@ public class MyTestCase {
         @DisplayName("연결 리스트 기반 덱")
         class CreateTest {
 
+            @Test
+            @DisplayName("생성 시 사이즈가 0이며 isEmpty는 true이다.")
+            void create_deque_size_is_zero_and_isEmpty_is_true() {
+                assertThat(deque.size()).isZero();
+                assertThat(deque.isEmpty()).isTrue();
+            }
         }
 
         @Nested
