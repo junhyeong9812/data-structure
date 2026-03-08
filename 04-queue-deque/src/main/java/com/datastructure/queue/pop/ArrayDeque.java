@@ -52,6 +52,7 @@ public class ArrayDeque<E> {
         elements[front] = null;
         front = (front + 1) % capacity;
         size--;
+        shrinkArrayDeque();
         return result;
     }
 
@@ -63,6 +64,7 @@ public class ArrayDeque<E> {
         E result = elements[rear];
         elements[rear] = null;
         size--;
+        shrinkArrayDeque();
         return result;
     }
 
