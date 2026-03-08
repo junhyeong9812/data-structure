@@ -93,12 +93,13 @@ public class ArrayDeque<E> {
     }
 
     private void shrinkArrayDeque() {
-        int size = rear - front;
         if (size <= capacity/4 && capacity > 10) {
             int newCapacity = Math.max(capacity/2, 10);
             E[] newElements = (E[])(new Object[newCapacity]);
 
-            System.arraycopy(elements, front, newElements, 0, size);
+            for (int i = 0; i < size; i++) {
+                newElements[i] = elements[(front + i) % capacity];
+            }
 
             elements = newElements;
             capacity = newCapacity;
