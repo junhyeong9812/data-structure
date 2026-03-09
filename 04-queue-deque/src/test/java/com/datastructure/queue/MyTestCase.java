@@ -2177,6 +2177,63 @@ public class MyTestCase {
         @Nested
         @DisplayName("removeLast 메서드 테스트")
         class RemoveLastTest {
+
+            @Test
+            @DisplayName("빈 덱에 removeLast 시 예외가 발생한다.")
+            void removeLast_throws_exception_when_empty() {
+                assertThatThrownBy(() -> deque.removeLast())
+                        .isInstanceOf(NoSuchElementException.class);
+            }
+
+            @Test
+            @DisplayName("요소가 있는 덱의 마지막 요소가 삭제된다.")
+            void removeLast_removes_last_element() {
+                deque.addLast(1);
+                deque.addLast(2);
+                deque.addLast(3);
+
+                int removed = deque.removeLast();
+
+                assertThat(removed).isEqualTo(3);
+                assertThat(deque.size()).isEqualTo(2);
+            }
+
+            @Test
+            @DisplayName("null인 요소가 제거된다.")
+            void removeLast_removes_null_element() {
+                deque.addLast(null);
+
+                Integer removed = deque.removeLast();
+
+                assertThat(removed).isNull();
+                assertThat(deque.size()).isZero();
+                assertThat(deque.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("removeLast 시 사이즈가 감소한다.")
+            void removeLast_decreases_size() {
+                for (int i = 0; i < 3; i++) {
+                    deque.addLast(i);
+                }
+                assertThat(deque.size()).isEqualTo(3);
+
+                deque.removeLast();
+
+                assertThat(deque.size()).isEqualTo(2);
+            }
+
+            @Test
+            @DisplayName("마지막 데이터부터 순차적으로 삭제된다.")
+            void removeLast_multiple_elements_in_reverse_order() {
+                for (int i = 0; i < 3; i++) {
+                    deque.addLast(i);
+                }
+
+                assertThat(deque.removeLast()).isEqualTo(2);
+                assertThat(deque.removeLast()).isEqualTo(1);
+                assertThat(deque.removeLast()).isEqualTo(0);
+            }
         }
 
         @Nested
