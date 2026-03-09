@@ -2114,19 +2114,78 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("removeFirst 메서드 테스트")
-        class removeFirstTest {}
+        class RemoveFirstTest {
+
+            @Test
+            @DisplayName("빈 덱에 removeFirst 시 예외가 발생한다.")
+            void removeFirst_throws_exception_when_empty() {
+                assertThatThrownBy(() -> deque.removeFirst())
+                        .isInstanceOf(NoSuchElementException.class);
+            }
+
+            @Test
+            @DisplayName("요소가 있는 덱에 removeFirst 시 첫번째 요소가 삭제된다.")
+            void removeFirst_removes_front_element() {
+                deque.addFirst(1);
+                deque.addFirst(2);
+                deque.addFirst(3);
+
+                int removed = deque.removeFirst();
+
+                assertThat(removed).isEqualTo(3);
+                assertThat(deque.size()).isEqualTo(2);
+            }
+
+            @Test
+            @DisplayName("null 요소가 제거된다.")
+            void removeFirst_removes_null_element() {
+                deque.addFirst(null);
+
+                Integer removed =deque.removeFirst();
+
+                assertThat(removed).isNull();
+                assertThat(deque.size()).isZero();
+                assertThat(deque.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("removeFirst 시 사이즈가 감소한다.")
+            void removeFirst_decreases_size() {
+                for (int i = 0; i < 3; i++) {
+                    deque.addFirst(i);
+                }
+                assertThat(deque.size()).isEqualTo(3);
+
+                deque.removeFirst();
+
+                assertThat(deque.size()).isEqualTo(2);
+            }
+
+            @Test
+            @DisplayName("데이터가 처음부터 순차적으로 삭제된다.")
+            void removeFirst_multiple_elements_in_order() {
+                for (int i = 0; i < 3; i++) {
+                    deque.addFirst(i);
+                }
+
+                assertThat(deque.removeFirst()).isEqualTo(2);
+                assertThat(deque.removeFirst()).isEqualTo(1);
+                assertThat(deque.removeFirst()).isEqualTo(0);
+            }
+        }
 
         @Nested
         @DisplayName("removeLast 메서드 테스트")
-        class removeLastTest {}
+        class RemoveLastTest {
+        }
 
         @Nested
         @DisplayName("peekFirst 메서드 테스트")
-        class peekFirstTest {}
+        class PeekFirstTest {}
 
         @Nested
         @DisplayName("peekLast 메서드 테스트")
-        class peekLastTest {}
+        class PeekLastTest {}
     }
 
 
