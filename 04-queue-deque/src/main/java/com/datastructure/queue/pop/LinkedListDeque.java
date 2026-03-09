@@ -18,7 +18,18 @@ public class LinkedListDeque<E> {
         public void setNext(Node<E> next) { this.next = next; }
     }
 
-    public void addFirst(E element) {}
+    public void addFirst(E element) {
+        Node<E> newElement = new Node<>(element);
+        if (size == 0) {
+            front = newElement;
+            rear = newElement;
+        } else {
+            newElement.setNext(front);
+            front.setPrev(newElement);
+            front = newElement;
+        }
+        size++;
+    }
 
     public void addLast(E element) {}
 
