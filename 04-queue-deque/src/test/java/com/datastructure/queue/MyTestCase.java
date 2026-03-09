@@ -2238,7 +2238,55 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("peekFirst 메서드 테스트")
-        class PeekFirstTest {}
+        class PeekFirstTest {
+
+            @Test
+            @DisplayName("빈 덱은 null을 반환한다.")
+            void peekFirst_returns_null_when_empty() {
+                Integer target = deque.peekFirst();
+
+                assertThat(target).isNull();
+                assertThat(deque.size()).isZero();
+                assertThat(deque.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("요소가 있는 덱의 첫번째 요소를 반환한다.")
+            void peekFirst_returns_front_element() {
+                deque.addFirst(1);
+                deque.addFirst(2);
+                deque.addFirst(3);
+
+                int target = deque.peekFirst();
+
+                assertThat(target).isEqualTo(3);
+                assertThat(deque.size()).isEqualTo(3);
+            }
+
+            @Test
+            @DisplayName("null인 요소를 반환한다.")
+            void peekFirst_returns_null_element() {
+                deque.addFirst(null);
+
+                Integer target = deque.peekFirst();
+
+                assertThat(target).isNull();
+                assertThat(deque.size()).isEqualTo(1);
+                assertThat(deque.isEmpty()).isFalse();
+            }
+
+            @Test
+            @DisplayName("여러번 peekFirst를 해도 덱은 변하지 않는다.")
+            void peekFirst_does_not_modify_deque() {
+                for (int i = 0; i < 5; i++) {
+                    deque.addFirst(i);
+                }
+
+                assertThat(deque.peekFirst()).isEqualTo(4);
+                assertThat(deque.peekFirst()).isEqualTo(4);
+                assertThat(deque.peekFirst()).isEqualTo(4);
+            }
+        }
 
         @Nested
         @DisplayName("peekLast 메서드 테스트")
