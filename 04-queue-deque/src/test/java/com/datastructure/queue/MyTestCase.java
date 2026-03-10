@@ -2368,7 +2368,7 @@ public class MyTestCase {
                 int windowsLength = 3;
 
                 assertThatThrownBy(() -> queueProblems.slidingWindow(nums, windowsLength))
-                        .isInstanceOf(Exception.class);
+                        .isInstanceOf(IllegalArgumentException.class);
             }
 
             @Test
@@ -2409,7 +2409,7 @@ public class MyTestCase {
                 int[] nums = {1, 3, -1};
                 int windowsLength = 4;
                 assertThatThrownBy(() -> queueProblems.slidingWindow(nums, windowsLength))
-                        .isInstanceOf(Exception.class);
+                        .isInstanceOf(IllegalArgumentException.class);
             }
         }
 
