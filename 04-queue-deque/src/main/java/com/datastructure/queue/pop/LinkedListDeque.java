@@ -87,9 +87,13 @@ public class LinkedListDeque<E> {
         return rear.element;
     }
 
-    public int size() { return 0; }
+    public int size() { return size; }
 
-    public boolean isEmpty() { return true; }
+    public boolean isEmpty() { return size == 0; }
 
-    public void clear() {}
+    public void clear() {
+        front = null;
+        rear = null;
+        size = 0;
+    }
 }
