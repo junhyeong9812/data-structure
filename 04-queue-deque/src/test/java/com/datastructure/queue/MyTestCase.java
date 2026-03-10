@@ -2346,12 +2346,79 @@ public class MyTestCase {
     class ApplicationTest {
         @Nested
         @DisplayName("슬라이딩 윈도우 최댓값")
-        class SlidingWindowMaxTest {}
+        class SlidingWindowMaxTest {
+
+            QueueProblems queueProblems = new QueueProblems();
+
+            @Test
+            @DisplayName("배열과 최댓값이 들어오면 정상적으로 결과 배열이 반환된다.")
+            void maxSlidingWindow_returns_correct_result() {
+                int[] nums = {1, 3, -1, -3, 5, 3, 6, 7};
+                int windowsLength = 3;
+                int[] result = queueProblems.slidingWindow(nums, windowsLength);
+
+                assertThat(result.length).isEqualTo(6);
+                assertThat(result).containsExactly(3, 3, 5, 5, 6, 7);
+            }
+
+            @Test
+            @DisplayName("빈 배열일 경우 예외를 발생시킨다.")
+            void maxSlidingWindow_throws_exception_when_empty() {
+                int[] nums = {};
+                int windowsLength = 3;
+
+                assertThatThrownBy(() -> queueProblems.slidingWindow(nums, windowsLength))
+                        .isInstanceOf(Exception.class);
+            }
+
+            @Test
+            @DisplayName("windowsLength가 배열의 길이와 같은 경우 최댓값 하나를 반환한다.")
+            void maxSlidingWindow_k_equals_array_length() {
+                int[] nums = {1, 3, -1, -3, 5, 3, 6, 7};
+                int windowsLength = 8;
+                int[] result = queueProblems.slidingWindow(nums, windowsLength);
+
+                assertThat(result[0]).isEqualTo(7);
+            }
+
+            @Test
+            @DisplayName("windowsLength가 1인 경우 원본 배열을 반환한다.")
+            void maxSlidingWindow_k_is_one() {
+                int[] nums = {1, 3, -1, -3, 5, 3, 6, 7};
+                int windowsLength = 1;
+                int[] result = queueProblems.slidingWindow(nums, windowsLength);
+
+                assertThat(result).containsExactly(1, 3, -1, -3, 5, 3, 6, 7);
+            }
+
+            @Test
+            @DisplayName("모든 요소가 같은 경우 동일한 값의 배열을 반환한다.")
+            void maxSlidingWindow_all_elements_same() {
+                int[] nums = {3, 3, 3, 3, 3, 3, 3, 3};
+                int windowsLength = 3;
+                int[] result = queueProblems.slidingWindow(nums, windowsLength);
+
+                for (int i = 0; i < 6;i++) {
+                    assertThat(result[i]).isEqualTo(3);
+                }
+            }
+
+            @Test
+            @DisplayName("windowsLength가 배열 길이보다 클 때 예외를 발생시킨다.")
+            void maxSlidingWindow_k_exceeds_array_length() {
+                int[] nums = {1, 3, -1};
+                int windowsLength = 4;
+                assertThatThrownBy(() -> queueProblems.slidingWindow(nums, windowsLength))
+                        .isInstanceOf(Exception.class);
+            }
+        }
 
         @Nested
         @DisplayName("최근 요청 카운터")
         class RecentRequestCounterTest {
-
+            @Test
+            @DisplayName("")
+            void test1() {}
         }
     }
 
