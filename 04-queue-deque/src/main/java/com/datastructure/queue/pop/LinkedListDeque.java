@@ -77,9 +77,15 @@ public class LinkedListDeque<E> {
         return removed;
     }
 
-    public E peekFirst() { return null; }
+    public E peekFirst() {
+        if (size == 0) return null;
+        return front.element;
+    }
 
-    public E peekLast() { return null; }
+    public E peekLast() {
+        if (size == 0) return null;
+        return rear.element;
+    }
 
     public int size() { return 0; }
 
