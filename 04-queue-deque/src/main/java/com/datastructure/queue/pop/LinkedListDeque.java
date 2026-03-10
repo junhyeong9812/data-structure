@@ -61,7 +61,21 @@ public class LinkedListDeque<E> {
         size--;
         return removed; }
 
-    public E removeLast() { return null; }
+    public E removeLast() {
+        if (size == 0) {
+            throw new NoSuchElementException();
+        }
+        E removed = rear.element;
+        if (size == 1) {
+            front = null;
+            rear = null;
+        } else {
+            rear = rear.prev;
+            rear.next = null;
+        }
+        size--;
+        return removed;
+    }
 
     public E peekFirst() { return null; }
 
