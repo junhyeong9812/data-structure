@@ -1,5 +1,7 @@
 package com.datastructure.queue.pop;
 
+import java.util.NoSuchElementException;
+
 public class LinkedListDeque<E> {
 
     private Node<E> front;
@@ -44,7 +46,20 @@ public class LinkedListDeque<E> {
         size++;
     }
 
-    public E removeFirst() { return null; }
+    public E removeFirst() {
+        if (size == 0) {
+            throw new NoSuchElementException();
+        }
+        E removed = front.element;
+        if (size == 1) {
+            front = null;
+            rear = null;
+        } else {
+            front = front.next;
+            front.prev = null;
+        }
+        size--;
+        return removed; }
 
     public E removeLast() { return null; }
 
