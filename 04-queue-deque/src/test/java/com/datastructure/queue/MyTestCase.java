@@ -2417,8 +2417,20 @@ public class MyTestCase {
         @DisplayName("최근 요청 카운터")
         class RecentRequestCounterTest {
             @Test
-            @DisplayName("")
-            void test1() {}
+            @DisplayName("요청 시간동안 들어온 요청 카운트를 반환할 수 있다.")
+            void ping_returns_count_within_time_reange() {}
+
+            @Test
+            @DisplayName("요청 시간이 0이면 예외를 발생시킨다.")
+            void ping_throws_exception_when_tiem_is_zero() {}
+
+            @Test
+            @DisplayName("시간 범위를 벗어난 오래된 요청은 카운트에서 제외된다.")
+            void ping_excludes_expired_requests() {}
+
+            @Test
+            @DisplayName("요청이 연속으로 들어와도 정상 동작한다.")
+            void ping_handles_consecutive_request() {}
         }
     }
 
