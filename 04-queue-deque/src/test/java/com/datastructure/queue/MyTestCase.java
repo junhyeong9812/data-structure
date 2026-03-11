@@ -2416,22 +2416,48 @@ public class MyTestCase {
         @Nested
         @DisplayName("최근 요청 카운터")
         class RecentRequestCounterTest {
+            RecentCounter counter;
+
+            @BeforeEach
+            void setup() {
+                counter = new RecentCounter();
+            }
+
             @Test
             @DisplayName("요청 시간동안 들어온 요청 카운트를 반환할 수 있다.")
-            void ping_returns_count_within_time_reange() {}
+            void ping_returns_count_within_time_range() {
+
+                assertThat(counter.ping(1)).isEqualTo(1);
+                assertThat(counter.ping(1000)).isEqualTo(2);
+                assertThat(counter.ping(3000)).isEqualTo(3);
+            }
 
             @Test
             @DisplayName("요청 시간이 0이면 예외를 발생시킨다.")
-            void ping_throws_exception_when_tiem_is_zero() {}
+            void ping_throws_exception_when_time_is_zero() {
+                assertThatThrownBy(() -> counter.ping(0))
+                        .isInstanceOf(Exception.class);
+            }
 
             @Test
             @DisplayName("시간 범위를 벗어난 오래된 요청은 카운트에서 제외된다.")
-            void ping_excludes_expired_requests() {}
+            void ping_excludes_expired_requests() {
+                assertThat(counter.ping(1)).isEqualTo(1);
+                assertThat(counter.ping(1000)).isEqualTo(2);
+                assertThat(counter.ping(3000)).isEqualTo(3);
+                assertThat(counter.ping(3001)).isEqualTo(4);
+
+
+                assertThat(counter.ping(3002)).isEqualTo(4);
+            }
 
             @Test
             @DisplayName("요청이 연속으로 들어와도 정상 동작한다.")
-            void ping_handles_consecutive_request() {}
+            void ping_handles_consecutive_request() {
+                assertThat(counter.ping(1)).isEqualTo(1);
+                assertThat(counter.ping(1)).isEqualTo(2);
+                assertThat(counter.ping(1)).isEqualTo(3);
+            }
         }
     }
-
 }
