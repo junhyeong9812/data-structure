@@ -2433,10 +2433,12 @@ public class MyTestCase {
             }
 
             @Test
-            @DisplayName("요청 시간이 0이면 예외를 발생시킨다.")
+            @DisplayName("요청 시간이 0이거나 음수이면 예외를 발생시킨다.")
             void ping_throws_exception_when_time_is_zero() {
                 assertThatThrownBy(() -> counter.ping(0))
-                        .isInstanceOf(Exception.class);
+                        .isInstanceOf(IllegalArgumentException.class);
+                assertThatThrownBy(() -> counter.ping(-1))
+                        .isInstanceOf(IllegalArgumentException.class);
             }
 
             @Test
