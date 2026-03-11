@@ -22,7 +22,17 @@ public class LinkedQueueImpl<E> implements Queue<E> {
     }
 
     @Override
-    public void enqueue(E element) {}
+    public void enqueue(E element) {
+        Node<E> newNode = new Node<>(element);
+        if (size == 0) {
+            front = newNode;
+            rear = newNode;
+        } else {
+            rear.next = newNode;
+            rear = newNode;
+        }
+        size++;
+    }
 
     @Override
     public boolean offer(E element) {
