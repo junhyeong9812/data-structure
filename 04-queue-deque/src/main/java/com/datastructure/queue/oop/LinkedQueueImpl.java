@@ -1,5 +1,7 @@
 package com.datastructure.queue.oop;
 
+import java.util.NoSuchElementException;
+
 public class LinkedQueueImpl<E> implements Queue<E> {
 
     private Node<E> front;
@@ -50,7 +52,13 @@ public class LinkedQueueImpl<E> implements Queue<E> {
 
     @Override
     public E dequeue() {
-        return null;
+        if (size == 0) {
+            throw new NoSuchElementException("빈 큐에서는 요소를 제거할 수 없습니다.");
+        }
+        E removed = front.element;
+        front = front.next;
+        size--;
+        return removed;
     }
 
     @Override
