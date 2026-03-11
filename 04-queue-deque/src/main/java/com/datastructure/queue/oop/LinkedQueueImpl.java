@@ -36,8 +36,18 @@ public class LinkedQueueImpl<E> implements Queue<E> {
 
     @Override
     public boolean offer(E element) {
+        Node<E> newNode = new Node<>(element);
+        if ( size == 0 ) {
+            front = newNode;
+            rear = newNode;
+        } else {
+            rear.next = newNode;
+            rear = newNode;
+        }
+        size++;
         return true;
     }
+
     @Override
     public E dequeue() {
         return null;
