@@ -55,7 +55,17 @@ public class ArrayQueueImpl<E> implements Queue<E> {
     }
 
     @Override
-    public E poll() {return null;}
+    public E poll() {
+        if (size == 0) {
+            return null;
+        }
+        E removed = elements[front];
+        elements[front] = null;
+        front++;
+        size--;
+        shrinkArrayQueue();
+        return removed;
+    }
 
     @Override
     public E peek() {return null;}
