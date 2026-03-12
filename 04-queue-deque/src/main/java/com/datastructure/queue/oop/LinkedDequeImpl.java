@@ -27,7 +27,17 @@ public class LinkedDequeImpl<E> implements Deque<E> {
     }
 
     @Override
-    public void enqueue(E element)  {}
+    public void enqueue(E element)  {
+        Node<E> newNode = new Node<>(element);
+        if (size == 0) {
+            front = newNode;
+            rear = newNode;
+        } else {
+            rear.next = newNode;
+            rear = newNode;
+        }
+        size++;
+    }
 
     @Override
     public void addFirst(E element) {}
