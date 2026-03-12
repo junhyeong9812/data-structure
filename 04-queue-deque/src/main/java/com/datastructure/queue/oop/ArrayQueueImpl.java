@@ -23,7 +23,12 @@ public class ArrayQueueImpl<E> implements Queue<E> {
     }
 
     @Override
-    public void enqueue(E element) {}
+    public void enqueue(E element) {
+        growArrayQueue();
+        elements[rear] = element;
+        rear++;
+        size++;
+    }
 
     @Override
     public boolean offer(E element) {
@@ -51,4 +56,19 @@ public class ArrayQueueImpl<E> implements Queue<E> {
 
     @Override
     public void clear() {}
+
+    private void growArrayQueue() {
+        if (rear >= capacity) {
+            int newCapacity = (int)(capacity * 1.5);
+
+            E[] newElements = (E[])(new Object[newCapacity]);
+
+            System.arraycopy(elements, front, newElements, 0, size);
+
+            elements = newElements;
+            capacity = newCapacity;
+            front = 0;
+            rear = size;
+        }
+    }
 }
