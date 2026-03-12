@@ -1,5 +1,7 @@
 package com.datastructure.queue.oop;
 
+import java.util.NoSuchElementException;
+
 public class ArrayQueueImpl<E> implements Queue<E> {
 
     private int capacity;
@@ -38,9 +40,18 @@ public class ArrayQueueImpl<E> implements Queue<E> {
         size++;
         return true;
     }
+
     @Override
     public E dequeue() {
-        return null;
+        if (size == 0) {
+            throw new NoSuchElementException("큐의 데이터가 비어있습니다.");
+        }
+        E removed = elements[front];
+        elements[front] = null;
+        front++;
+        size--;
+        shrinkArrayQueue();
+        return removed;
     }
 
     @Override
@@ -65,6 +76,20 @@ public class ArrayQueueImpl<E> implements Queue<E> {
         if (rear >= capacity) {
             int newCapacity = (int)(capacity * 1.5);
 
+            E[] newElements = (E[])(new Object[newCapacity]);
+
+            System.arraycopy(elements, front, newElements, 0, size);
+
+            elements = newElements;
+            capacity = newCapacity;
+            front = 0;
+            rear = size;
+        }
+    }
+
+    private void shrinkArrayQueue() {
+        if (size <= capacity/4 && capacity > 10) {
+            int newCapacity = Math.max(capacity/2, 10);
             E[] newElements = (E[])(new Object[newCapacity]);
 
             System.arraycopy(elements, front, newElements, 0, size);
