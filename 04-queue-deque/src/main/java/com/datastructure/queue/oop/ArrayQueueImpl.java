@@ -68,10 +68,16 @@ public class ArrayQueueImpl<E> implements Queue<E> {
     }
 
     @Override
-    public E peek() {return null;}
+    public E peek() {
+        if (size == 0) return null;
+        return elements[front];
+    }
 
     @Override
-    public E front() {return null;}
+    public E front() {
+        if (size == 0) return null;
+        return elements[front];
+    }
 
     @Override
     public boolean isEmpty() {return true;}
