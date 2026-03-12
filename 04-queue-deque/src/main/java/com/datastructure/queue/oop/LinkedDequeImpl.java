@@ -59,7 +59,10 @@ public class LinkedDequeImpl<E> implements Deque<E> {
     }
 
     @Override
-    public boolean offer(E element) {return true;}
+    public boolean offer(E element) {
+        enqueue(element);
+        return true;
+    }
 
     @Override
     public E dequeue()  {return null;}
