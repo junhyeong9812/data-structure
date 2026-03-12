@@ -10,6 +10,7 @@ public class ArrayQueueImpl<E> implements Queue<E> {
     private int front;
     private int rear;
 
+    @SuppressWarnings("unchecked")
     public ArrayQueueImpl() {
         this.capacity = 10;
         this.elements = (E[])(new Object[capacity]);
@@ -17,6 +18,7 @@ public class ArrayQueueImpl<E> implements Queue<E> {
         this.rear = 0;
     }
 
+    @SuppressWarnings("unchecked")
     public ArrayQueueImpl(int capacity) {
         this.capacity = capacity;
         this.elements = (E[])(new Object[capacity]);
@@ -80,14 +82,21 @@ public class ArrayQueueImpl<E> implements Queue<E> {
     }
 
     @Override
-    public boolean isEmpty() {return true;}
+    public boolean isEmpty() {return size==0;}
 
     @Override
-    public int size() {return 0;}
+    public int size() {return size;}
 
     @Override
-    public void clear() {}
+    @SuppressWarnings("unchecked")
+    public void clear() {
+        this.elements = (E[])(new Object[capacity]);
+        this.front = 0;
+        this.rear = 0;
+        this.size = 0;
+    }
 
+    @SuppressWarnings("unchecked")
     private void growArrayQueue() {
         if (rear >= capacity) {
             int newCapacity = (int)(capacity * 1.5);
@@ -103,6 +112,7 @@ public class ArrayQueueImpl<E> implements Queue<E> {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void shrinkArrayQueue() {
         if (size <= capacity/4 && capacity > 10) {
             int newCapacity = Math.max(capacity/2, 10);
