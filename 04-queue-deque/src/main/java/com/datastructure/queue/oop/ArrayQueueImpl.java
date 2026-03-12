@@ -32,6 +32,10 @@ public class ArrayQueueImpl<E> implements Queue<E> {
 
     @Override
     public boolean offer(E element) {
+        growArrayQueue();
+        elements[rear] = element;
+        rear++;
+        size++;
         return true;
     }
     @Override
