@@ -26,4 +26,48 @@ public class LinkedDequeImpl<E> implements Deque<E> {
         public void setNext(Node<E> next) {this.next = next; }
     }
 
+    @Override
+    public void enqueue(E element)  {}
+
+    @Override
+    public void addFirst(E element) {}
+
+    @Override
+    public void addLast(E element) {}
+
+    @Override
+    public boolean offer(E element) {return true;}
+
+    @Override
+    public E dequeue()  {return null;}
+
+    @Override
+    public E removeFirst() {return null;}
+
+    @Override
+    public E removeLast() {return null;}
+
+    @Override
+    public E poll() {return null;}
+
+    @Override
+    public E peek() {return null;}
+
+    @Override
+    public E peekFirst() {return null;}
+
+    @Override
+    public E peekLast() {return null;}
+
+    @Override
+    public E front() {return null;}
+
+    @Override
+    public boolean isEmpty() {return true;}
+
+    @Override
+    public int size() {return 0;}
+
+    @Override
+    public void clear() {}
 }
