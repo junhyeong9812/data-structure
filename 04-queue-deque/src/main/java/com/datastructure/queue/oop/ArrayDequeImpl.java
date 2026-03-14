@@ -73,5 +73,26 @@ public class ArrayDequeImpl<E> implements Deque<E> {
     @Override
     public void clear() {}
 
-    
+    @SuppressWarnings("unchecked")
+    private void growArrayDeque() {
+        int newCapacity = (int)(capacity * 1.5);
+        E[] newElements = (E[])(new Object[newCapacity]);
+
+//        if (front + size <= capacity) {
+//            System.arraycopy(elements, front, newElements, 0, size);
+//        } else {
+//            int firstPart = capacity - front;
+//            System.arraycopy(elements, front, newElements, 0, firstPart);
+//            System.arraycopy(elements, 0, newElements, firstPart, size - firstPart);
+//        }
+
+        for (int i = 0; i < size; i++) {
+            newElements[i] = elements[(front + i)%capacity];
+        }
+
+        capacity = newCapacity;
+        elements = newElements;
+        front = 0;
+        rear = size;
+    }
 }
