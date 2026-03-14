@@ -1,5 +1,7 @@
 package com.datastructure.queue.oop;
 
+import java.util.NoSuchElementException;
+
 public class ArrayDequeImpl<E> implements Deque<E> {
 
     private int capacity;
@@ -59,11 +61,15 @@ public class ArrayDequeImpl<E> implements Deque<E> {
 
     @Override
     public E dequeue()  {
+        if ( size == 0) {
+            throw new NoSuchElementException("덱이 비었습니다.");
+        }
         E removed = elements[front];
         elements[front] = null;
         front = (front + 1) % capacity;
         size--;
-        return null;
+        shrinkArrayDeque();
+        return removed;
     }
 
     @Override
