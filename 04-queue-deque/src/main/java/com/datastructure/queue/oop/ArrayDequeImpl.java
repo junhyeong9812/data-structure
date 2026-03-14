@@ -37,10 +37,19 @@ public class ArrayDequeImpl<E> implements Deque<E> {
     }
 
     @Override
-    public void addFirst(E element) {}
+    public void addFirst(E element) {
+        if( size >= capacity) {
+            growArrayDeque();
+        }
+        front = (front - 1 + capacity) % capacity;
+        elements[front] = element;
+        size++;
+    }
 
     @Override
-    public void addLast(E element) {}
+    public void addLast(E element) {
+        enqueue(element);
+    }
 
     @Override
     public boolean offer(E element) {return true;}
@@ -99,5 +108,6 @@ public class ArrayDequeImpl<E> implements Deque<E> {
         elements = newElements;
         front = 0;
         rear = size;
+
     }
 }
