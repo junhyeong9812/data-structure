@@ -58,7 +58,13 @@ public class ArrayDequeImpl<E> implements Deque<E> {
     }
 
     @Override
-    public E dequeue()  {return null;}
+    public E dequeue()  {
+        E removed = elements[front];
+        elements[front] = null;
+        front = (front + 1) % capacity;
+        size--;
+        return null;
+    }
 
     @Override
     public E removeFirst() {return null;}
@@ -111,6 +117,20 @@ public class ArrayDequeImpl<E> implements Deque<E> {
         elements = newElements;
         front = 0;
         rear = size;
+    }
 
+    private void shrinkArrayDeque() {
+        if (size < capacity/4 && capacity >10) {
+            int newCapacity = capacity/2;
+            E[] newElements = (E[])(new Object[newCapacity]);
+
+            for (int i = 0; i < size; i++) {
+                newElements[i] = elements[(front + i)% capacity];
+            }
+            capacity = newCapacity;
+            elements = newElements;
+            front = 0;
+            rear = size;
+        }
     }
 }
