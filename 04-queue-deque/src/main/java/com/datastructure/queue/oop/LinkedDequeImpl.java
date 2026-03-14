@@ -138,7 +138,10 @@ public class LinkedDequeImpl<E> implements Deque<E> {
     }
 
     @Override
-    public E front() {return null;}
+    public E front() {
+        if (size == 0) return null;
+        return front.element;
+    }
 
     @Override
     public boolean isEmpty() {return true;}
