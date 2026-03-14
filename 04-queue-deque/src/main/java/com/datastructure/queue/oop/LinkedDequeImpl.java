@@ -84,10 +84,26 @@ public class LinkedDequeImpl<E> implements Deque<E> {
     }
 
     @Override
-    public E removeFirst() {return null;}
+    public E removeFirst() {
+        return dequeue();
+    }
 
     @Override
-    public E removeLast() {return null;}
+    public E removeLast() {
+        if (isEmpty()) {
+            throw new NoSuchElementException("큐가 비었어요!");
+        }
+        E removed = rear.element;
+        if (size == 1) {
+            front = null;
+            rear = null;
+        } else {
+            rear = rear.prev;
+            rear.next = null;
+        }
+        size--;
+        return removed;
+    }
 
     @Override
     public E poll() {return null;}
