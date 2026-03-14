@@ -127,13 +127,19 @@ public class ArrayDequeImpl<E> implements Deque<E> {
     }
 
     @Override
-    public boolean isEmpty() {return true;}
+    public boolean isEmpty() {return size == 0;}
 
     @Override
-    public int size() {return 0;}
+    public int size() {return size;}
 
     @Override
-    public void clear() {}
+    @SuppressWarnings("unchecked")
+    public void clear() {
+        this.elements = (E[])(new Object[capacity]);
+        this.front = 0;
+        this.rear = 0;
+        this.size = 0;
+    }
 
     @SuppressWarnings("unchecked")
     private void growArrayDeque() {
