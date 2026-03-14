@@ -1,5 +1,7 @@
 package com.datastructure.queue.oop;
 
+import java.util.NoSuchElementException;
+
 public class LinkedDequeImpl<E> implements Deque<E> {
 
     private Node<E> front;
@@ -65,7 +67,21 @@ public class LinkedDequeImpl<E> implements Deque<E> {
     }
 
     @Override
-    public E dequeue()  {return null;}
+    public E dequeue()  {
+        if (isEmpty()) {
+            throw new NoSuchElementException("큐가 비였어요");
+        }
+        E removed = front.element;
+        if (size == 1) {
+            front = null;
+            rear = null;
+        } else {
+            front = front.next;
+            front.prev = null;
+        }
+        size--;
+        return removed;
+    }
 
     @Override
     public E removeFirst() {return null;}
