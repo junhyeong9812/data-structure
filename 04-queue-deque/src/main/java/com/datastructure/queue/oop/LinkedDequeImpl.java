@@ -106,7 +106,21 @@ public class LinkedDequeImpl<E> implements Deque<E> {
     }
 
     @Override
-    public E poll() {return null;}
+    public E poll() {
+        if (isEmpty()) {
+            return null;
+        }
+        E removed = front.element;
+        if (size == 1) {
+            front = null;
+            rear = null;
+        } else {
+            front = front.next;
+            front.prev = null;
+        }
+        size--;
+        return removed;
+    }
 
     @Override
     public E peek() {return null;}
