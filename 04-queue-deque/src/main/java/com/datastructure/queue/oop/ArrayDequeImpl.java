@@ -89,7 +89,17 @@ public class ArrayDequeImpl<E> implements Deque<E> {
     }
 
     @Override
-    public E poll() {return null;}
+    public E poll() {
+        if (size == 0) {
+            return null;
+        }
+        E removed = elements[front];
+        elements[front] = null;
+        front = (front + 1) % capacity;
+        size--;
+        shrinkArrayDeque();
+        return removed;
+     }
 
     @Override
     public E peek() {return null;}
