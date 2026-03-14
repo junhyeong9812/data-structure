@@ -144,11 +144,15 @@ public class LinkedDequeImpl<E> implements Deque<E> {
     }
 
     @Override
-    public boolean isEmpty() {return true;}
+    public boolean isEmpty() {return size==0;}
 
     @Override
-    public int size() {return 0;}
+    public int size() {return size;}
 
     @Override
-    public void clear() {}
+    public void clear() {
+        front = null;
+        rear = null;
+        size = 0;
+    }
 }
