@@ -102,16 +102,29 @@ public class ArrayDequeImpl<E> implements Deque<E> {
      }
 
     @Override
-    public E peek() {return null;}
+    public E peek() {
+        if (size == 0) {
+            return null;
+        }
+        return elements[front];}
 
     @Override
-    public E peekFirst() {return null;}
+    public E peekFirst() {
+        return peek();
+    }
 
     @Override
-    public E peekLast() {return null;}
+    public E peekLast() {
+        if (size == 0) {
+            return null;
+        }
+        return elements[(rear - 1 + capacity) % capacity];
+    }
 
     @Override
-    public E front() {return null;}
+    public E front() {
+        return peek();
+    }
 
     @Override
     public boolean isEmpty() {return true;}
