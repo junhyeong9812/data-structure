@@ -28,7 +28,12 @@ public class ArrayDequeImpl<E> implements Deque<E> {
 
     @Override
     public void enqueue(E element)  {
-        growArrayDeque();
+        if( size >= capacity) {
+            growArrayDeque();
+        }
+        elements[rear] = element;
+        rear = (rear + 1) % capacity;
+        size++;
     }
 
     @Override
