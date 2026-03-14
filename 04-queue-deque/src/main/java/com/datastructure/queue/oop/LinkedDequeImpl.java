@@ -123,13 +123,19 @@ public class LinkedDequeImpl<E> implements Deque<E> {
     }
 
     @Override
-    public E peek() {return null;}
+    public E peek() {
+        if (size == 0) return null;
+        return front.element;
+    }
 
     @Override
-    public E peekFirst() {return null;}
+    public E peekFirst() {return peek();}
 
     @Override
-    public E peekLast() {return null;}
+    public E peekLast() {
+        if (size == 0) return null;
+        return rear.element;
+    }
 
     @Override
     public E front() {return null;}
