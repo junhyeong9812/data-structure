@@ -73,10 +73,20 @@ public class ArrayDequeImpl<E> implements Deque<E> {
     }
 
     @Override
-    public E removeFirst() {return null;}
+    public E removeFirst() {return dequeue();}
 
     @Override
-    public E removeLast() {return null;}
+    public E removeLast() {
+        if (size == 0) {
+            throw new NoSuchElementException("덱이 비었습니다.");
+        }
+        rear = (rear - 1 + capacity) % capacity;
+        E removed = elements[rear];
+        elements[rear] = null;
+        size--;
+        shrinkArrayDeque();
+        return removed;
+    }
 
     @Override
     public E poll() {return null;}
