@@ -102,7 +102,50 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("get 메서드 테스트")
-        class GetTest {}
+        class GetTest {
+
+            @Test
+            @DisplayName("key값을 통해 value를 조회할 수 있다.")
+            void get_returns_value_by_key() {
+                hashMap.put(1, "A");
+
+                assertThat(hashMap.get(1)).isEqualTo("A");
+            }
+
+            @Test
+            @DisplayName("key값을 통해 여러번 조회 시 같은 value값을 리턴한다.")
+            void get_multiple_times_returns_same_value() {
+                hashMap.put(1, "A");
+
+                assertThat(hashMap.get(1)).isEqualTo("A");
+                assertThat(hashMap.get(1)).isEqualTo("A");
+                assertThat(hashMap.get(1)).isEqualTo("A");
+            }
+
+            @Test
+            @DisplayName("존재하지 않는 key로 조회하면 null을 반환한다.")
+            void get_returns_null_when_key_not_found() {
+                hashMap.put(1, "A");
+
+                assertThat(hashMap.get(2)).isNull();
+            }
+
+            @Test
+            @DisplayName("null key로 조회할 수 있다.")
+            void get_with_null_key() {
+                hashMap.put(null, "A");
+
+                assertThat(hashMap.get(null)).isEqualTo("A");
+            }
+
+            @Test
+            @DisplayName("값이 null인 경우 null을 반환한다.")
+            void get_returns_null_value() {
+                hashMap.put(1, null);
+
+                assertThat(hashMap.get(1)).isNull();
+            }
+        }
 
         @Nested
         @DisplayName("remove 메서드 테스트")
