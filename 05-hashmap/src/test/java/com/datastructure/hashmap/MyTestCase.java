@@ -149,7 +149,59 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("remove 메서드 테스트")
-        class RemoveTest {}
+        class RemoveTest {
+
+            @Test
+            @DisplayName("key에 해당하는 값을 삭제하고 값을 반환한다.")
+            void remove_returns_value_and_deletes() {
+                hashMap.put(1, "A");
+
+                String removed = hashMap.remove(1);
+
+                assertThat(removed).isEqualTo("A");
+            }
+
+            @Test
+            @DisplayName("존재하지 않는 key를 삭제하면 null을 반한환다.")
+            void remove_returns_null_when_key_not_found() {
+                hashMap.put(1, "A");
+
+                String removed = hashMap.remove(2);
+
+                assertThat(removed).isEqualTo(null);
+            }
+
+            @Test
+            @DisplayName("삭제 후 size가 감소한다.")
+            void remove_decreases_size() {
+                hashMap.put(1, "A");
+
+                hashMap.remove(1);
+
+                assertThat(hashMap.size()).isZero();
+            }
+
+            @Test
+            @DisplayName("null key를 삭제할 수 있다.")
+            void remove_null_key() {
+                hashMap.put(null, "A");
+
+                String removed = hashMap.remove(null);
+
+                assertThat(removed).isEqualTo("A");
+            }
+
+            @Test
+            @DisplayName("삭제 후 해당 key로 조회하면 null을 반환한다.")
+            void remove_then_get_returns_null() {
+                hashMap.put(1, "A");
+
+                String removed = hashMap.remove(1);
+
+                assertThat(removed).isEqualTo("A");
+                assertThat(hashMap.get(1)).isNull();
+            }
+        }
 
         @Nested
         @DisplayName("containsKey 메서드 테스트")
