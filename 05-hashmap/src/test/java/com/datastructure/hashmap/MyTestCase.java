@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -389,6 +390,7 @@ public class MyTestCase {
                 assertThat(keySet.contains(1)).isTrue();
                 assertThat(keySet.contains(2)).isTrue();
                 assertThat(keySet.contains(3)).isTrue();
+                assertThat(keySet).containsExactlyInAnyOrder(1, 2, 3);
             }
 
             @Test
@@ -404,7 +406,43 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("values 메서드 테스트")
-        class ValuesTest {}
+        class ValuesTest {
+
+            @Test
+            @DisplayName("빈 hashMap은 빈 값이 반환한다.")
+            void values_returns_empty_collection_when_empty() {
+                Collection<String> values = hashMap.values();
+
+                assertThat(values.size()).isZero();
+            }
+
+            @Test
+            @DisplayName("모든 values를 반환한다.")
+            void values_returns_all_values() {
+                hashMap.put(1, "A");
+                hashMap.put(2, "B");
+                hashMap.put(3, "C");
+
+                Collection<String> values = hashMap.values();
+
+                assertThat(values.contains("A")).isTrue();
+                assertThat(values.contains("B")).isTrue();
+                assertThat(values.contains("C")).isTrue();
+                assertThat(values).containsExactlyInAnyOrder("A", "B", "C");
+            }
+
+            @Test
+            @DisplayName("null인 value도 포함된다.")
+            void values_contains_null_value() {
+                hashMap.put(1, "A");
+                hashMap.put(2, "B");
+                hashMap.put(3, null);
+
+                Collection<String> values = hashMap.values();
+
+                assertThat(values.contains(null)).isTrue();
+            }
+        }
 
         @Nested
         @DisplayName("entrySet 메서드 테스트")
