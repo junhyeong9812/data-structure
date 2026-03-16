@@ -6,6 +6,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.Set;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MyTestCase {
@@ -365,7 +367,40 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("keySet 메서드 테스트")
-        class KeySetTest {}
+        class KeySetTest {
+
+            @Test
+            @DisplayName("빈 hashMap에는 빈 Set이 반환된다.")
+            void keySet_returns_empty_set_when_empty() {
+                Set<Integer> keySet = hashMap.keySet();
+
+                assertThat(keySet.size()).isZero();
+            }
+
+            @Test
+            @DisplayName("모든 key가 반환된다.")
+            void keySet_returns_all_keys() {
+                hashMap.put(1, "A");
+                hashMap.put(2, "A");
+                hashMap.put(3, "A");
+
+                Set<Integer> keySet = hashMap.keySet();
+
+                assertThat(keySet.contains(1)).isTrue();
+                assertThat(keySet.contains(2)).isTrue();
+                assertThat(keySet.contains(3)).isTrue();
+            }
+
+            @Test
+            @DisplayName("null key도 포함된다.")
+            void keySet_contains_null_key() {
+                hashMap.put(null, "A");
+
+                Set<Integer> keySet = hashMap.keySet();
+
+                assertThat(keySet.contains(null)).isTrue();
+            }
+        }
 
         @Nested
         @DisplayName("values 메서드 테스트")
