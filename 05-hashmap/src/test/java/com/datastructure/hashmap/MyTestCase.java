@@ -205,7 +205,44 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("containsKey 메서드 테스트")
-        class ContainsKeyTest {}
+        class ContainsKeyTest {
+
+            @Test
+            @DisplayName("존재하는 key를 찾을 수 있다.")
+            void containsKey_returns_true_when_exists() {
+                hashMap.put(1, "A");
+
+                assertThat(hashMap.containsKey(1)).isTrue();
+            }
+
+            @Test
+            @DisplayName("존재하지 않는 key는  false를 반환한다.")
+            void containsKey_returns_false_when_not_exists() {
+                hashMap.put(1, "A");
+
+                assertThat(hashMap.containsKey(2)).isFalse();
+            }
+
+            @Test
+            @DisplayName("null인 키를 찾을 수 있다.")
+            void containsKey_with_null_key() {
+                hashMap.put(null, "A");
+
+                assertThat(hashMap.containsKey(null)).isTrue();
+            }
+
+            @Test
+            @DisplayName("삭제 후 해당 key는 false를 반환한다.")
+            void containsKey_return_false_after_remove() {
+                hashMap.put(1, "A");
+
+                assertThat(hashMap.containsKey(1)).isTrue();
+
+                hashMap.remove(1);
+
+                assertThat(hashMap.containsKey(1)).isFalse();
+            }
+        }
 
         @Nested
         @DisplayName("containValue 메서드 테스트")
