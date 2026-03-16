@@ -338,7 +338,30 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("clear 메서드 테스트")
-        class ClearTest {}
+        class ClearTest {
+
+            @Test
+            @DisplayName("빈 해시맵에 동작한다.")
+            void clear_empty_hashmap_remains_empty() {
+                hashMap.clear();
+
+                assertThat(hashMap.size()).isZero();
+                assertThat(hashMap.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("요소가 있는 hashMap을 초기화한다.")
+            void clear_removes_all_entries() {
+                hashMap.put(1, "A");
+                hashMap.put(2, "A");
+                hashMap.put(3, "A");
+
+                hashMap.clear();
+
+                assertThat(hashMap.size()).isZero();
+                assertThat(hashMap.isEmpty()).isTrue();
+            }
+        }
 
         @Nested
         @DisplayName("keySet 메서드 테스트")
