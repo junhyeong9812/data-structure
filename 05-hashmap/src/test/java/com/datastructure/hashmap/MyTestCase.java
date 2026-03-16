@@ -321,6 +321,19 @@ public class MyTestCase {
         @DisplayName("isEmpty 메서드 테스트")
         class IsEmptyTest {
 
+            @Test
+            @DisplayName("빈 해시맵은 true를 반환한다.")
+            void isEmpty_returns_true_when_empty() {
+                assertThat(hashMap.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("요소가 있는 해시맵은 false를 반환한다.")
+            void isEmpty_returns_false_when_not_empty() {
+                hashMap.put(1, "A");
+
+                assertThat(hashMap.isEmpty()).isFalse();
+            }
         }
 
         @Nested
