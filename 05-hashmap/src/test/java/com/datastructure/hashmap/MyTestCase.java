@@ -286,11 +286,42 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("size 메서드 테스트")
-        class SizeTest {}
+        class SizeTest {
+            @Test
+            @DisplayName("처음 size는 0이다.")
+            void size_return_zero_when_empty() {
+                assertThat(hashMap.size()).isZero();
+            }
+
+            @Test
+            @DisplayName("put을 하면 size가 증가한다.")
+            void size_increases_after_put() {
+                assertThat(hashMap.size()).isZero();
+
+                hashMap.put(1, "A");
+
+                assertThat(hashMap.size()).isEqualTo(1);
+            }
+
+            @Test
+            @DisplayName("remove를 하면 size가 감소한다.")
+            void size_decreases_after_remove() {
+                hashMap.put(1, "A");
+                hashMap.put(2, "B");
+                hashMap.put(3, "C");
+                assertThat(hashMap.size()).isEqualTo(3);
+
+                hashMap.remove(3);
+
+                assertThat(hashMap.size()).isEqualTo(2);
+            }
+        }
 
         @Nested
         @DisplayName("isEmpty 메서드 테스트")
-        class IsEmptyTest {}
+        class IsEmptyTest {
+
+        }
 
         @Nested
         @DisplayName("clear 메서드 테스트")
