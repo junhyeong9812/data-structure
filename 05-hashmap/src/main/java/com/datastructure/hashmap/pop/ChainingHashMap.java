@@ -8,6 +8,10 @@ public class ChainingHashMap<K, V> {
     public static class Entry<K, V> {
         K key;
         V value;
+
+        public K getKey() {return key;}
+
+        public V getValue() {return value;}
     }
 
     public V put(K key, V value) {return null;}
