@@ -246,7 +246,43 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("containValue 메서드 테스트")
-        class ContainsValueTest {}
+        class ContainsValueTest {
+            @Test
+            @DisplayName("value가 존재하면 true를 반환한다.")
+            void containsValue_returns_true_when_exists() {
+                hashMap.put(1, "A");
+
+                assertThat(hashMap.containsValue("A")).isTrue();
+            }
+
+            @Test
+            @DisplayName("value가 존재하지 않으면 false를 반환한다.")
+            void containsValue_returns_false_when_not_exists() {
+                hashMap.put(1, "A");
+
+                assertThat(hashMap.containsValue("B")).isFalse();
+            }
+
+            @Test
+            @DisplayName("null인 value를 찾을 수 있다.")
+            void containsValue_with_null_value() {
+                hashMap.put(1, null);
+
+                assertThat(hashMap.containsValue(null)).isTrue();
+            }
+
+            @Test
+            @DisplayName("삭제 후 해당 value는 false를 반환한다.")
+            void containsValue_returns_false_after_remove() {
+                hashMap.put(1, "A");
+
+                assertThat(hashMap.containsValue("A")).isTrue();
+
+                hashMap.remove(1);
+
+                assertThat(hashMap.containsValue("A")).isFalse();
+            }
+        }
 
         @Nested
         @DisplayName("size 메서드 테스트")
