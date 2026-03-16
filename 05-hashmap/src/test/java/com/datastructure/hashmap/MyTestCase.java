@@ -446,7 +446,50 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("entrySet 메서드 테스트")
-        class EntrySetTest {}
+        class EntrySetTest {
+            @Test
+            @DisplayName("빈 hashMap에는 빈 Set을 반환한다")
+            void entrySet_returns_empty_set_when_empty() {
+                Set<ChainingHashMap.Entry<Integer, String>> entries = hashMap.entrySet();
+
+                assertThat(entries.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("모든 엔트리를 반환한다.")
+            void entrySet_returns_all_entries() {
+                hashMap.put(1, "A");
+                hashMap.put(2, "B");
+                hashMap.put(3, "C");
+                Set<ChainingHashMap.Entry<Integer, String>> entries = hashMap.entrySet();
+
+                assertThat(entries).hasSize(3);
+                assertThat(entries).extracting(
+                        ChainingHashMap.Entry::getKey
+                ).containsExactlyInAnyOrder(1, 2, 3);
+                assertThat(entries).extracting(
+                        ChainingHashMap.Entry::getValue
+                ).containsExactlyInAnyOrder("A", "B", "C");
+            }
+
+            @Test
+            @DisplayName("null key를 가진 엔트리도 포함된다.")
+            void entrySet_contains_null_key_entry() {
+                hashMap.put(1, "A");
+                hashMap.put(2, "B");
+                hashMap.put(3, null);
+
+                Set<ChainingHashMap.Entry<Integer, String>> entries = hashMap.entrySet();
+
+                assertThat(entries).hasSize(3);
+                assertThat(entries).extracting(
+                        ChainingHashMap.Entry::getKey
+                ).containsExactlyInAnyOrder(1, 2, 3);
+                assertThat(entries).extracting(
+                        ChainingHashMap.Entry::getValue
+                ).containsExactlyInAnyOrder("A", "B", null);
+            }
+        }
     }
 
     @Nested
