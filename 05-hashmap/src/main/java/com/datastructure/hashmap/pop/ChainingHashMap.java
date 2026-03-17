@@ -1,8 +1,6 @@
 package com.datastructure.hashmap.pop;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class ChainingHashMap<K, V> {
 
@@ -145,7 +143,15 @@ public class ChainingHashMap<K, V> {
     }
 
     public Collection<V> values() {
-        return null;
+        List<V> result = new ArrayList<>();
+        for (int i = 0; i < capacity; i++) {
+            Entry<K, V> entry = buckets[i];
+            while (entry != null) {
+                result.add(entry.getValue());
+                entry = entry.getNext();
+            }
+        }
+        return result;
     }
 
     public Set<Entry<K, V>> entrySet() {
