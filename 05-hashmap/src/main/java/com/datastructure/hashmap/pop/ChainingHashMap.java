@@ -122,9 +122,15 @@ public class ChainingHashMap<K, V> {
         return false;
     }
 
-    public int size() {return 0;}
-    public boolean isEmpty() {return true;}
-    public void clear() {}
+    public int size() {return size;}
+
+    public boolean isEmpty() {return size == 0;}
+
+    public void clear() {
+        this.buckets = new Entry[capacity];
+        this.size = 0;
+    }
+
     public Set<K> keySet() {return null;}
     public Collection<V> values() {return null;}
     public Set<Entry<K, V>> entrySet() {return null;}
