@@ -24,6 +24,8 @@ public class ChainingHashMap<K, V> {
         public Entry<K, V> getNext() {return next;}
 
         public void setNext(Entry<K, V> entry) {this.next = entry;}
+
+        public void setValue(V value) {this.value = value;}
     }
 
     private Entry<K, V>[] buckets;
@@ -38,7 +40,27 @@ public class ChainingHashMap<K, V> {
         this.size = 0;
     }
 
-    public V put(K key, V value) {return null;}
+    public V put(K key, V value) {
+        rehash();
+        int index = getIndex(key);
+        Entry<K, V> entry = buckets[index];
+
+        while (entry != null) {
+            if (entry.getKey() == key || (key != null && key.equals(entry.getKey()))) {
+                V oldValue = entry.getValue();
+                entry.setValue(value);
+                return oldValue;
+            }
+            entry = entry.next;
+        }
+
+        Entry<K, V> newEntry = new Entry<>(key, value);
+        newEntry.setNext(buckets[index]);
+        buckets[index] = newEntry;
+        size++;
+        return null;
+    }
+
     public V get(K key) {return null;}
     public V remove(K key) {return null;}
     public boolean containsKey(K key) {return false;}
