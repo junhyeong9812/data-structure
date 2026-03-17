@@ -1,6 +1,7 @@
 package com.datastructure.hashmap.pop;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 public class ChainingHashMap<K, V> {
@@ -131,9 +132,25 @@ public class ChainingHashMap<K, V> {
         this.size = 0;
     }
 
-    public Set<K> keySet() {return null;}
-    public Collection<V> values() {return null;}
-    public Set<Entry<K, V>> entrySet() {return null;}
+    public Set<K> keySet() {
+        Set<K> result = new HashSet<>();
+        for (int i = 0; i < capacity; i++) {
+            Entry<K, V> entry = buckets[i];
+            while (entry != null) {
+                result.add(entry.getKey());
+                entry = entry.getNext();
+            }
+        }
+        return result;
+    }
+
+    public Collection<V> values() {
+        return null;
+    }
+
+    public Set<Entry<K, V>> entrySet() {
+        return null;
+    }
 
     private int getIndex(K key) {
         if (key != null) {
