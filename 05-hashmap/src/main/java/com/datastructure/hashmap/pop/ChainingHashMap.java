@@ -9,10 +9,34 @@ public class ChainingHashMap<K, V> {
         K key;
         V value;
 
+        Entry<K, V> next;
+
+        public Entry(K key, V value) {
+            this.key = key;
+            this.value = value;
+            this.next = null;
+        }
+
         public K getKey() {return key;}
 
         public V getValue() {return value;}
+
+        public Entry<K, V> getNext() {return next;}
+
+        public void setNext(Entry<K, V> entry) {this.next = entry;}
     }
+
+    private Entry<K, V>[] buckets;
+    private int capacity;
+    private int size;
+    private static final float LOAD_FACTOR = 0.75f;
+
+    public ChainingHashMap() {
+        this.capacity = 16;
+        this.buckets = new Entry[capacity];
+        this.size = 0;
+    }
+
 
     public V put(K key, V value) {return null;}
     public V get(K key) {return null;}
