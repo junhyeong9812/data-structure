@@ -95,8 +95,22 @@ public class ChainingHashMap<K, V> {
         return null;
     }
 
-    public boolean containsKey(K key) {return false;}
-    public boolean containsValue(V value) {return false;}
+    public boolean containsKey(K key) {
+        int index = getIndex(key);
+        Entry<K, V> entry = buckets[index];
+
+        while (entry != null) {
+            if (entry.getKey() == key || (key != null && key.equals(entry.getKey()))) {
+                return true;
+            }
+            entry = entry.next;
+        }
+        return false;
+    }
+
+    public boolean containsValue(V value) {
+        return false;
+    }
     public int size() {return 0;}
     public boolean isEmpty() {return true;}
     public void clear() {}
