@@ -155,7 +155,15 @@ public class ChainingHashMap<K, V> {
     }
 
     public Set<Entry<K, V>> entrySet() {
-        return null;
+        Set<Entry<K, V>> result = new HashSet<>();
+        for (int i = 0; i < capacity; i++) {
+            Entry<K, V> entry =buckets[i];
+            while (entry != null) {
+                result.add(entry);
+                entry = entry.getNext();
+            }
+        }
+        return result;
     }
 
     private int getIndex(K key) {
