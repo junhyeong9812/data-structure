@@ -59,4 +59,24 @@ public class ChainingHashMap<K, V> {
         }
         return 0;
     }
+
+    @SuppressWarnings("unchecked")
+    private void growCapacity() {
+        int oldCapacity = capacity;
+        Entry<K, V>[] oldBuckets = buckets;
+
+        capacity = capacity * 2;
+        buckets = new Entry[capacity];
+
+        for(int i = 0; i < oldCapacity; i++) {
+            Entry<K, V> entry = oldBuckets[i];
+            while(entry != null) {
+                Entry<K, V> next = entry.next;
+                int newIndex = getIndex(entry.getKey());
+                entry.next = buckets[newIndex];
+                buckets[newIndex] = entry;
+                entry = next;
+            }
+        }
+    }
 }
