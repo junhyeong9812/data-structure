@@ -1,6 +1,7 @@
 package com.datastructure.hashmap;
 
 import com.datastructure.hashmap.pop.ChainingHashMap;
+import com.datastructure.hashmap.pop.LinearProbingHashMap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -495,6 +496,10 @@ public class MyTestCase {
     @Nested
     @DisplayName("LinearProbingHashMap 테스트")
     class LinearProbingHashMapTest {
+
+        LinearProbingHashMap hashMap;
+        @BeforeEach
+        void setup() {hashMap = new LinearProbingHashMap();}
 
         @Nested
         @DisplayName("put 메서드 테스트")
