@@ -109,8 +109,19 @@ public class ChainingHashMap<K, V> {
     }
 
     public boolean containsValue(V value) {
+
+        for (int i = 0; i < capacity; i++) {
+            Entry<K, V> entry = buckets[i];
+            while (entry != null) {
+                if (entry.getValue() == value || (value != null && value.equals(entry.getValue()))) {
+                    return true;
+                }
+                entry = entry.getNext();
+            }
+        }
         return false;
     }
+
     public int size() {return 0;}
     public boolean isEmpty() {return true;}
     public void clear() {}
