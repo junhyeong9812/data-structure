@@ -37,7 +37,6 @@ public class ChainingHashMap<K, V> {
         this.size = 0;
     }
 
-
     public V put(K key, V value) {return null;}
     public V get(K key) {return null;}
     public V remove(K key) {return null;}
@@ -49,4 +48,15 @@ public class ChainingHashMap<K, V> {
     public Set<K> keySet() {return null;}
     public Collection<V> values() {return null;}
     public Set<Entry<K, V>> entrySet() {return null;}
+
+    private int getIndex(K key) {
+        if (key != null) {
+            int hash = key.hashCode();
+            int index = hash & (capacity - 1);
+
+            //int Math.abs(hash) % capacity;
+            return index;
+        }
+        return 0;
+    }
 }
