@@ -74,7 +74,27 @@ public class ChainingHashMap<K, V> {
         return null;
     }
 
-    public V remove(K key) {return null;}
+    public V remove(K key) {
+        int index = getIndex(key);
+        Entry<K, V> entry = buckets[index];
+        Entry<K, V> beforeEntry = null;
+
+        while (entry != null) {
+            if (entry.getKey() == key || (key != null && key.equals(entry.getKey()))) {
+                if (beforeEntry == null) {
+                    buckets[index] = entry.next;
+                } else {
+                    beforeEntry.setNext(entry.next);
+                }
+                size--;
+                return entry.getValue();
+            }
+            beforeEntry = entry;
+            entry = entry.next;
+        }
+        return null;
+    }
+
     public boolean containsKey(K key) {return false;}
     public boolean containsValue(V value) {return false;}
     public int size() {return 0;}
