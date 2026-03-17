@@ -31,6 +31,7 @@ public class ChainingHashMap<K, V> {
     private int size;
     private static final float LOAD_FACTOR = 0.75f;
 
+    @SuppressWarnings("unchecked")
     public ChainingHashMap() {
         this.capacity = 16;
         this.buckets = new Entry[capacity];
@@ -58,6 +59,12 @@ public class ChainingHashMap<K, V> {
             return index;
         }
         return 0;
+    }
+
+    private void rehash() {
+        if ( (float) size / capacity >= 0.75f ) {
+            growCapacity();
+        }
     }
 
     @SuppressWarnings("unchecked")
