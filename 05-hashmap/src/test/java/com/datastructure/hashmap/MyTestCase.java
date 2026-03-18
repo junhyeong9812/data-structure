@@ -772,7 +772,24 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("isEmpty 메서드 테스트")
-        class IsEmptyTest {}
+        class IsEmptyTest {
+
+            @Test
+            @DisplayName("빈 hashMap이면 isEmpty는 true이다.")
+            void isEmpty_returns_true_when_empty() {
+                assertThat(hashMap.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("요소가 있는 hashMap이면 isEmpty는 false이다.")
+            void isEmpty_returns_false_when_not_empty() {
+                hashMap.put(1, "A");
+                hashMap.put(2, "B");
+                hashMap.put(3, "C");
+
+                assertThat(hashMap.isEmpty()).isFalse();
+            }
+        }
 
         @Nested
         @DisplayName("clear 메서드 테스트")
