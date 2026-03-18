@@ -579,11 +579,103 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("get 메서드 테스트")
-        class GetTest {}
+        class GetTest {
+
+            @Test
+            @DisplayName("key를 통해 value를 찾을 수 있다.")
+            void get_returns_value_by_key() {
+                hashMap.put(1, "A");
+
+                assertThat(hashMap.get(1)).isEqualTo("A");
+            }
+
+            @Test
+            @DisplayName("존재하지 않는 key를 조회 시 null을 반환한다.")
+            void get_returns_null_when_key_not_found() {
+                hashMap.put(1, "A");
+
+                assertThat(hashMap.get(2)).isNull();
+            }
+
+            @Test
+            @DisplayName("null인 키의 value를 찾을 수 있다.")
+            void get_with_null_key() {
+                hashMap.put(null, "A");
+
+                assertThat(hashMap.get(null)).isEqualTo("A");
+            }
+
+            @Test
+            @DisplayName("같은 키를 여러번 조회하면 값은 같다.")
+            void get_multiple_times_returns_same_value() {
+                hashMap.put(1, "A");
+
+                assertThat(hashMap.get(1)).isEqualTo("A");
+                assertThat(hashMap.get(1)).isEqualTo("A");
+                assertThat(hashMap.get(1)).isEqualTo("A");
+            }
+        }
 
         @Nested
         @DisplayName("remove 메서드 테스트")
-        class RemoveTest {}
+        class RemoveTest {
+
+            @Test
+            @DisplayName("해당하는 key값의 value를 삭제할 수 있다.")
+            void remove_returns_value_and_deletes() {
+                hashMap.put(1, "A");
+
+                String removed = hashMap.remove(1);
+
+                assertThat(hashMap.size()).isZero();
+                assertThat(hashMap.isEmpty()).isTrue();
+                assertThat(removed).isEqualTo("A");
+            }
+
+            @Test
+            @DisplayName("null인 key의 value를 삭제할 수 있다.")
+            void remove_null_key() {
+                hashMap.put(null, "A");
+
+                String removed = hashMap.remove(null);
+
+                assertThat(hashMap.size()).isZero();
+                assertThat(hashMap.isEmpty()).isTrue();
+                assertThat(removed).isEqualTo("A");
+            }
+
+            @Test
+            @DisplayName("key가 존재하지 않으면 null을 반환한다.")
+            void remove_returns_null_when_key_not_found() {
+                hashMap.put(1, "A");
+
+                String removed = hashMap.remove(2);
+
+                assertThat(hashMap.size()).isOne();
+                assertThat(hashMap.isEmpty()).isFalse();
+                assertThat(removed).isEqualTo(null);
+            }
+
+            @Test
+            @DisplayName("사이즈가 감소한다.")
+            void remove_decreases_size() {
+                hashMap.put(1, "A");
+
+                hashMap.remove(1);
+
+                assertThat(hashMap.size()).isEqualTo(0);
+            }
+
+            @Test
+            @DisplayName("삭제 후 조회 시 null을 반환한다.")
+            void remove_then_get_returns_null() {
+                hashMap.put(1, "A");
+
+                hashMap.remove(1);
+
+                assertThat(hashMap.get(1)).isNull();
+            }
+        }
 
         @Nested
         @DisplayName("containsKey 메서드 테스트")
