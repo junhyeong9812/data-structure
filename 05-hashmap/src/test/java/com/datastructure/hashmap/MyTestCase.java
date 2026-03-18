@@ -503,7 +503,36 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("put 메서드 테스트")
-        class PutTest {}
+        class PutTest {
+
+            @Test
+            @DisplayName("key-value 쌍으로 저장이 가능하다.")
+            void put_stores_key_value_pair() {}
+
+            @Test
+            @DisplayName("같은 key값으로 넣으면 덮어쓰인다.")
+            void put_overwrites_existing_key() {}
+
+            @Test
+            @DisplayName("key값이 null일 때 저장이 가능하다.")
+            void put_null_key() {}
+
+            @Test
+            @DisplayName("value값이 null일 때 저장이 가능하다.")
+            void put_null_value() {}
+
+            @Test
+            @DisplayName("같은 key값으로 저장하면 이전 값이 반환된다.")
+            void put_returns_previous_value() {}
+
+            @Test
+            @DisplayName("연속하여 저장할 수 있다.")
+            void put_multiple_entries() {}
+
+            @Test
+            @DisplayName("put을 사용할 때 사이즈가 증가한다.")
+            void put_increases_size() {}
+        }
 
         @Nested
         @DisplayName("get 메서드 테스트")
