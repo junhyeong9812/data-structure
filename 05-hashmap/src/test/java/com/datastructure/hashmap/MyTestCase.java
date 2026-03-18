@@ -820,7 +820,46 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("keySet 메서드 테스트")
-        class KeySetTest {}
+        class KeySetTest {
+
+            @Test
+            @DisplayName("빈 hashMap에서는 빈 Set이 반환된다.")
+            void keySet_returns_empty_set_when_empty() {
+                Set<Integer> keys = hashMap.keySet();
+
+                assertThat(keys.size()).isZero();
+            }
+
+            @Test
+            @DisplayName("모든 키가 반환된다.")
+            void keySet_returns_all_keys() {
+                hashMap.put(1, "A");
+                hashMap.put(2, "B");
+                hashMap.put(3, "C");
+
+                Set<Integer> keys = hashMap.keySet();
+
+                assertThat(keys.contains(1)).isTrue();
+                assertThat(keys.contains(2)).isTrue();
+                assertThat(keys.contains(3)).isTrue();
+                assertThat(keys).containsExactlyInAnyOrder(1, 2, 3);
+            }
+
+            @Test
+            @DisplayName("null인 키도 포함하여 반환한다.")
+            void keySet_contains_null_key() {
+                hashMap.put(1, "A");
+                hashMap.put(null, "B");
+                hashMap.put(3, "C");
+
+                Set<Integer> keys = hashMap.keySet();
+
+                assertThat(keys.contains(1)).isTrue();
+                assertThat(keys.contains(null)).isTrue();
+                assertThat(keys.contains(3)).isTrue();
+                assertThat(keys).containsExactlyInAnyOrder(1, null, 3);
+            }
+        }
 
         @Nested
         @DisplayName("values 메서드 테스트")
