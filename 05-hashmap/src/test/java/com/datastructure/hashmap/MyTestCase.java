@@ -863,7 +863,47 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("values 메서드 테스트")
-        class ValuesTest {}
+        class ValuesTest {
+
+            @Test
+            @DisplayName("빈 hashMap에는 빈 Set이 반환된다.")
+            void values_returns_empty_collection_when_empty() {
+                Collection<String> values = hashMap.values();
+
+                assertThat(values.isEmpty()).isTrue();
+                assertThat(values.size()).isZero();
+            }
+
+            @Test
+            @DisplayName("모든 value가 반환된다.")
+            void values_returns_all_values() {
+                hashMap.put(1, "A");
+                hashMap.put(2, "B");
+                hashMap.put(3, "C");
+
+                Collection<String> values = hashMap.values();
+
+                assertThat(values.contains("A")).isTrue();
+                assertThat(values.contains("B")).isTrue();
+                assertThat(values.contains("C")).isTrue();
+                assertThat(values).containsExactlyInAnyOrder("A", "B", "C");
+            }
+
+            @Test
+            @DisplayName("null인 value도 반환된다.")
+            void values_contains_null_value() {
+                hashMap.put(1, "A");
+                hashMap.put(2, null);
+                hashMap.put(3, "C");
+
+                Collection<String> values = hashMap.values();
+
+                assertThat(values.contains("A")).isTrue();
+                assertThat(values.contains(null)).isTrue();
+                assertThat(values.contains("C")).isTrue();
+                assertThat(values).containsExactlyInAnyOrder("A", null, "C");
+            }
+        }
 
         @Nested
         @DisplayName("entrySet 메서드 테스트")
