@@ -751,7 +751,24 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("size 메서드 테스트")
-        class SizeTest {}
+        class SizeTest {
+
+            @Test
+            @DisplayName("빈 hashMap이면 size는 0이다.")
+            void size_returns_zero_when_empty() {
+                assertThat(hashMap.size()).isZero();
+            }
+
+            @Test
+            @DisplayName("요소가 있는 hashMap이면 size는 요소의 개수다.")
+            void size_returns_number_of_entries() {
+                hashMap.put(1, "A");
+                hashMap.put(2, "B");
+                hashMap.put(3, "C");
+
+                assertThat(hashMap.size()).isEqualTo(3);
+            }
+        }
 
         @Nested
         @DisplayName("isEmpty 메서드 테스트")
