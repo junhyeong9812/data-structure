@@ -907,7 +907,53 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("entrySet 메서드 테스트")
-        class EntrySetTest {}
-    }
+        class EntrySetTest {
 
+            @Test
+            @DisplayName("빈 hashMap은 빈 Set을 반환한다.")
+            void entrySet_returns_empty_set_when_empty() {
+                Set<LinearProbingHashMap.Entry<Integer, String>> entries = hashMap.entrySet();
+
+                assertThat(entries.size()).isZero();
+                assertThat(entries.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("모든 entry를 반환한다.")
+            void entrySet_returns_all_entries() {
+                hashMap.put(1, "A");
+                hashMap.put(2, "B");
+                hashMap.put(3, "C");
+
+                Set<LinearProbingHashMap.Entry<Integer, String>> entries = hashMap.entrySet();
+
+                assertThat(entries).hasSize(3);
+                assertThat(entries).extracting(
+                        LinearProbingHashMap.Entry::getKey
+                ).containsExactlyInAnyOrder(1, 2, 3);
+                assertThat(entries).extracting(
+                        LinearProbingHashMap.Entry::getValue
+                ).containsExactlyInAnyOrder("A" , "B", "C");
+            }
+
+            @Test
+            @DisplayName("key와 value가 null인 요소를 가진 entry를 반환할 수 있다.")
+            void entrySet_contains_null_key_value_entry() {
+                hashMap.put(1, "A");
+                hashMap.put(null, null);
+                hashMap.put(3, "C");
+
+                Set<LinearProbingHashMap.Entry<Integer, String>> entries = hashMap.entrySet();
+
+                assertThat(entries).hasSize(3);
+                assertThat(entries).extracting(
+                        LinearProbingHashMap.Entry::getKey
+                ).containsExactlyInAnyOrder(1, null, 3);
+                // extracting은 컬렉션의 각 요소에서 지정한 메서드를 호출해서 결과값들로 새로운 리스트를 만든다.
+                assertThat(entries).extracting(
+                        LinearProbingHashMap.Entry::getValue
+                ).containsExactlyInAnyOrder("A", null, "C");
+            }
+        }
+    }
 }
