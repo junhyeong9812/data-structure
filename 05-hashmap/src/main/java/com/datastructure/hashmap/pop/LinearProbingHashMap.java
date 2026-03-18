@@ -8,6 +8,10 @@ public class LinearProbingHashMap<K, V> {
     public static class Entry<K, V> {
         K key;
         V value;
+
+        public V getValue() {return value;}
+
+        public K getKey() {return key;}
     }
 
     public V put(K key, V value) {return null;}
