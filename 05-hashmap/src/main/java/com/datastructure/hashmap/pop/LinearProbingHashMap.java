@@ -51,7 +51,18 @@ public class LinearProbingHashMap<K, V> {
         size++;
         return null;
     }
-    public V get(K key) {return null;}
+
+    public V get(K key) {
+        int index = getIndex(key);
+        while (buckets[index] != null) {
+            if (buckets[index].getKey() == key
+            || (key != null && key.equals(buckets[index].getKey()))) {
+                return buckets[index].getValue();
+            }
+            index = (index + 1) % capacity;
+        }
+        return null;
+    }
     public V remove(K key) {return null;}
     public boolean containsKey(K key) {return false;}
     public boolean containsValue(V value) {return false;}
