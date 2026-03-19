@@ -63,7 +63,23 @@ public class LinearProbingHashMap<K, V> {
         }
         return null;
     }
-    public V remove(K key) {return null;}
+
+    public V remove(K key) {
+        int index = getIndex(key);
+        while(buckets[index] != null) {
+            if (buckets[index].getKey() == key
+                    || (key != null && key.equals(buckets[index].getKey()))) {
+                V removed = buckets[index].getValue();
+                buckets[index] = null;
+                size--;
+                rehashCluster(index);
+                return removed;
+            }
+            index = (index + 1) % capacity;
+        }
+        return null;
+    }
+
     public boolean containsKey(K key) {return false;}
     public boolean containsValue(V value) {return false;}
     public int size() {return 0;}
@@ -101,6 +117,17 @@ public class LinearProbingHashMap<K, V> {
             if (entry != null) {
                 put(entry.getKey(), entry.value);
             }
+        }
+    }
+
+    private void rehashCluster(int startIndex) {
+        int index = (startIndex + 1) % capacity;
+        while (buckets[index] != null) {
+            Entry<K, V> entry = buckets[index];
+            buckets[index] = null;
+            size--;
+            put(entry.getKey(), entry.getValue());
+            index = (index + 1) % capacity;
         }
     }
 }
