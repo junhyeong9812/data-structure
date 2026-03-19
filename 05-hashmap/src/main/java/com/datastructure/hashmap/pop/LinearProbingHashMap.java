@@ -92,7 +92,16 @@ public class LinearProbingHashMap<K, V> {
         return false;
     }
 
-    public boolean containsValue(V value) {return false;}
+    public boolean containsValue(V value) {
+        for (int i = 0; i < capacity; i++) {
+            if (buckets[i] != null && (buckets[i].getValue() == value
+                    || (value != null && value.equals(buckets[i].getValue())))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public int size() {return 0;}
     public boolean isEmpty() {return true;}
     public void clear() {}
