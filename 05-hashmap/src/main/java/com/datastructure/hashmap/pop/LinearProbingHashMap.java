@@ -80,7 +80,18 @@ public class LinearProbingHashMap<K, V> {
         return null;
     }
 
-    public boolean containsKey(K key) {return false;}
+    public boolean containsKey(K key) {
+        int index = getIndex(key);
+        while(buckets[index] != null) {
+            if (buckets[index].getKey() == key
+                    || (key != null && key.equals(buckets[index].getKey()))) {
+                return true;
+            }
+            index = (index + 1) % capacity;
+        }
+        return false;
+    }
+
     public boolean containsValue(V value) {return false;}
     public int size() {return 0;}
     public boolean isEmpty() {return true;}
