@@ -9,9 +9,28 @@ public class LinearProbingHashMap<K, V> {
         K key;
         V value;
 
+        public Entry(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
         public V getValue() {return value;}
 
         public K getKey() {return key;}
+
+        public void setValue(V value) {this.value = value;}
+    }
+
+    private Entry<K, V>[] buckets;
+    private int capacity;
+    private int size;
+    private static final float LOAD_FACTOR = 0.75f;
+
+    @SuppressWarnings("unchecked")
+    public LinearProbingHashMap() {
+        this.capacity = 16;
+        this.buckets = new Entry[capacity];
+        this.size = 0;
     }
 
     public V put(K key, V value) {return null;}
