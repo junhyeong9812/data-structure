@@ -44,4 +44,42 @@ public class LinearProbingHashMap<K, V> {
     public Set<K> keySet() {return null;}
     public Collection<V> values() {return null;}
     public Set<Entry<K, V>> entrySet() {return null;}
+
+    private int getIndex(K key) {
+        if (key != null){
+            int hash = key.hashCode();
+            int index = hash & (capacity - 1);
+
+            return index;
+        }
+        return 0;
+    }
+
+    private void rehash() {
+        if ((float) size / capacity >= LOAD_FACTOR) {
+            growCapacity();
+        }
+    }
+
+    private void growCapacity() {
+        int oldCapacity = capacity;
+        Entry<K, V>[]  oldBuckets = buckets;
+
+        capacity = capacity * 2;
+        buckets = new Entry[capacity];
+
+        for (int i = 0; i < oldCapacity; i++) {
+            Entry<K, V> entry = oldBuckets[i];
+            if (entry != null) {
+                put(entry.getKey(), entry.value);
+            }
+        }
+    }
+
+    private int searchIndex(Entry<K, V>[] buckets, int index) {
+        while (buckets[index] != null) {
+            index = (index + 1) % capacity;
+        }
+        return index;
+    }
 }
