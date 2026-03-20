@@ -130,7 +130,16 @@ public class LinearProbingHashMap<K, V> {
         return result;
     }
 
-    public Set<Entry<K, V>> entrySet() {return null;}
+    public Set<Entry<K, V>> entrySet() {
+        Set<Entry<K, V>> result = new HashSet<>();
+        for (int i = 0; i < capacity; i++) {
+            if (buckets[i] != null) {
+                Entry<K, V> entry = buckets[i];
+                result.add(entry);
+            }
+        }
+        return result;
+    }
 
     private int getIndex(K key) {
         if (key != null){
