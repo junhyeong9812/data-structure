@@ -1,8 +1,6 @@
 package com.datastructure.hashmap.pop;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class LinearProbingHashMap<K, V> {
 
@@ -122,7 +120,16 @@ public class LinearProbingHashMap<K, V> {
         return result;
     }
 
-    public Collection<V> values() {return null;}
+    public Collection<V> values() {
+        List<V> result = new ArrayList<>();
+        for (int i = 0; i < capacity; i++) {
+            if (buckets[i] != null) {
+                result.add(buckets[i].getValue());
+            }
+        }
+        return result;
+    }
+
     public Set<Entry<K, V>> entrySet() {return null;}
 
     private int getIndex(K key) {
