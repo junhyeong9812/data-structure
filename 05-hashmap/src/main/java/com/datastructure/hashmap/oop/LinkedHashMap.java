@@ -38,7 +38,8 @@ public class LinkedHashMap<K, V> implements Map<K, V> {
     }
 
     @Override
-    public V put(K key, V value) { return null; }
+    public V put(K key, V value) {
+        return null; }
 
     @Override
     public V get(K key) { return null; }
@@ -77,5 +78,25 @@ public class LinkedHashMap<K, V> implements Map<K, V> {
             return index;
         }
         return 0;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void growCapacity() {
+        int oldCapacity = capacity;
+        Entry<K, V>[] oldBuckets = buckets;
+
+        capacity = capacity * 2;
+        buckets = new Entry[capacity];
+
+        for (int i = 0; i < oldCapacity; i++) {
+            Entry<K, V> entry = oldBuckets[i];
+            while(entry != null) {
+                Entry<K, V> next = entry.next;
+                int newIndex = getIndex(entry.getKey());
+                entry.next = buckets[newIndex];
+                buckets[newIndex] = entry;
+                entry = next;
+            }
+        }
     }
 }
