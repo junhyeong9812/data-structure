@@ -1,5 +1,7 @@
 package com.datastructure.hashmap.oop;
 
+import com.datastructure.hashmap.pop.LinearProbingHashMap;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -105,13 +107,17 @@ public class HashMap<K, V> implements Map<K, V> {
     }
 
     @Override
-    public int size() { return 0; }
+    public int size() { return size; }
 
     @Override
-    public boolean isEmpty() { return true; }
+    public boolean isEmpty() { return size==0; }
 
     @Override
-    public void clear() {}
+    public void clear() {
+        this.capacity = 16;
+        this.buckets = new Entry[capacity];
+        this.size = 0;
+    }
 
     @Override
     public Set<K> keySet() { return null; }
