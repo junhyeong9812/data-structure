@@ -82,4 +82,37 @@ public class HashMap<K, V> implements Map<K, V> {
         }
         return 0;
     }
+
+    private void rehash() {
+        if ((float) size / capacity >= LOAD_FACTOR) {
+            growCapacity();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void growCapacity() {
+        int oldCapacity = capacity;
+        Entry<K, V>[] oldBuckets = buckets;
+
+        capacity = capacity * 2;
+        buckets = new Entry[capacity];
+
+        for (int i = 0; i < oldCapacity; i++) {
+            Entry<K, V> entry = oldBuckets[i];
+            if (entry != null) {
+                put(entry.getKey(), entry.getValue());
+            }
+        }
+    }
+
+    private void rehashCluster(int startIndex) {
+        int index = (startIndex + 1) % capacity;
+        while (buckets[index] != null) {
+            Entry<K, V> entry = buckets[index];
+            buckets[index] = null;
+            size--;
+            put(entry.getKey(), entry.getValue());
+            index = (index + 1) % capacity;
+        }
+    }
 }
