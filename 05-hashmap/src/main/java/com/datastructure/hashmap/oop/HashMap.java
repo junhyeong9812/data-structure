@@ -81,7 +81,17 @@ public class HashMap<K, V> implements Map<K, V> {
         return null; }
 
     @Override
-    public boolean containsKey(K key) { return false; }
+    public boolean containsKey(K key) {
+        int index = getIndex(key);
+        while(buckets[index] != null) {
+            if (buckets[index].getKey() == key
+                    || (key != null && key.equals(buckets[index].getKey()))) {
+                return true;
+            }
+            index = (index + 1) % capacity;
+        }
+        return false;
+    }
 
     @Override
     public boolean containsValue(V value) { return false; }
