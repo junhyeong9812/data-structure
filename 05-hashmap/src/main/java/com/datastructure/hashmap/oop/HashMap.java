@@ -1,6 +1,7 @@
 package com.datastructure.hashmap.oop;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 public class HashMap<K, V> implements Map<K, V> {
@@ -60,4 +61,25 @@ public class HashMap<K, V> implements Map<K, V> {
 
     @Override
     public Collection<V> values() { return null; }
+
+    public Set<Entry<K, V>> entrySet() {
+        Set<Entry<K, V>> result = new HashSet<>();
+        for (int i = 0; i < capacity; i++) {
+            if (buckets[i] != null) {
+                Entry<K, V> entry = buckets[i];
+                result.add(entry);
+            }
+        }
+        return result;
+    }
+
+    private int getIndex(K key) {
+        if (key != null) {
+            int hash = key.hashCode();
+            int index = hash & (capacity - 1);
+
+            return index;
+        }
+        return 0;
+    }
 }
