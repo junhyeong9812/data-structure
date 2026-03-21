@@ -94,7 +94,15 @@ public class HashMap<K, V> implements Map<K, V> {
     }
 
     @Override
-    public boolean containsValue(V value) { return false; }
+    public boolean containsValue(V value) {
+        for (int i = 0; i < capacity; i++) {
+            if (buckets[i] != null && (buckets[i].getValue() == value
+                    || (value != null && value.equals(buckets[i].getValue())))) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     public int size() { return 0; }
