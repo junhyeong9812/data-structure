@@ -2,9 +2,7 @@ package com.datastructure.hashmap.oop;
 
 import com.datastructure.hashmap.pop.LinearProbingHashMap;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class HashMap<K, V> implements Map<K, V> {
 
@@ -120,10 +118,26 @@ public class HashMap<K, V> implements Map<K, V> {
     }
 
     @Override
-    public Set<K> keySet() { return null; }
+    public Set<K> keySet() {
+        Set<K> result = new HashSet<>();
+        for(int i = 0; i < capacity; i++) {
+            if (buckets[i] != null) {
+                result.add(buckets[i].getKey());
+            }
+        }
+        return result;
+    }
 
     @Override
-    public Collection<V> values() { return null; }
+    public Collection<V> values() {
+        List<V> result = new ArrayList<>();
+        for (int i = 0; i < capacity; i++) {
+            if (buckets[i] != null) {
+                result.add(buckets[i].getValue());
+            }
+        }
+        return result;
+    }
 
     public Set<Entry<K, V>> entrySet() {
         Set<Entry<K, V>> result = new HashSet<>();
