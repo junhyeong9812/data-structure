@@ -33,7 +33,24 @@ public class HashMap<K, V> implements Map<K, V> {
     }
 
     @Override
-    public V put(K key, V value) { return null; }
+    public V put(K key, V value) {
+        rehash();
+        int index = getIndex(key);
+
+        while (buckets[index] != null) {
+            if (buckets[index].getKey() == key
+                    || (key != null && key.equals(buckets[index].getKey()))) {
+                V oldValue = buckets[index].getValue();
+                buckets[index].setValue(value);
+                return oldValue;
+            }
+            index = (index + 1) % capacity;
+        }
+
+        buckets[index] = new Entry<>(key, value);
+        size++;
+        return null;
+    }
 
     @Override
     public V get(K key) { return null; }
