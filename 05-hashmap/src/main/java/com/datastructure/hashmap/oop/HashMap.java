@@ -65,7 +65,20 @@ public class HashMap<K, V> implements Map<K, V> {
         return null; }
 
     @Override
-    public V remove(K key) { return null; }
+    public V remove(K key) {
+        int index = getIndex(key);
+        while (buckets[index] != null) {
+            if (buckets[index].getKey() == key
+                    || (key != null && key.equals(buckets[index].getKey()))) {
+                V removed = buckets[index].getValue();
+                buckets[index] = null;
+                size--;
+                rehashCluster(index);
+                return removed;
+            }
+            index = (index + 1) % capacity;
+        }
+        return null; }
 
     @Override
     public boolean containsKey(K key) { return false; }
