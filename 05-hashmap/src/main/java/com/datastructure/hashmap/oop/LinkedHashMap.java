@@ -68,4 +68,14 @@ public class LinkedHashMap<K, V> implements Map<K, V> {
     public Collection<V> values() { return null; }
 
     public Set<Entry<K, V>> entrySet() { return null; }
+
+    private int getIndex(K key) {
+        if (key != null) {
+            int hash = key.hashCode();
+            int index = hash & (capacity - 1);
+
+            return index;
+        }
+        return 0;
+    }
 }
