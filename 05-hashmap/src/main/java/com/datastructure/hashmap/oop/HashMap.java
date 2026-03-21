@@ -53,7 +53,16 @@ public class HashMap<K, V> implements Map<K, V> {
     }
 
     @Override
-    public V get(K key) { return null; }
+    public V get(K key) {
+        int index = getIndex(key);
+        while (buckets[index] != null) {
+            if (buckets[index].getKey() == key
+                    || key != null && key.equals(buckets[index].getKey())) {
+                return buckets[index].getValue();
+            }
+            index = (index + 1) % capacity;
+        }
+        return null; }
 
     @Override
     public V remove(K key) { return null; }
