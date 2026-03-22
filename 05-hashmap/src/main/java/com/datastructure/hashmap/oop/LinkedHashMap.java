@@ -1,6 +1,7 @@
 package com.datastructure.hashmap.oop;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 public class LinkedHashMap<K, V> implements Map<K, V> {
@@ -136,7 +137,17 @@ public class LinkedHashMap<K, V> implements Map<K, V> {
     }
 
     @Override
-    public Set<K> keySet() { return null; }
+    public Set<K> keySet() {
+        Set<K> result = new HashSet<>();
+        for (int i = 0; i < capacity; i++) {
+            Entry<K, V> entry = buckets[i];
+            while (entry != null) {
+                result.add(entry.getKey());
+                entry =entry.getNext();
+            }
+        }
+        return result;
+    }
 
     @Override
     public Collection<V> values() { return null; }
