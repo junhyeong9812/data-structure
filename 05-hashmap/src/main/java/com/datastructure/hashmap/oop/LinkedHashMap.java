@@ -124,13 +124,16 @@ public class LinkedHashMap<K, V> implements Map<K, V> {
     }
 
     @Override
-    public int size() { return 0; }
+    public int size() { return size; }
 
     @Override
-    public boolean isEmpty() { return true; }
+    public boolean isEmpty() { return size==0; }
 
     @Override
-    public void clear() {}
+    public void clear() {
+        this.buckets = new Entry[capacity];
+        this.size = 0;
+    }
 
     @Override
     public Set<K> keySet() { return null; }
