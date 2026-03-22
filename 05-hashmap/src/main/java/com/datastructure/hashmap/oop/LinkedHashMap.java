@@ -8,11 +8,15 @@ public class LinkedHashMap<K, V> implements Map<K, V> {
         K key;
         V value;
         Entry<K, V> next;
+        Entry<K, V> before;
+        Entry<K, V> after;
 
         public Entry(K key, V value) {
             this.key = key;
             this.value = value;
             this.next = null;
+            this.before = null;
+            this.after = null;
         }
 
         public K getKey() { return key; }
@@ -23,6 +27,10 @@ public class LinkedHashMap<K, V> implements Map<K, V> {
 
         public void setNext(Entry<K, V> entry) {this.next = entry;}
 
+        public void setBefore(Entry<K, V> before) {this.before = before;}
+
+        public void setAfter(Entry<K, V> after) {this.after = after;}
+
         public void setValue(V value) {this.value = value;}
     }
 
@@ -30,6 +38,8 @@ public class LinkedHashMap<K, V> implements Map<K, V> {
     private int capacity;
     private int size;
     private static final float LOAD_FACTOR = 0.75f;
+    private Entry<K, V> head;
+    private Entry<K, V> tail;
 
     @SuppressWarnings("unchecked")
     public LinkedHashMap() {
@@ -56,6 +66,14 @@ public class LinkedHashMap<K, V> implements Map<K, V> {
         Entry<K, V> newEntry = new Entry<>(key, value);
         newEntry.setNext(buckets[index]);
         buckets[index] = newEntry;
+        if (head == null) {
+            head = newEntry;
+            tail = newEntry;
+        } else {
+            tail.setAfter(newEntry);
+            newEntry.setBefore(tail);
+            tail =newEntry;
+        }
         size++;
         return null; }
 
@@ -160,7 +178,17 @@ public class LinkedHashMap<K, V> implements Map<K, V> {
         return result;
     }
 
-    public Set<Entry<K, V>> entrySet() { return null; }
+    public Set<Entry<K, V>> entrySet() {
+        Set<Entry<K, V>> result = new HashSet<>();
+        for (int i = 0; i < capacity; i++) {
+            Entry<K, V> entry = buckets[i];
+            while (entry != null) {
+                result.add(entry);
+                entry = entry.getNext();
+            }
+        }
+        return result;
+    }
 
     private int getIndex(K key) {
         if (key != null) {
