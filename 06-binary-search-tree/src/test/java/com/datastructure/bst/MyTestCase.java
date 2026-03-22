@@ -24,6 +24,55 @@ public class MyTestCase {
         @DisplayName("insert 메서드 테스트")
         class InsertTest {
 
+            @Test
+            @DisplayName("값을 삽입할 수 있다.")
+            void insert_value() {
+                tree.insert(1);
+
+                assertThat(tree.size()).isEqualTo(1);
+                assertThat(tree.isEmpty()).isFalse();
+            }
+
+            @Test
+            @DisplayName("null인 값을 삽입하면 예외가 발생한다.")
+            void insert_null_throws_exception() {
+                assertThatThrownBy(() -> tree.insert(null))
+                        .isInstanceOf(Exception.class);
+            }
+
+            @Test
+            @DisplayName("중복 값을 삽입하면 무시된다.")
+            void insert_duplicate_ignored() {
+                tree.insert(1);
+
+                tree.insert(1);
+
+                assertThat(tree.size()).isEqualTo(1);
+                assertThat(tree.isEmpty()).isFalse();
+            }
+
+            @Test
+            @DisplayName("삽입 후 size가 증가한다.")
+            void insert_increases_size() {
+                tree.insert(1);
+                assertThat(tree.size()).isEqualTo(1);
+
+                tree.insert(2);
+
+                assertThat(tree.size()).isEqualTo(2);
+                assertThat(tree.isEmpty()).isFalse();
+            }
+
+            @Test
+            @DisplayName("여러 값을 삽입하면 BST 속성을 유지한다.")
+            void insert_maintains_bst_property() {
+                tree.insert(1);
+                tree.insert(2);
+                tree.insert(3);
+
+                assertThat(tree.size()).isEqualTo(3);
+                assertThat(tree.inorder()).containsExactly(1, 2, 3);
+            }
         }
 
         @Nested
