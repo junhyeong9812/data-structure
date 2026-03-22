@@ -75,7 +75,25 @@ public class LinkedHashMap<K, V> implements Map<K, V> {
     }
 
     @Override
-    public V remove(K key) { return null; }
+    public V remove(K key) {
+        int index = getIndex(key);
+        Entry<K, V> entry = buckets[index];
+        Entry<K, V> beforeEntry = null;
+
+        while (entry != null) {
+            if (entry.getKey() == key || (key != null && key.equals(entry.getKey()))) {
+                if (beforeEntry == null) {
+                    buckets[index] = entry.next;
+                } else {
+                    beforeEntry.setNext(entry.next);
+                }
+                size--;
+                return entry.getValue();
+            }
+            beforeEntry = entry;
+            entry = entry.next;
+        }
+        return null; }
 
     @Override
     public boolean containsKey(K key) { return false; }
