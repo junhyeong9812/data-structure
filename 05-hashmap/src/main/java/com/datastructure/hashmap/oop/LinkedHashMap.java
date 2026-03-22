@@ -166,13 +166,11 @@ public class LinkedHashMap<K, V> implements Map<K, V> {
 
     @Override
     public Set<K> keySet() {
-        Set<K> result = new HashSet<>();
-        for (int i = 0; i < capacity; i++) {
-            Entry<K, V> entry = buckets[i];
-            while (entry != null) {
-                result.add(entry.getKey());
-                entry =entry.getNext();
-            }
+        Set<K> result = new LinkedHashSet<>();
+        Entry<K, V> entry = head;
+        while(entry != null) {
+            result.add(entry.getKey());
+            entry = entry.after;
         }
         return result;
     }
@@ -180,24 +178,20 @@ public class LinkedHashMap<K, V> implements Map<K, V> {
     @Override
     public Collection<V> values() {
         List<V> result = new ArrayList<>();
-        for (int i =0; i < capacity; i++) {
-            Entry<K, V> entry = buckets[i];
-            while (entry != null) {
-                result.add(entry.getValue());
-                entry = entry.getNext();
-            }
+        Entry<K, V> entry = head;
+        while (entry != null) {
+            result.add(entry.getValue());
+            entry = entry.after;
         }
         return result;
     }
 
     public Set<Entry<K, V>> entrySet() {
-        Set<Entry<K, V>> result = new HashSet<>();
-        for (int i = 0; i < capacity; i++) {
-            Entry<K, V> entry = buckets[i];
-            while (entry != null) {
-                result.add(entry);
-                entry = entry.getNext();
-            }
+        Set<Entry<K, V>> result = new LinkedHashSet<>();
+        Entry<K, V> entry = head;
+        while (entry != null) {
+            result.add(entry);
+            entry = entry.after;
         }
         return result;
     }
