@@ -104,6 +104,16 @@ public class LinkedHashMap<K, V> implements Map<K, V> {
                 } else {
                     beforeEntry.setNext(entry.next);
                 }
+                if (entry.before != null) {
+                    entry.before.setAfter(entry.after);
+                } else {
+                    head = entry.after;
+                }
+                if (entry.after != null) {
+                    entry.after.setBefore(entry.before);
+                } else {
+                    tail = entry.before;
+                }
                 size--;
                 return entry.getValue();
             }
@@ -150,6 +160,8 @@ public class LinkedHashMap<K, V> implements Map<K, V> {
     public void clear() {
         this.buckets = new Entry[capacity];
         this.size = 0;
+        head = null;
+        tail = null;
     }
 
     @Override
