@@ -96,7 +96,18 @@ public class LinkedHashMap<K, V> implements Map<K, V> {
         return null; }
 
     @Override
-    public boolean containsKey(K key) { return false; }
+    public boolean containsKey(K key) {
+        int index = getIndex(key);
+        Entry<K, V> entry = buckets[index];
+
+        while (entry != null) {
+            if (entry.getKey() == key || (key != null && key.equals(entry.getKey()))) {
+                return true;
+            }
+            entry = entry.next;
+        }
+        return false;
+    }
 
     @Override
     public boolean containsValue(V value) { return false; }
