@@ -110,7 +110,18 @@ public class LinkedHashMap<K, V> implements Map<K, V> {
     }
 
     @Override
-    public boolean containsValue(V value) { return false; }
+    public boolean containsValue(V value) {
+        for (int i = 0; i < capacity; i++) {
+            Entry<K, V> entry = buckets[i];
+            while (entry != null) {
+                if (entry.getValue() == value || (value != null && value.equals(entry.getValue()))) {
+                    return true;
+                }
+                entry = entry.getNext();
+            }
+        }
+        return false;
+    }
 
     @Override
     public int size() { return 0; }
