@@ -62,6 +62,15 @@ public class LinkedHashMap<K, V> implements Map<K, V> {
 
     @Override
     public V get(K key) {
+        int index = getIndex(key);
+        Entry<K, V> entry = buckets[index];
+
+        while (entry != null) {
+            if (entry.getKey() == key || (key != null && key.equals(entry.getKey()))) {
+                return entry.getValue();
+            }
+            entry = entry.next;
+        }
         return null;
     }
 
