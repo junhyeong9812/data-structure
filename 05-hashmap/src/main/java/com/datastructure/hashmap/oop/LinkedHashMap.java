@@ -23,6 +23,8 @@ public class LinkedHashMap<K, V> implements Map<K, V> {
         public Entry<K , V> getNext() {return next;}
 
         public void setNext(Entry<K, V> entry) {this.next = entry;}
+
+        public void setValue(V value) {this.value = value;}
     }
 
     private Entry<K, V>[] buckets;
@@ -39,10 +41,29 @@ public class LinkedHashMap<K, V> implements Map<K, V> {
 
     @Override
     public V put(K key, V value) {
+        rehash();
+        int index = getIndex(key);
+        Entry<K, V> entry = buckets[index];
+
+        while (entry != null) {
+            if (entry.getKey() == key || (key != null && key.equals(entry.getKey()))) {
+                V oldValue = entry.getValue();
+                entry.setValue(value);
+                return oldValue;
+            }
+            entry = entry.next;
+        }
+
+        Entry<K, V> newEntry = new Entry<>(key, value);
+        newEntry.setNext(buckets[index]);
+        buckets[index] = newEntry;
+        size++;
         return null; }
 
     @Override
-    public V get(K key) { return null; }
+    public V get(K key) {
+        return null;
+    }
 
     @Override
     public V remove(K key) { return null; }
@@ -78,6 +99,12 @@ public class LinkedHashMap<K, V> implements Map<K, V> {
             return index;
         }
         return 0;
+    }
+
+    private void rehash() {
+        if ((float) size / capacity >= 0.75f) {
+            growCapacity();
+        }
     }
 
     @SuppressWarnings("unchecked")
