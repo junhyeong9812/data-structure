@@ -210,13 +210,45 @@ public class MyTestCase {
                 tree.delete(3);
 
                 assertThat(tree.size()).isEqualTo(4);
-                assertThat(tree.inorder()).containsExactlyInAnyOrder(1, 2, 4, 6);
+                assertThat(tree.inorder()).containsExactlyInAnyOrder(1, 2, 4, 5);
             }
         }
 
         @Nested
         @DisplayName("contains 메서드 테스트")
-        class ContainsTest {}
+        class ContainsTest {
+            @Test
+            @DisplayName("빈 트리에서는 false를 반환한다.")
+            void contains_returns_false_when_empty() {
+                boolean result = tree.contains(1);
+
+                assertThat(result).isFalse();
+            }
+
+            @Test
+            @DisplayName("존재하면 true를 반환한다.")
+            void contains_returns_true_when_exists() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+
+                boolean result = tree.contains(3);
+
+                assertThat(result).isTrue();
+            }
+
+            @Test
+            @DisplayName("존재하지 않으면 false를 반환한다.")
+            void contains_returns_false_when_not_exists() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+
+                boolean result = tree.contains(9);
+
+                assertThat(result).isFalse();
+            }
+        }
 
         @Nested
         @DisplayName("min 메서드 테스트")
