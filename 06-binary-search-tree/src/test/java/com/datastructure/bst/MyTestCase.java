@@ -77,11 +77,60 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("search 메서드 테스트")
-        class SearchTest {}
+        class SearchTest {
+
+            @Test
+            @DisplayName("빈 트리에서 조회 시 false를 반환한다.")
+            void search_returns_false_when_empty() {
+                boolean result = tree.search(1);
+
+                assertThat(tree.size()).isZero();
+                assertThat(tree.isEmpty()).isTrue();
+                assertThat(result).isFalse();
+            }
+
+            @Test
+            @DisplayName("값이 존재하면 true를 반환한다.")
+            void search_returns_true_when_exists() {
+                tree.insert(1);
+
+                boolean result = tree.search(1);
+
+                assertThat(result).isTrue();
+            }
+
+            @Test
+            @DisplayName("값이 없으면 false를 반환한다.")
+            void search_returns_false_when_not_exists() {
+                tree.insert(1);
+                tree.insert(2);
+                tree.insert(3);
+
+                boolean result = tree.search(4);
+
+                assertThat(result).isFalse();
+            }
+
+            @Test
+            @DisplayName("반복해서 조회해도 같은 값을 반환한다.")
+            void search_multiple_times_returns_same_result() {
+
+                tree.insert(1);
+                tree.insert(2);
+                tree.insert(3);
+
+                assertThat(tree.search(1)).isTrue();
+                assertThat(tree.search(1)).isTrue();
+                assertThat(tree.search(1)).isTrue();
+            }
+        }
 
         @Nested
         @DisplayName("delete 메서드 테스트")
-        class DeleteTest {}
+        class DeleteTest {
+
+
+        }
 
         @Nested
         @DisplayName("contains 메서드 테스트")
