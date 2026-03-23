@@ -129,7 +129,89 @@ public class MyTestCase {
         @DisplayName("delete 메서드 테스트")
         class DeleteTest {
 
+            @Test
+            @DisplayName("빈 트리에서 삭제 시 예외가 발생한다.")
+            void delete_throws_exception_when_empty() {
+                assertThatThrownBy(() -> tree.delete(1))
+                        .isInstanceOf(Exception.class);
+            }
 
+            @Test
+            @DisplayName("리프 노드를 삭제할 수 있다.")
+            void delete_leaf_node() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+
+                tree.delete(7);
+
+                assertThat(tree.size()).isEqualTo(2);
+                assertThat(tree.inorder()).containsExactly(3, 5);
+            }
+
+            @Test
+            @DisplayName("자식이 하나인 노드를 삭제할 수 있다.")
+            void delete_node_with_one_child() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+                tree.insert(9);
+
+                tree.delete(7);
+
+                assertThat(tree.size()).isEqualTo(3);
+                assertThat(tree.inorder()).containsExactly(3, 5, 9);
+            }
+
+            @Test
+            @DisplayName("자식이 둘인 노드를 삭제할 수 있다.")
+            void delete_node_with_two_children() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+                tree.insert(1);
+                tree.insert(4);
+
+                tree.delete(3);
+
+                assertThat(tree.size()).isEqualTo(4);
+                assertThat(tree.inorder()).containsExactly(1, 4, 5, 7);
+            }
+
+            @Test
+            @DisplayName("존재하지 않는 값을 삭제하면 예외가 발생한다.")
+            void delete_non_existent_value() {
+                assertThatThrownBy(() -> tree.delete(1))
+                        .isInstanceOf(Exception.class);
+            }
+
+            @Test
+            @DisplayName("삭제 후 size가 감소한다.")
+            void delete_decreases_size() {
+                tree.insert(1);
+                tree.insert(2);
+                tree.insert(3);
+                tree.insert(4);
+
+                tree.delete(3);
+
+                assertThat(tree.size()).isEqualTo(3);
+            }
+
+            @Test
+            @DisplayName("삭제 후 BST 속성이 유지된다.")
+            void delete_maintains_bst_property() {
+                tree.insert(1);
+                tree.insert(2);
+                tree.insert(3);
+                tree.insert(4);
+                tree.insert(5);
+
+                tree.delete(3);
+
+                assertThat(tree.size()).isEqualTo(4);
+                assertThat(tree.inorder()).containsExactlyInAnyOrder(1, 2, 4, 6);
+            }
         }
 
         @Nested
