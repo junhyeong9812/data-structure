@@ -319,7 +319,38 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("size 메서드 테스트")
-        class SizeTest {}
+        class SizeTest {
+            @Test
+            @DisplayName("빈 트리의 size는 0이다.")
+            void size_returns_zero_when_empty() {
+                assertThat(tree.size()).isZero();
+            }
+
+            @Test
+            @DisplayName("insert 시 size가 증가한다.")
+            void size_increases_after_insert() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+                assertThat(tree.size()).isEqualTo(3);
+
+                tree.insert(9);
+                assertThat(tree.size()).isEqualTo(4);
+
+            }
+
+            @Test
+            @DisplayName("delete 시 size가 감소한다.")
+            void size_decreases_after_delete() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+                assertThat(tree.size()).isEqualTo(3);
+
+                tree.delete(7);
+                assertThat(tree.size()).isEqualTo(2);
+            }
+        }
 
         @Nested
         @DisplayName("isEmpty 메서드 테스트")
