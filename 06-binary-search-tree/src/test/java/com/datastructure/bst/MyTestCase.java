@@ -286,7 +286,36 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("max 메서드 테스트")
-        class MaxTest {}
+        class MaxTest {
+            @Test
+            @DisplayName("빈 값일 경우 예외가 발생한다.")
+            void max_throws_exception_when_empty() {
+                assertThatThrownBy(() -> tree.max())
+                        .isInstanceOf(Exception.class);
+            }
+
+            @Test
+            @DisplayName("최댓값을 반환한다.")
+            void max_returns_maximum_value() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+
+                int result = tree.max();
+
+                assertThat(result).isEqualTo(7);
+            }
+
+            @Test
+            @DisplayName("노드가 하나면 그 값을 반환한다.")
+            void max_returns_single_node_value() {
+                tree.insert(5);
+
+                int result = tree.max();
+
+                assertThat(result).isEqualTo(5);
+            }
+        }
 
         @Nested
         @DisplayName("size 메서드 테스트")
