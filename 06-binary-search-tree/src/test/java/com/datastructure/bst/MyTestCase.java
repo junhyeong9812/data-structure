@@ -252,7 +252,37 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("min 메서드 테스트")
-        class MinTest {}
+        class MinTest {
+
+            @Test
+            @DisplayName("빈 값일 경우 예외가 발생한다.")
+            void min_throws_exception_when_empty() {
+                assertThatThrownBy(() -> tree.min())
+                        .isInstanceOf(Exception.class);
+            }
+
+            @Test
+            @DisplayName("최솟값을 반환한다.")
+            void min_returns_minimum_value() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+
+                int result = tree.min();
+
+                assertThat(result).isEqualTo(3);
+            }
+
+            @Test
+            @DisplayName("노드가 하나면 그 값을 반환한다.")
+            void min_returns_single_node_value() {
+                tree.insert(5);
+
+                int result = tree.min();
+
+                assertThat(result).isEqualTo(5);
+            }
+        }
 
         @Nested
         @DisplayName("max 메서드 테스트")
