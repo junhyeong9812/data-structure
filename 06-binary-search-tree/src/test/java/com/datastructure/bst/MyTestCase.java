@@ -354,7 +354,23 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("isEmpty 메서드 테스트")
-        class IsEmptyTest {}
+        class IsEmptyTest {
+
+            @Test
+            @DisplayName("빈 트리에서는 true를 반환한다.")
+            void isEmpty_returns_true_when_empty() {
+                assertThat(tree.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("요소가 있는 트리는 false를 반환한다.")
+            void isEmpty_returns_false_when_not_empty() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+                assertThat(tree.isEmpty()).isFalse();
+            }
+        }
 
         @Nested
         @DisplayName("clear 메서드 테스트")
