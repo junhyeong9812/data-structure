@@ -402,7 +402,44 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("height 메서드 테스트")
-        class HeightTest {}
+        class HeightTest {
+            @Test
+            @DisplayName("빈 트리는 결과가 0이다.")
+            void height_returns_zero() {
+                assertThat(tree.height()).isZero();
+            }
+
+            @Test
+            @DisplayName("루트가 1개인 트리의 결과는 1이다.")
+            void height_returns_one_for_single_node() {
+                tree.insert(5);
+
+                assertThat(tree.height()).isEqualTo(1);
+            }
+
+            @Test
+            @DisplayName("편향 트리는 결과가 편향된 높이이다.")
+            void height_returns_skewed_height() {
+                tree.insert(1);
+                tree.insert(2);
+                tree.insert(3);
+                tree.insert(4);
+                tree.insert(5);
+                tree.insert(6);
+
+                assertThat(tree.height()).isEqualTo(6);
+            }
+
+            @Test
+            @DisplayName("요소가 있는 트리는 리프 노드가 높이의 기준이 된다.")
+            void height_returns_height_based_on_deepest_leaf() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+                tree.insert(8);
+                assertThat(tree.height()).isEqualTo(3);
+            }
+        }
 
         @Nested
         @DisplayName("inorder 순회 테스트")
