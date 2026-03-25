@@ -437,13 +437,31 @@ public class MyTestCase {
                 tree.insert(3);
                 tree.insert(7);
                 tree.insert(8);
+
                 assertThat(tree.height()).isEqualTo(3);
             }
         }
 
         @Nested
         @DisplayName("inorder 순회 테스트")
-        class InorderTest {}
+        class InorderTest {
+            @Test
+            @DisplayName("빈 트리는 빈 배열이 반환된다.")
+            void inorder_returns_empty_list_when_empty() {
+                assertThat(tree.inorder()).isEmpty();
+            }
+
+            @Test
+            @DisplayName("요소가 존재하는 트리의 경우 정렬된 순서로 반횐된다.")
+            void inorder_returns_sorted_order() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+                tree.insert(8);
+
+                assertThat(tree.inorder()).containsExactly(3, 5, 7, 8);
+            }
+        }
 
         @Nested
         @DisplayName("preorder 순회 테스트")
