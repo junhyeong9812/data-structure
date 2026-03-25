@@ -374,7 +374,31 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("clear 메서드 테스트")
-        class ClearTest {}
+        class ClearTest {
+
+            @Test
+            @DisplayName("빈 tree는 초기화 된다.")
+            void clear_empty_tree_remains_empty() {
+                tree.clear();
+
+                assertThat(tree.size()).isZero();
+                assertThat(tree.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("요소가 있는 tree는 초기화된다.")
+            void clear_removes_all_nodes() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+                assertThat(tree.size()).isEqualTo(3);
+
+                tree.clear();
+
+                assertThat(tree.size()).isZero();
+                assertThat(tree.isEmpty()).isTrue();
+            }
+        }
 
         @Nested
         @DisplayName("height 메서드 테스트")
