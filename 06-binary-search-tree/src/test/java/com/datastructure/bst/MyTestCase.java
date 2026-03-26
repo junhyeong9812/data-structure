@@ -468,7 +468,9 @@ public class MyTestCase {
         class PreorderTest {
             @Test
             @DisplayName("빈 트리는 빈 배열이 반환된다.")
-            void preorder_returns_empty_list_when_empty() {}
+            void preorder_returns_empty_list_when_empty() {
+                assertThat(tree.preorder()).isEmpty();
+            }
 
             @Test
             @DisplayName("요소가 존재하는 트리의 경우 루트-왼쪽-오른쪽 순서로 반환된다.")
@@ -484,7 +486,24 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("postorder 순회 테스트")
-        class PostorderTest {}
+        class PostorderTest {
+            @Test
+            @DisplayName("빈 트리는 빈 배열이 반환된다.")
+            void postorder_returns_empty_list_when_empty() {
+                assertThat(tree.postorder()).isEmpty();
+            }
+
+            @Test
+            @DisplayName("요소가 존재하는 트리의 경우 왼쪽-오른쪽-루트 순서로 반환된다.")
+            void postorder_returns_root_left_right_order() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+                tree.insert(8);
+
+                assertThat(tree.postorder()).containsExactly(3, 8, 7, 5);
+            }
+        }
 
         @Nested
         @DisplayName("levelorder 순회 테스트")
