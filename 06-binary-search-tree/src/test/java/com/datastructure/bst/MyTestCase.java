@@ -507,7 +507,24 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("levelorder 순회 테스트")
-        class LevelorderTest {}
+        class LevelorderTest {
+            @Test
+            @DisplayName("빈 트리는 빈 배열이 반환된다.")
+            void levelorder_returns_empty_list_when_empty() {
+                assertThat(tree.levelorder()).isEmpty();
+            }
+
+            @Test
+            @DisplayName("요소가 존재하는 트리의 경우 레벨 순서로 반환된다.")
+            void levelorder_returns_level_order() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+                tree.insert(8);
+
+                assertThat(tree.levelorder()).containsExactly(5, 3, 7, 8);
+            }
+        }
 
         @Nested
         @DisplayName("floor 메서드 테스트")
