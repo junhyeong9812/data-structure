@@ -528,7 +528,47 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("floor 메서드 테스트")
-        class FloorTest {}
+        class FloorTest {
+
+            @Test
+            @DisplayName("빈 트리는 null을 반환한다.")
+            void floor_returns_null_when_empty() {
+                assertThat(tree.floor(5)).isNull();
+            }
+
+            @Test
+            @DisplayName("value보다 작은 값 중 최댓값을 반환한다.")
+            void floor_returns_largest_value_less_or_equal() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+                tree.insert(8);
+
+                assertThat(tree.floor(6)).isEqualTo(5);
+            }
+
+            @Test
+            @DisplayName("정확히 일치하는 값이 있으면 그 값을 반환한다.")
+            void floor_returns_exact_match() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+                tree.insert(8);
+
+                assertThat(tree.floor(7)).isEqualTo(7);
+            }
+
+            @Test
+            @DisplayName("모든 값보다 작은 값을 조회하면 null을 반환한다.")
+            void floor_returns_null_when_smaller_than_all() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+                tree.insert(8);
+
+                assertThat(tree.floor(1)).isNull();
+            }
+        }
 
         @Nested
         @DisplayName("ceiling 메서드 테스트")
