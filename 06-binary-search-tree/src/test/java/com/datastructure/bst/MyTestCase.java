@@ -615,7 +615,35 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("rank 메서드 테스트")
-        class RankTest {}
+        class RankTest {
+            @Test
+            @DisplayName("빈 트리는 null을 반환한다.")
+            void rank_returns_zero_when_empty() {
+                assertThat(tree.rank(3)).isNull();
+            }
+
+            @Test
+            @DisplayName("value보다 작은 키의 개수를 반환한다.")
+            void rank_returns_count_of_smaller_keys() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+                tree.insert(8);
+
+                assertThat(tree.rank(5)).isEqualTo(1);
+            }
+
+            @Test
+            @DisplayName("작은 키가 없으면 null을 반환한다.")
+            void rank_returns_zero_when_no_smaller_keys() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+                tree.insert(8);
+
+                assertThat(tree.rank(3)).isZero();
+            }
+        }
 
         @Nested
         @DisplayName("select 메서드 테스트")
