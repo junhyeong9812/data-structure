@@ -23,7 +23,12 @@ public class BinarySearchTree<T extends Comparable<T>> {
         root = insertNode(root, value);
     }
 
-    public boolean search(T value) { return false; }
+    public boolean search(T value) {
+        if (searchNode(root, value)!=null) {
+            return true;
+        }
+        return false;
+    }
     public void delete(T value) {}
     public boolean contains(T value) { return false; }
     public T min() { return null; }
@@ -55,5 +60,17 @@ public class BinarySearchTree<T extends Comparable<T>> {
             node.right = insertNode(node.right, value);
         }
         return node;
+    }
+
+    private TreeNode<T> searchNode(TreeNode<T> node, T value) {
+        if (node == null) return null;
+        int cmp = value.compareTo(node.value);
+        if (cmp == 0) {
+            return node;
+        } else if (cmp < 0) {
+            return searchNode(node.left, value);
+        } else {
+            return searchNode(node.right, value);
+        }
     }
 }
