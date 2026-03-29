@@ -647,11 +647,53 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("select 메서드 테스트")
-        class SelectTest {}
+        class SelectTest {
+            @Test
+            @DisplayName("빈 트리일 경우 null을 반환한다.")
+            void select_returns_null_when_empty() {
+                assertThat(tree.select(1)).isNull();
+            }
+
+            @Test
+            @DisplayName("k번째로 작은 값을 반환한다. (0-based)")
+            void select_returns_kth_smallest() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+                tree.insert(8);
+                // 정렬: 3, 5, 7, 8
+                assertThat(tree.select(0)).isEqualTo(3);
+                assertThat(tree.select(1)).isEqualTo(5);
+                assertThat(tree.select(2)).isEqualTo(7);
+                assertThat(tree.select(3)).isEqualTo(8);
+            }
+
+            @Test
+            @DisplayName("k가 범위를 벗어나면 null을 반환한다.")
+            void select_returns_null_when_out_of_range() {
+                tree.insert(5);
+                tree.insert(3);
+
+                assertThat(tree.select(5)).isNull();
+            }
+
+            @Test
+            @DisplayName("k가 0이면 가장 작은 값을 반환한다..")
+            void select_returns_smallest_when_k_is_zero() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+                tree.insert(8);
+
+                assertThat(tree.select(0)).isEqualTo(3);
+            }
+        }
 
         @Nested
         @DisplayName("predecessor 메서드 테스트")
-        class PredecessorTest {}
+        class PredecessorTest {
+
+        }
 
         @Nested
         @DisplayName("successor 메서드 테스트")
