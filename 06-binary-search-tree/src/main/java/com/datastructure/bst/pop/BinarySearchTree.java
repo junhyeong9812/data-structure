@@ -4,6 +4,20 @@ import java.util.List;
 
 public class BinarySearchTree<T extends Comparable<T>> {
 
+    private static class TreeNode<T> {
+        T value;
+        TreeNode<T> left;
+        TreeNode<T> right;
+
+        public TreeNode(T element) {
+            this.value = element;
+            this.left = null;
+            this.right = null;
+        }
+    }
+    private TreeNode<T> root;
+    private int size = 0;
+
     public void insert(T value) {}
     public boolean search(T value) { return false; }
     public void delete(T value) {}
