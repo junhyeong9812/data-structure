@@ -572,7 +572,46 @@ public class MyTestCase {
 
         @Nested
         @DisplayName("ceiling 메서드 테스트")
-        class CeilingTest {}
+        class CeilingTest {
+            @Test
+            @DisplayName("빈 트리는 null을 반환한다.")
+            void ceiling_returns_null_when_empty() {
+                assertThat(tree.ceiling(1)).isNull();
+            }
+
+            @Test
+            @DisplayName("value이상의 최솟값을 반환한다.")
+            void ceiling_returns_smallest_value_greater_or_equal() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+                tree.insert(8);
+
+                assertThat(tree.ceiling(4)).isEqualTo(5);
+            }
+
+            @Test
+            @DisplayName("정확히 일치하는 값이 있으면 그 값을 반환한다.")
+            void ceiling_returns_exact_match() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+                tree.insert(8);
+
+                assertThat(tree.ceiling(5)).isEqualTo(5);
+            }
+
+            @Test
+            @DisplayName("모든 값보다 큰 값을 조회하면 null을 반환한다.")
+            void ceiling_returns_null_when_larger_than_all() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+                tree.insert(8);
+
+                assertThat(tree.ceiling(9)).isNull();
+            }
+        }
 
         @Nested
         @DisplayName("rank 메서드 테스트")
