@@ -18,7 +18,11 @@ public class BinarySearchTree<T extends Comparable<T>> {
     private TreeNode<T> root;
     private int size = 0;
 
-    public void insert(T value) {}
+    public void insert(T value) {
+        if (value == null) throw new IllegalArgumentException();
+        root = insertNode(root, value);
+    }
+
     public boolean search(T value) { return false; }
     public void delete(T value) {}
     public boolean contains(T value) { return false; }
@@ -38,4 +42,18 @@ public class BinarySearchTree<T extends Comparable<T>> {
     public T select(int k) { return null; }
     public T predecessor(T value) { return null; }
     public T successor(T value) { return null; }
+
+    private TreeNode<T> insertNode(TreeNode<T> node, T value) {
+        if (node == null) {
+            size++;
+            return new TreeNode<>(value);
+        }
+        int cmp = value.compareTo(node.value);
+        if (cmp < 0) {
+            node.left = insertNode(node.left, value);
+        } else if (cmp > 0) {
+            node.right = insertNode(node.right, value);
+        }
+        return node;
+    }
 }
