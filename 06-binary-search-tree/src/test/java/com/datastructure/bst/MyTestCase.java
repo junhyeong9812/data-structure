@@ -692,7 +692,49 @@ public class MyTestCase {
         @Nested
         @DisplayName("predecessor 메서드 테스트")
         class PredecessorTest {
+            @Test
+            @DisplayName("빈 트리일 경우 null을 반환한다.")
+            void predecessor_returns_null_when_empty() {
+                assertThat(tree.predecessor(1)).isNull();
+            }
 
+            @Test
+            @DisplayName("중위 순회 기준으로 바로 이전 값을 반환한다.")
+            void predecessor_returns_previous_value() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+                tree.insert(8);
+
+                assertThat(tree.preorder()).containsExactly(5, 3, 7, 8);
+                assertThat(tree.predecessor(5)).isEqualTo(3);
+                assertThat(tree.predecessor(7)).isEqualTo(5);
+                assertThat(tree.predecessor(8)).isEqualTo(7);
+            }
+
+            @Test
+            @DisplayName("가장 작은 값의 predecessor는 null을 반환한다.")
+            void predecessor_returns_null_for_minimum() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+                tree.insert(8);
+
+                assertThat(tree.preorder()).containsExactly(5, 3, 7, 8);
+                assertThat(tree.predecessor(3)).isNull();
+            }
+
+            @Test
+            @DisplayName("트리에 없는 값을 넣으면 예외가 발생한다.")
+            void predecessor_throws_exception_when_not_exists() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+                tree.insert(8);
+
+                assertThat(tree.preorder()).containsExactly(5, 3, 7, 8);
+                assertThat(tree.predecessor(4)).isNull();
+            }
         }
 
         @Nested
