@@ -706,7 +706,7 @@ public class MyTestCase {
                 tree.insert(7);
                 tree.insert(8);
 
-                assertThat(tree.preorder()).containsExactly(5, 3, 7, 8);
+                assertThat(tree.inorder()).containsExactly(3, 5, 7, 8);
                 assertThat(tree.predecessor(5)).isEqualTo(3);
                 assertThat(tree.predecessor(7)).isEqualTo(5);
                 assertThat(tree.predecessor(8)).isEqualTo(7);
@@ -720,7 +720,7 @@ public class MyTestCase {
                 tree.insert(7);
                 tree.insert(8);
 
-                assertThat(tree.preorder()).containsExactly(5, 3, 7, 8);
+                assertThat(tree.inorder()).containsExactly(3, 5, 7, 8);
                 assertThat(tree.predecessor(3)).isNull();
             }
 
@@ -732,13 +732,57 @@ public class MyTestCase {
                 tree.insert(7);
                 tree.insert(8);
 
-                assertThat(tree.preorder()).containsExactly(5, 3, 7, 8);
-                assertThat(tree.predecessor(4)).isNull();
+                assertThat(tree.inorder()).containsExactly(3, 5, 7, 8);
+                assertThatThrownBy(() -> tree.predecessor(4)).isInstanceOf(Exception.class);
             }
         }
 
         @Nested
         @DisplayName("successor 메서드 테스트")
-        class SuccessorTest {}
+        class SuccessorTest {
+            @Test
+            @DisplayName("빈 트리일 경우 null을 반환한다.")
+            void successor_returns_null_when_empty() {
+                assertThat(tree.successor(1)).isNull();
+            }
+
+            @Test
+            @DisplayName("중위 순회 기준으로 바로 다음 값을 반환한다.")
+            void successor_returns_next_value() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+                tree.insert(8);
+
+                assertThat(tree.inorder()).containsExactly(3, 5, 7, 8);
+                assertThat(tree.successor(3)).isEqualTo(5);
+                assertThat(tree.successor(5)).isEqualTo(7);
+                assertThat(tree.successor(7)).isEqualTo(8);
+            }
+
+            @Test
+            @DisplayName("가장 큰 값의 successor는 null을 반환한다.")
+            void successor_returns_null_for_maximum() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+                tree.insert(8);
+
+                assertThat(tree.inorder()).containsExactly(3, 5, 7, 8);
+                assertThat(tree.successor(8)).isNull();
+            }
+
+            @Test
+            @DisplayName("트리에 없는 값을 넣으면 예외가 발생한다.")
+            void successor_throws_exception_when_not_exists() {
+                tree.insert(5);
+                tree.insert(3);
+                tree.insert(7);
+                tree.insert(8);
+
+                assertThat(tree.inorder()).containsExactly(3, 5, 7, 8);
+                assertThatThrownBy(() -> tree.successor(4)).isInstanceOf(Exception.class);
+            }
+        }
     }
 }
