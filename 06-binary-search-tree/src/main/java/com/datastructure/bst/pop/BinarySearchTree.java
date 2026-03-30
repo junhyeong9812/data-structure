@@ -47,9 +47,16 @@ public class BinarySearchTree<T extends Comparable<T>> {
         if (root == null) throw new IllegalStateException("빈 트리에는 사용할 수 없습니다.");
         return findMax(root).value;
     }
-    public int size() { return 0; }
-    public boolean isEmpty() { return true; }
-    public void clear() {}
+
+    public int size() { return size; }
+
+    public boolean isEmpty() { return size == 0; }
+
+    public void clear() {
+        root = null;
+        size = 0;
+    }
+
     public int height() { return 0; }
     public List<T> inorder() { return null; }
     public List<T> preorder() { return null; }
