@@ -24,10 +24,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     public boolean search(T value) {
-        if (searchNode(root, value)!=null) {
-            return true;
-        }
-        return false;
+        return searchNode(root, value)!=null;
     }
 
     public void delete(T value) {
@@ -57,8 +54,13 @@ public class BinarySearchTree<T extends Comparable<T>> {
         size = 0;
     }
 
-    public int height() { return 0; }
-    public List<T> inorder() { return null; }
+    public int height() {
+        return getHeight(root);
+    }
+
+    public List<T> inorder() {
+        return null;
+    }
     public List<T> preorder() { return null; }
     public List<T> postorder() { return null; }
     public List<T> levelorder() { return null; }
@@ -139,5 +141,10 @@ public class BinarySearchTree<T extends Comparable<T>> {
             node = node.right;
         }
         return node;
+    }
+
+    private int getHeight(TreeNode<T> node) {
+        if (node == null) return 0;
+        return 1 + Math.max(getHeight(node.left), getHeight(node.right));
     }
 }
