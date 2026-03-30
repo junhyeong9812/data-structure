@@ -1,5 +1,6 @@
 package com.datastructure.bst.pop;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BinarySearchTree<T extends Comparable<T>> {
@@ -59,7 +60,9 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     public List<T> inorder() {
-        return null;
+        List<T> result = new ArrayList<>();
+        getInOrder(root, result);
+        return result;
     }
     public List<T> preorder() { return null; }
     public List<T> postorder() { return null; }
@@ -146,5 +149,19 @@ public class BinarySearchTree<T extends Comparable<T>> {
     private int getHeight(TreeNode<T> node) {
         if (node == null) return 0;
         return 1 + Math.max(getHeight(node.left), getHeight(node.right));
+    }
+
+    private void getInOrder(TreeNode<T> node, List<T> inorders) {
+        if (node == null) return;
+        if (node.left != null) {
+            getInOrder(node.left, inorders);
+        }
+
+        inorders.add(node.value);
+
+        if (node.right != null) {
+            getInOrder(node.right, inorders);
+        }
+
     }
 }
