@@ -64,11 +64,18 @@ public class BinarySearchTree<T extends Comparable<T>> {
         getInOrder(root, result);
         return result;
     }
+
     public List<T> preorder() {
         List<T> result = new ArrayList<>();
         getPreOrder(root, result);
-        return result; }
-    public List<T> postorder() { return null; }
+        return result;
+    }
+
+    public List<T> postorder() {
+        List<T> result = new ArrayList<>();
+        getPostOrder(root, result);
+        return null;
+    }
     public List<T> levelorder() { return null; }
     public T floor(T value) { return null; }
     public T ceiling(T value) { return null; }
@@ -176,5 +183,16 @@ public class BinarySearchTree<T extends Comparable<T>> {
         if (node.right != null) {
             getPreOrder(node.right, preorder);
         }
+    }
+
+    private void getPostOrder(TreeNode<T> node, List<T> postorder) {
+        if (node == null) return;
+        if (node.left != null) {
+            getPostOrder(node.left, postorder);
+        }
+        if (node.right != null) {
+            getPostOrder(node.right, postorder);
+        }
+        postorder.add(node.value);
     }
 }
