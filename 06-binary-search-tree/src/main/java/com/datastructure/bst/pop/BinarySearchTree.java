@@ -29,15 +29,24 @@ public class BinarySearchTree<T extends Comparable<T>> {
         }
         return false;
     }
-    public void delete(T value) {
 
+    public void delete(T value) {
         root = deleteNode(root, value);
     }
+
     public boolean contains(T value) {
         return search(value);
     }
-    public T min() { return null; }
-    public T max() { return null; }
+
+    public T min() {
+        if (root == null) throw new IllegalStateException("빈 트리에는 사용할 수 없습니다.");
+        return findMin(root).value;
+    }
+
+    public T max() {
+        if (root == null) throw new IllegalStateException("빈 트리에는 사용할 수 없습니다.");
+        return findMax(root).value;
+    }
     public int size() { return 0; }
     public boolean isEmpty() { return true; }
     public void clear() {}
@@ -114,6 +123,13 @@ public class BinarySearchTree<T extends Comparable<T>> {
     private TreeNode<T> findMin(TreeNode<T> node) {
         while (node.left != null) {
             node = node.left;
+        }
+        return node;
+    }
+
+    private TreeNode<T> findMax(TreeNode<T> node) {
+        while (node.right != null) {
+            node = node.right;
         }
         return node;
     }
