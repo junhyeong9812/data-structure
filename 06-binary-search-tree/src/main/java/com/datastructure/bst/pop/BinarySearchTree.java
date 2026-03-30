@@ -29,7 +29,10 @@ public class BinarySearchTree<T extends Comparable<T>> {
         }
         return false;
     }
-    public void delete(T value) {}
+    public void delete(T value) {
+
+        root = deleteNode(root, value);
+    }
     public boolean contains(T value) { return false; }
     public T min() { return null; }
     public T max() { return null; }
@@ -72,5 +75,44 @@ public class BinarySearchTree<T extends Comparable<T>> {
         } else {
             return searchNode(node.right, value);
         }
+    }
+
+    private TreeNode<T> deleteNode(TreeNode<T> node, T value) {
+        if (node == null) throw new IllegalArgumentException();
+        int cmp = value.compareTo(node.value);
+        if (cmp < 0) {
+            node.left = deleteNode(node.left, value);
+        } else if (cmp > 0) {
+            node.right = deleteNode(node.right, value);
+        } else {
+            // Case 1: 리프 노드
+            if (node.left == null && node.right == null) {
+                size--;
+                return null;
+            }
+
+            // Case 2: 자식 하나
+            if (node.left == null) {
+                size--;
+                return node.right;
+            }
+            if (node.right == null) {
+                size--;
+                return node.left;
+            }
+
+            // Case 3: 자식 둘 - 오른쪽 서브 트리의 최솟값으로 대체
+            TreeNode<T> successor = findMin(node.right);
+            node.value = successor.value;
+            node.right = deleteNode(node.right, successor.value);
+        }
+        return node;
+    }
+
+    private TreeNode<T> findMin(TreeNode<T> node) {
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node;
     }
 }
