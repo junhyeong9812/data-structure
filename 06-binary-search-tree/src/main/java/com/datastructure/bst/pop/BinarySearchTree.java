@@ -33,7 +33,9 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
         root = deleteNode(root, value);
     }
-    public boolean contains(T value) { return false; }
+    public boolean contains(T value) {
+        return search(value);
+    }
     public T min() { return null; }
     public T max() { return null; }
     public int size() { return 0; }
