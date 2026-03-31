@@ -107,7 +107,19 @@ public class BinarySearchTree<T extends Comparable<T>> {
         return node.value;
     }
 
-    public T ceiling(T value) { return null; }
+    public T ceiling(T value) {
+        return findCeiling(root, value);
+    }
+
+    private T findCeiling(TreeNode<T> node, T value) {
+        if (node == null) return null;
+        int cmp = value.compareTo(node.value);
+        if (cmp == 0) return node.value;
+        if (cmp > 0) return findCeiling(node.right, value);
+        T left = findCeiling(node.left, value);
+        if (left != null) return left;
+        return node.value;
+    }
     public int rank(T value) { return 0; }
     public T select(int k) { return null; }
     public T predecessor(T value) { return null; }
