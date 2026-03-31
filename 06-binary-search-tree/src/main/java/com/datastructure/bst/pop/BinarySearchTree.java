@@ -1,6 +1,8 @@
 package com.datastructure.bst.pop;
 
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 
 public class BinarySearchTree<T extends Comparable<T>> {
@@ -76,7 +78,21 @@ public class BinarySearchTree<T extends Comparable<T>> {
         getPostOrder(root, result);
         return null;
     }
-    public List<T> levelorder() { return null; }
+    public List<T> levelorder() {
+        Deque<TreeNode<T>> deque = new LinkedList<>();
+        List<T> result = new ArrayList<>();
+        if (root == null) return result;
+        deque.add(root);
+        while(!deque.isEmpty()) {
+            TreeNode<T> node = deque.pop();
+            result.add(node.value);
+            if (node.left != null) {deque.add(node.left);}
+            if (node.right != null) {deque.add(node.right);}
+
+        }
+        return result;
+    }
+
     public T floor(T value) { return null; }
     public T ceiling(T value) { return null; }
     public int rank(T value) { return 0; }
