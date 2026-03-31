@@ -93,7 +93,20 @@ public class BinarySearchTree<T extends Comparable<T>> {
         return result;
     }
 
-    public T floor(T value) { return null; }
+    public T floor(T value) {
+        return findFloor(root, value);
+    }
+
+    private T findFloor(TreeNode<T> node, T value) {
+        if (node == null) return null;
+        int cmp = value.compareTo(node.value);
+        if (cmp == 0) return node.value;
+        if (cmp < 0) return findFloor(node.left, value);
+        T right = findFloor(node.right, value);
+        if (right != null) return right;
+        return node.value;
+    }
+
     public T ceiling(T value) { return null; }
     public int rank(T value) { return 0; }
     public T select(int k) { return null; }
