@@ -140,7 +140,13 @@ public class BinarySearchTree<T extends Comparable<T>> {
         return 0;
     }
 
-    public T select(int k) { return null; }
+    public T select(int k) {
+        List<T> values = inorder();
+        if (k < 0 || k >= values.size()) return null;
+        return values.get(k);
+    }
+
+
     public T predecessor(T value) { return null; }
     public T successor(T value) { return null; }
 
