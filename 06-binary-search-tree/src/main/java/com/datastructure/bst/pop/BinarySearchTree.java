@@ -1,11 +1,8 @@
 package com.datastructure.bst.pop;
 
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
-public class BinarySearchTree<T extends Comparable<T>> {
+public class BinarySearchTree<T extends Comparable<T>> implements Iterable<T>{
 
     private static class TreeNode<T> {
         T value;
@@ -162,6 +159,10 @@ public class BinarySearchTree<T extends Comparable<T>> {
         if (index == -1) throw new IllegalArgumentException("트리에 존재하지 않는 값입니다.");
         if (index == values.size() - 1) return null;
         return values.get(index + 1);
+    }
+
+    public Iterator<T> iterator() {
+        return inorder().iterator();
     }
 
     private TreeNode<T> insertNode(TreeNode<T> node, T value) {
