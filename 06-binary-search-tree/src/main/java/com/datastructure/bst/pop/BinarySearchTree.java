@@ -76,7 +76,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     public List<T> postorder() {
         List<T> result = new ArrayList<>();
         getPostOrder(root, result);
-        return null;
+        return result;
     }
     public List<T> levelorder() {
         Deque<TreeNode<T>> deque = new LinkedList<>();
@@ -148,6 +148,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
     public T predecessor(T value) {
         List<T> values = inorder();
+        if (values.isEmpty()) return null;
         int index = values.indexOf(value);
         if (index == -1) throw new IllegalArgumentException("트리에 존재하지 않는 값입니다.");
         if (index == 0) return null;
@@ -156,6 +157,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
     public T successor(T value) {
         List<T> values = inorder();
+        if (values.isEmpty()) return null;
         int index = values.indexOf(value);
         if (index == -1) throw new IllegalArgumentException("트리에 존재하지 않는 값입니다.");
         if (index == values.size() - 1) return null;
