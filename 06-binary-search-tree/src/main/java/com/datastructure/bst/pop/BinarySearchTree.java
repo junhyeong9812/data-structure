@@ -120,7 +120,26 @@ public class BinarySearchTree<T extends Comparable<T>> {
         if (left != null) return left;
         return node.value;
     }
-    public int rank(T value) { return 0; }
+
+    public int rank(T value) {
+        return calculateRank(root, value);
+    }
+
+    private int calculateRank(TreeNode<T> node, T value) {
+        if (node == null) return 0;
+        int cmp = value.compareTo(node.value);
+        if (cmp > 0) {
+            return calculateRank(node.left, value) + calculateRank(node.right, value) + 1;
+        }
+        if (cmp == 0) {
+            return calculateRank(node.left, value);
+        }
+        if (cmp < 0) {
+            return  calculateRank(node.left, value);
+        }
+        return 0;
+    }
+
     public T select(int k) { return null; }
     public T predecessor(T value) { return null; }
     public T successor(T value) { return null; }
