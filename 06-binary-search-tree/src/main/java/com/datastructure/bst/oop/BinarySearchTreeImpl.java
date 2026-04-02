@@ -24,6 +24,8 @@ public class BinarySearchTreeImpl<T extends Comparable<T>> implements BST<T> {
             this.right = right;
         }
 
+        public T getValue() {return value;}
+
         public TreeNode<T> getLeft() {return left;}
 
         public TreeNode<T> getRight() {return right;}
@@ -33,7 +35,35 @@ public class BinarySearchTreeImpl<T extends Comparable<T>> implements BST<T> {
     private int size = 0;
 
     @Override
-    public void insert(T value) {}
+    public void insert(T value) {
+        if (value == null) throw new IllegalArgumentException("null은 넣을 수 없습니다.");
+        if (root == null) {
+            root = new TreeNode<T>(value);
+            size++;
+        }
+        else setNode(root, value);
+    }
+
+    private void setNode(TreeNode<T> node, T value) {
+        int cmp = value.compareTo(node.getValue());
+        if (cmp < 0) {
+            if(node.getLeft() == null) {
+                node.setLeft(new TreeNode(value));
+                size++;
+                return;
+            }
+            setNode(node.left, value);
+        }
+        if (cmp > 0) {
+            if(node.getRight() == null) {
+                node.setRight(new TreeNode(value));
+                size++;
+                return;
+            }
+            setNode(node.right, value);
+        }
+    }
+
     @Override
     public boolean search(T value) { return false; }
     @Override
