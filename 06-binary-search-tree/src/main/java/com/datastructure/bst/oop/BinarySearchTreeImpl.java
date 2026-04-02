@@ -65,7 +65,20 @@ public class BinarySearchTreeImpl<T extends Comparable<T>> implements BST<T> {
     }
 
     @Override
-    public boolean search(T value) { return false; }
+    public boolean search(T value) {
+        return getValue(root, value);
+    }
+
+    private boolean getValue(TreeNode<T> node, T value) {
+        if (node == null) return false;
+        if (value == null) throw new IllegalArgumentException("null은 비교할 수 없습니다.");
+        int cmp = value.compareTo(node.value);
+        if (cmp == 0) { return true; }
+        if (cmp > 0) { return getValue(node.right, value);}
+        if (cmp < 0) { return getValue(node.left, value);}
+        return false;
+    }
+
     @Override
     public void delete(T value) {}
     @Override
