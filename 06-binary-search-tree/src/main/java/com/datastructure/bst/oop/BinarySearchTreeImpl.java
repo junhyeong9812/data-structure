@@ -5,6 +5,33 @@ import java.util.List;
 
 public class BinarySearchTreeImpl<T extends Comparable<T>> implements BST<T> {
 
+    private class TreeNode<T> {
+        private T value;
+        private TreeNode<T> left;
+        private TreeNode<T> right;
+
+        public TreeNode(T value) {
+            this.value = value;
+            this.left = null;
+            this.right = null;
+        }
+
+        public void setLeft(TreeNode<T> left) {
+            this.left = left;
+        }
+
+        public void setRight(TreeNode<T> right) {
+            this.right = right;
+        }
+
+        public TreeNode<T> getLeft() {return left;}
+
+        public TreeNode<T> getRight() {return right;}
+    }
+
+    private TreeNode<T> root;
+    private int size = 0;
+
     @Override
     public void insert(T value) {}
     @Override
