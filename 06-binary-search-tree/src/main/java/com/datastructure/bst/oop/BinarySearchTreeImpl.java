@@ -113,9 +113,38 @@ public class BinarySearchTreeImpl<T extends Comparable<T>> implements BST<T> {
     }
 
     @Override
-    public List<T> preorder() { return null; }
+    public List<T> preorder() {
+        List<T> result = new ArrayList<>();
+        getPreOrder(root, result);
+        return result;
+    }
+
+    private void getPreOrder(TreeNode<T> node, List<T> result) {
+        if (node == null) return;
+        result.add(node.value);
+        if (node.left != null) {
+            getInOrder(node.left, result);
+        }
+        if (node.right != null) {
+            getInOrder(node.right, result);
+        }
+    }
     @Override
-    public List<T> postorder() { return null; }
+    public List<T> postorder() {
+        List<T> result = new ArrayList<>();
+        getPostOrder(root, result);
+        return result; }
+
+    private void getPostOrder(TreeNode<T> node, List<T> result) {
+        if (node == null) return;
+        if (node.left != null) {
+            getPostOrder(node.left, result);
+        }
+        if (node.right != null) {
+            getPostOrder(node.right, result);
+        }
+        result.add(node.value);
+    }
     @Override
     public List<T> levelorder() { return null; }
     @Override
