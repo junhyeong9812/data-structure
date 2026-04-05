@@ -1,5 +1,6 @@
 package com.datastructure.bst.oop;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -95,7 +96,22 @@ public class BinarySearchTreeImpl<T extends Comparable<T>> implements BST<T> {
     }
 
     @Override
-    public List<T> inorder() { return null; }
+    public List<T> inorder() {
+        List<T> result = new ArrayList<>();
+        getInOrder(root, result);
+        return result; }
+
+    private void getInOrder(TreeNode<T> node, List<T> result) {
+        if (node == null) return;
+        if (node.left != null) {
+            getInOrder(node.left, result);
+        }
+        result.add(node.value);
+        if (node.right != null) {
+            getInOrder(node.right, result);
+        }
+    }
+
     @Override
     public List<T> preorder() { return null; }
     @Override
