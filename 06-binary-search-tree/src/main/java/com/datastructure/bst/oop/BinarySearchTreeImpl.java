@@ -44,6 +44,58 @@ public class BinarySearchTreeImpl<T extends Comparable<T>> implements BST<T> {
         else setNode(root, value);
     }
 
+    @Override
+    public boolean search(T value) {
+        return getValue(root, value) != null;
+    }
+
+    @Override
+    public void delete(T value) {
+        root = deleteNode(root, value);
+    }
+
+    @Override
+    public boolean contains(T value) { return false; }
+    @Override
+    public T min() { return findMin(root).value; }
+    @Override
+    public T max() { return findMax(root).value; }
+
+    @Override
+    public int size() { return size; }
+    @Override
+    public boolean isEmpty() { return size==0; }
+    @Override
+    public void clear() {
+        this.root = null;
+        this.size = 0;
+    }
+
+    @Override
+    public int height() { return 0; }
+    @Override
+    public List<T> inorder() { return null; }
+    @Override
+    public List<T> preorder() { return null; }
+    @Override
+    public List<T> postorder() { return null; }
+    @Override
+    public List<T> levelorder() { return null; }
+    @Override
+    public T floor(T value) { return null; }
+    @Override
+    public T ceiling(T value) { return null; }
+    @Override
+    public int rank(T value) { return 0; }
+    @Override
+    public T select(int k) { return null; }
+    @Override
+    public T predecessor(T value) { return null; }
+    @Override
+    public T successor(T value) { return null; }
+    @Override
+    public Iterator<T> iterator() { return null; }
+
     private void setNode(TreeNode<T> node, T value) {
         int cmp = value.compareTo(node.getValue());
         if (cmp < 0) {
@@ -64,10 +116,6 @@ public class BinarySearchTreeImpl<T extends Comparable<T>> implements BST<T> {
         }
     }
 
-    @Override
-    public boolean search(T value) {
-        return getValue(root, value) != null;
-    }
 
     private TreeNode<T> getValue(TreeNode<T> node, T value) {
         if (node == null) return null;
@@ -77,11 +125,6 @@ public class BinarySearchTreeImpl<T extends Comparable<T>> implements BST<T> {
         if (cmp > 0) { return getValue(node.right, value);}
         if (cmp < 0) { return getValue(node.left, value);}
         return null;
-    }
-
-    @Override
-    public void delete(T value) {
-        root = deleteNode(root, value);
     }
 
     private TreeNode<T> deleteNode(TreeNode<T> node, T value) {
@@ -120,40 +163,10 @@ public class BinarySearchTreeImpl<T extends Comparable<T>> implements BST<T> {
         return node;
     }
 
-    @Override
-    public boolean contains(T value) { return false; }
-    @Override
-    public T min() { return null; }
-    @Override
-    public T max() { return null; }
-    @Override
-    public int size() { return 0; }
-    @Override
-    public boolean isEmpty() { return true; }
-    @Override
-    public void clear() {}
-    @Override
-    public int height() { return 0; }
-    @Override
-    public List<T> inorder() { return null; }
-    @Override
-    public List<T> preorder() { return null; }
-    @Override
-    public List<T> postorder() { return null; }
-    @Override
-    public List<T> levelorder() { return null; }
-    @Override
-    public T floor(T value) { return null; }
-    @Override
-    public T ceiling(T value) { return null; }
-    @Override
-    public int rank(T value) { return 0; }
-    @Override
-    public T select(int k) { return null; }
-    @Override
-    public T predecessor(T value) { return null; }
-    @Override
-    public T successor(T value) { return null; }
-    @Override
-    public Iterator<T> iterator() { return null; }
+    private TreeNode<T> findMax(TreeNode<T> node) {
+        while (node.right != null) {
+            node = node.left;
+        }
+        return node;
+    }
 }
