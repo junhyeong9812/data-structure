@@ -55,11 +55,17 @@ public class BinarySearchTreeImpl<T extends Comparable<T>> implements BST<T> {
     }
 
     @Override
-    public boolean contains(T value) { return false; }
+    public boolean contains(T value) { return search(value); }
     @Override
-    public T min() { return findMin(root).value; }
+    public T min() {
+        if (root == null) throw new IllegalStateException("빈 트리에는 사용할 수 없습니다.");
+        return findMin(root).value;
+    }
     @Override
-    public T max() { return findMax(root).value; }
+    public T max() {
+        if (root == null) throw new IllegalStateException("빈 트리에는 사용할 수 없습니다.");
+        return findMax(root).value;
+    }
 
     @Override
     public int size() { return size; }
@@ -72,7 +78,22 @@ public class BinarySearchTreeImpl<T extends Comparable<T>> implements BST<T> {
     }
 
     @Override
-    public int height() { return 0; }
+    public int height() { return getHeight(root); }
+
+    private int getHeight(TreeNode<T> node) {
+        if (node == null) return 0;
+        if (node.left != null && node.right != null) {
+            return Math.max(getHeight(node.left), getHeight(node.right)) + 1;
+        }
+        if (node.left != null) {
+            return getHeight(node.left) + 1;
+        }
+        if (node.right != null) {
+            return getHeight(node.right) + 1;
+        }
+        return 1;
+    }
+
     @Override
     public List<T> inorder() { return null; }
     @Override
@@ -165,7 +186,7 @@ public class BinarySearchTreeImpl<T extends Comparable<T>> implements BST<T> {
 
     private TreeNode<T> findMax(TreeNode<T> node) {
         while (node.right != null) {
-            node = node.left;
+            node = node.right;
         }
         return node;
     }
