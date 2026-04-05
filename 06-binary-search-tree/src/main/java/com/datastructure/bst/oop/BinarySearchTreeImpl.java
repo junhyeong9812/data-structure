@@ -66,21 +66,60 @@ public class BinarySearchTreeImpl<T extends Comparable<T>> implements BST<T> {
 
     @Override
     public boolean search(T value) {
-        return getValue(root, value);
+        return getValue(root, value) != null;
     }
 
-    private boolean getValue(TreeNode<T> node, T value) {
-        if (node == null) return false;
+    private TreeNode<T> getValue(TreeNode<T> node, T value) {
+        if (node == null) return null;
         if (value == null) throw new IllegalArgumentException("null은 비교할 수 없습니다.");
         int cmp = value.compareTo(node.value);
-        if (cmp == 0) { return true; }
+        if (cmp == 0) { return node; }
         if (cmp > 0) { return getValue(node.right, value);}
         if (cmp < 0) { return getValue(node.left, value);}
-        return false;
+        return null;
     }
 
     @Override
-    public void delete(T value) {}
+    public void delete(T value) {
+        root = deleteNode(root, value);
+    }
+
+    private TreeNode<T> deleteNode(TreeNode<T> node, T value) {
+        if (node == null) throw new IllegalArgumentException();
+        int cmp = value.compareTo(node.value);
+        if (cmp < 0) {
+            node.left = deleteNode(node.left, value);
+        } else if (cmp > 0) {
+            node.right = deleteNode(node.right, value);
+        } else {
+            if (node.left == null && node.right == null) {
+                size--;
+                return null;
+            }
+
+            if (node.left == null) {
+                size--;
+                return node.right;
+            }
+            if (node.right == null) {
+                size--;
+                return node.left;
+            }
+
+            TreeNode<T> successor = findMin(node.right);
+            node.value = successor.value;
+            node.right = deleteNode(node.right, successor.value);
+        }
+        return node;
+    }
+
+    private TreeNode<T> findMin(TreeNode<T> node) {
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node;
+    }
+
     @Override
     public boolean contains(T value) { return false; }
     @Override
