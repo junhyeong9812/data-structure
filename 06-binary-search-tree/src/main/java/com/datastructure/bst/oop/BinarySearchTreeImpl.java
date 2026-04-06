@@ -178,7 +178,18 @@ public class BinarySearchTreeImpl<T extends Comparable<T>> implements BST<T> {
     }
 
     @Override
-    public T ceiling(T value) { return null; }
+    public T ceiling(T value) { return findCeiling(root, value); }
+
+    private T findCeiling(TreeNode<T> node, T value) {
+        if (node == null) return null;
+        int cmp = value.compareTo(node.value);
+        if (cmp == 0) return node.value;
+        if (cmp > 0) return findCeiling(node.right, value);
+        T left = findCeiling(node.left, value);
+        if (left != null) return left;
+        return node.value;
+    }
+
     @Override
     public int rank(T value) { return 0; }
     @Override
