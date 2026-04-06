@@ -212,9 +212,17 @@ public class BinarySearchTreeImpl<T extends Comparable<T>> implements BST<T> {
     public T select(int k) {
         List<T> values = inorder();
         if (k < 0 || k >= values.size()) return null;
-        return values.get(k); }
+        return values.get(k);
+    }
+
     @Override
-    public T predecessor(T value) { return null; }
+    public T predecessor(T value) {
+        List<T> values = inorder();
+        if (values.isEmpty()) return null;
+        int index = values.indexOf(value);
+        if (index == -1) throw new IllegalArgumentException("트리에 존재하지 않는 값입니다.");
+        if (index == 0) return null;
+        return values.get(index - 1); }
     @Override
     public T successor(T value) { return null; }
     @Override
