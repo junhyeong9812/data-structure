@@ -162,7 +162,21 @@ public class BinarySearchTreeImpl<T extends Comparable<T>> implements BST<T> {
         return result;
     }
     @Override
-    public T floor(T value) { return null; }
+    public T floor(T value) {
+        return findFloor(root, value);
+    }
+
+    private T findFloor(TreeNode<T> node, T value) {
+        if (value == null) return null;
+        if (node == null) return null;
+        int cmp = value.compareTo(node.value);
+        if (cmp == 0) return node.value;
+        if (cmp < 0) return findFloor(node.left, value);
+        T right = findFloor(node.right, value);
+        if (right != null) return right;
+        return node.value;
+    }
+
     @Override
     public T ceiling(T value) { return null; }
     @Override
