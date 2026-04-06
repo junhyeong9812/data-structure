@@ -1,8 +1,6 @@
 package com.datastructure.bst.oop;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class BinarySearchTreeImpl<T extends Comparable<T>> implements BST<T> {
 
@@ -146,7 +144,23 @@ public class BinarySearchTreeImpl<T extends Comparable<T>> implements BST<T> {
         result.add(node.value);
     }
     @Override
-    public List<T> levelorder() { return null; }
+    public List<T> levelorder() {
+        Deque<TreeNode<T>> nodes = new LinkedList<TreeNode<T>>();
+        List<T> result = new ArrayList<>();
+        if (root == null) return result;
+        nodes.add(root);
+        while (!nodes.isEmpty()) {
+            TreeNode<T> node = nodes.pop();
+            result.add(node.value);
+            if (node.left != null) {
+                nodes.add(node.left);
+            }
+            if (node.right != null) {
+                nodes.add(node.right);
+            }
+        }
+        return result;
+    }
     @Override
     public T floor(T value) { return null; }
     @Override
