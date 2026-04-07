@@ -166,17 +166,6 @@ public class BinarySearchTreeImpl<T extends Comparable<T>> implements BST<T> {
         return findFloor(root, value);
     }
 
-    private T findFloor(TreeNode<T> node, T value) {
-        if (value == null) return null;
-        if (node == null) return null;
-        int cmp = value.compareTo(node.value);
-        if (cmp == 0) return node.value;
-        if (cmp < 0) return findFloor(node.left, value);
-        T right = findFloor(node.right, value);
-        if (right != null) return right;
-        return node.value;
-    }
-
     @Override
     public T ceiling(T value) { return findCeiling(root, value); }
 
@@ -192,21 +181,6 @@ public class BinarySearchTreeImpl<T extends Comparable<T>> implements BST<T> {
 
     @Override
     public int rank(T value) { return calculateRank(root, value); }
-
-    private int calculateRank(TreeNode<T> node, T value) {
-        if (node == null) return 0;
-        int cmp = value.compareTo(node.value);
-        if (cmp > 0) {
-            return calculateRank(node.left, value) + calculateRank(node.right, value) + 1;
-        }
-        if (cmp == 0) {
-            return calculateRank(node.left, value);
-        }
-        if (cmp < 0) {
-            return calculateRank(node.left, value);
-        }
-        return 0;
-    }
 
     @Override
     public T select(int k) {
@@ -235,7 +209,7 @@ public class BinarySearchTreeImpl<T extends Comparable<T>> implements BST<T> {
         return values.get(index + 1);
     }
     @Override
-    public Iterator<T> iterator() { return null; }
+    public Iterator<T> iterator() { return inorder().iterator(); }
 
     private void setNode(TreeNode<T> node, T value) {
         int cmp = value.compareTo(node.getValue());
@@ -309,5 +283,31 @@ public class BinarySearchTreeImpl<T extends Comparable<T>> implements BST<T> {
             node = node.right;
         }
         return node;
+    }
+
+    private int calculateRank(TreeNode<T> node, T value) {
+        if (node == null) return 0;
+        int cmp = value.compareTo(node.value);
+        if (cmp > 0) {
+            return calculateRank(node.left, value) + calculateRank(node.right, value) + 1;
+        }
+        if (cmp == 0) {
+            return calculateRank(node.left, value);
+        }
+        if (cmp < 0) {
+            return calculateRank(node.left, value);
+        }
+        return 0;
+    }
+
+    private T findFloor(TreeNode<T> node, T value) {
+        if (value == null) return null;
+        if (node == null) return null;
+        int cmp = value.compareTo(node.value);
+        if (cmp == 0) return node.value;
+        if (cmp < 0) return findFloor(node.left, value);
+        T right = findFloor(node.right, value);
+        if (right != null) return right;
+        return node.value;
     }
 }
