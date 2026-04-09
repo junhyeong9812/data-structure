@@ -1,28 +1,28 @@
 package com.datastructure.heap.pop;
 
-public class MaxHeap {
+public class MaxHeap<E extends Comparable<E>> {
 
     public MaxHeap() {}
     public MaxHeap(int initialCapacity) {}
 
-    public void insert(int value) {}
-    public boolean offer(int value) { return false; }
+    public void insert(E value) {}
+    public boolean offer(E value) { return false; }
 
-    public int extractMax() { return 0; }
-    public Integer poll() { return null; }
+    public E extractMax() { return null; }
+    public E poll() { return null; }
 
-    public int getMax() { return 0; }
-    public Integer peek() { return null; }
+    public E getMax() { return null; }
+    public E peek() { return null; }
 
     public int size() { return 0; }
     public boolean isEmpty() { return false; }
     public void clear() {}
 
-    public static MaxHeap heapify(int[] array) { return null; }
+    public static <E extends Comparable<E>> MaxHeap<E> heapify(E[] array) { return null; }
 
-    public void increaseKey(int index, int newValue) {}
+    public void increaseKey(int index, E newValue) {}
 
-    public int delete(int index) { return 0; }
+    public E delete(int index) { return null; }
 
-    public MaxHeap merge(MaxHeap other) { return null; }
+    public MaxHeap<E> merge(MaxHeap<E> other) { return null; }
 }
