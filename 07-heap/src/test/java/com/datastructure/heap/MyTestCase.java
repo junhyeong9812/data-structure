@@ -85,7 +85,60 @@ public class MyTestCase {
         }
 
         @Nested @DisplayName("offer 메서드 테스트")
-        class OfferTest {}
+        class OfferTest {
+            @Test @DisplayName("빈 heap에 요소를 추가할 수 있다.")
+            void offer_into_empty_heap() {
+                heap.offer(1);
+
+                assertThat(heap.peek()).isEqualTo(1);
+                assertThat(heap.isEmpty()).isFalse();
+                assertThat(heap.size()).isOne();
+            }
+
+            @Test @DisplayName("요소가 있는 heap에 요소를 추가할 수있다.")
+            void offer_into_non_empty_heap() {
+                heap.offer(1);
+                heap.offer(5);
+                heap.offer(3);
+
+                assertThat(heap.peek()).isEqualTo(5);
+                assertThat(heap.isEmpty()).isFalse();
+                assertThat(heap.size()).isEqualTo(3);
+            }
+
+            @Test @DisplayName("삽입 시 최댓값이 루트에 위치한다.")
+            void offer_maintains_max_heap_property() {
+                heap.offer(3);
+                heap.offer(1);
+                heap.offer(5);
+                heap.offer(2);
+                heap.offer(4);
+
+                assertThat(heap.peek()).isEqualTo(5);
+            }
+
+            @Test @DisplayName("중복 값을 추가할 수 있다.")
+            void offer_duplicate_values() {
+                heap.offer(3);
+                heap.offer(3);
+
+                assertThat(heap.size()).isEqualTo(2);
+                assertThat(heap.peek()).isEqualTo(3);
+            }
+
+            @Test @DisplayName("null 요소를 추가하면 예외가 발생한다.")
+            void offer_null_throws_exception() {
+                assertThatThrownBy(() -> heap.offer(null))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test @DisplayName("성공 시 true를 반환한다.")
+            void offer_returns_true_on_success() {
+                boolean result = heap.offer(1);
+
+                assertThat(result).isTrue();
+            }
+        }
 
         @Nested @DisplayName("extractMax 메서드 테스트")
         class ExtractMaxTest {}
