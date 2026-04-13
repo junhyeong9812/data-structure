@@ -7,6 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.NoSuchElementException;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -141,7 +143,54 @@ public class MyTestCase {
         }
 
         @Nested @DisplayName("extractMax 메서드 테스트")
-        class ExtractMaxTest {}
+        class ExtractMaxTest {
+            @Test @DisplayName("빈 MaxHeap에 extractMax 시 예외가 발생한다.")
+            void extractMax_empty_heap_throws_exception() {
+                assertThatThrownBy(() -> heap.extractMax())
+                        .isInstanceOf(NoSuchElementException.class);
+            }
+
+            @Test @DisplayName("요소가 하나인 경우 최댓값을 제거 후 반환한다.")
+            void extractMax_single_element() {
+                heap.insert(1);
+
+                int result = heap.extractMax();
+
+                assertThat(result).isEqualTo(1);
+                assertThat(heap.size()).isZero();
+                assertThat(heap.isEmpty()).isTrue();
+            }
+
+            @Test @DisplayName("요소가 여러 개인 경우 최댓값을 제거 후 반환한다.")
+            void extractMax_multiple_elements() {
+                heap.insert(1);
+                heap.insert(2);
+                heap.insert(3);
+                heap.insert(4);
+
+                int result = heap.extractMax();
+
+                assertThat(result).isEqualTo(4);
+                assertThat(heap.size()).isEqualTo(3);
+                assertThat(heap.peek()).isEqualTo(3);
+            }
+
+            @Test @DisplayName("연속 extractMax 시 내림차순으로 반환된다.")
+            void extractMax_returns_in_descending_order() {
+                heap.insert(1);
+                heap.insert(2);
+                heap.insert(3);
+                heap.insert(4);
+
+                int result1 = heap.extractMax();
+                int result2 = heap.extractMax();
+                int result3 = heap.extractMax();
+
+                assertThat(result1).isEqualTo(4);
+                assertThat(result2).isEqualTo(3);
+                assertThat(result3).isEqualTo(2);
+            }
+        }
 
         @Nested @DisplayName("poll 메서드 테스트")
         class PollTest {}
