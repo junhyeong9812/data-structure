@@ -193,7 +193,55 @@ public class MyTestCase {
         }
 
         @Nested @DisplayName("poll 메서드 테스트")
-        class PollTest {}
+        class PollTest {
+            @Test @DisplayName("빈 MaxHeap에 poll 시 null을 반환한다.")
+            void poll_empty_heap_returns_null() {
+                Integer result = heap.poll();
+
+                assertThat(result).isNull();
+            }
+
+            @Test @DisplayName("요소가 하나인 경우 최댓값을 제거 후 반환한다.")
+            void poll_single_element() {
+                heap.insert(1);
+
+                int result = heap.poll();
+
+                assertThat(result).isEqualTo(1);
+                assertThat(heap.size()).isZero();
+                assertThat(heap.isEmpty()).isTrue();
+            }
+
+            @Test @DisplayName("요소가 여러 개인 경우 최댓값을 제거 후 반환한다.")
+            void poll_multiple_elements() {
+                heap.insert(1);
+                heap.insert(2);
+                heap.insert(3);
+                heap.insert(4);
+
+                int result = heap.poll();
+
+                assertThat(result).isEqualTo(4);
+                assertThat(heap.size()).isEqualTo(3);
+                assertThat(heap.peek()).isEqualTo(3);
+            }
+
+            @Test @DisplayName("연속 poll 시 내림차순으로 반환된다.")
+            void poll_returns_in_descending_order() {
+                heap.insert(1);
+                heap.insert(2);
+                heap.insert(3);
+                heap.insert(4);
+
+                int result1 = heap.poll();
+                int result2 = heap.poll();
+                int result3 = heap.poll();
+
+                assertThat(result1).isEqualTo(4);
+                assertThat(result2).isEqualTo(3);
+                assertThat(result3).isEqualTo(2);
+            }
+        }
 
         @Nested @DisplayName("peek 메서드 테스트")
         class PeekTest {}
