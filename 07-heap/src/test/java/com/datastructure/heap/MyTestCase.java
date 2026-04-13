@@ -244,7 +244,55 @@ public class MyTestCase {
         }
 
         @Nested @DisplayName("peek 메서드 테스트")
-        class PeekTest {}
+        class PeekTest {
+            @Test @DisplayName("빈 요소에서는 null을 반환한다.")
+            void peek_empty_heap_returns_null() {
+                Integer result = heap.peek();
+
+                assertThat(result).isNull();
+            }
+
+            @Test @DisplayName("요소가 하나인 경우 해당 값을 반환한다.")
+            void peek_single_element() {
+                heap.insert(1);
+
+                int result = heap.peek();
+
+                assertThat(result).isEqualTo(1);
+                assertThat(heap.size()).isEqualTo(1);
+                assertThat(heap.isEmpty()).isFalse();
+            }
+
+            @Test @DisplayName("요소가 여러개인 경우 최댓값을 반환한다.")
+            void peek_multiple_elements_returns_max() {
+                heap.insert(1);
+                heap.insert(2);
+                heap.insert(3);
+                heap.insert(4);
+
+                int result = heap.peek();
+
+                assertThat(result).isEqualTo(4);
+                assertThat(heap.size()).isEqualTo(4);
+            }
+
+            @Test @DisplayName("여러번 조회해도 같은 값을 반환한다.")
+            void peek_multiple_times_returns_same_value() {
+                heap.insert(1);
+                heap.insert(2);
+                heap.insert(3);
+                heap.insert(4);
+
+                int result1 = heap.peek();
+                int result2 = heap.peek();
+                int result3 = heap.peek();
+
+                assertThat(result1).isEqualTo(4);
+                assertThat(result2).isEqualTo(4);
+                assertThat(result3).isEqualTo(4);
+                assertThat(heap.size()).isEqualTo(4);
+            }
+        }
 
         @Nested @DisplayName("getMax 메서드 테스트")
         class GetMaxTest {}
