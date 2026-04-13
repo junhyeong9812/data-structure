@@ -385,7 +385,19 @@ public class MyTestCase {
         }
 
         @Nested @DisplayName("isEmpty 메서드 테스트")
-        class IsEmptyTest {}
+        class IsEmptyTest {
+            @Test @DisplayName("요소가 존재하지 않으면 True를 반환한다.")
+            void isEmpty_returns_true_when_empty() {
+                assertThat(heap.isEmpty()).isTrue();
+            }
+
+            @Test @DisplayName("요소가 존재하면 False를 반환한다.")
+            void isEmpty_returns_false_when_not_empty() {
+                heap.insert(1);
+
+                assertThat(heap.isEmpty()).isFalse();
+            }
+        }
 
         @Nested @DisplayName("clear 메서드 테스트")
         class ClearTest {}
