@@ -345,7 +345,44 @@ public class MyTestCase {
         }
 
         @Nested @DisplayName("size 메서드 테스트")
-        class SizeTest {}
+        class SizeTest {
+            @Test @DisplayName("빈 요소의 size는 0이다.")
+            void size_empty_heap_returns_zero() {
+                assertThat(heap.size()).isZero();
+            }
+
+            @Test @DisplayName("요소가 존재하는 경우 size는 요소의 갯수이다.")
+            void size_returns_number_of_elements() {
+                heap.insert(1);
+                heap.insert(2);
+                heap.insert(3);
+                heap.insert(4);
+
+                assertThat(heap.size()).isEqualTo(4);
+            }
+
+            @Test @DisplayName("insert 후 size가 증가한다.")
+            void size_increases_after_insert() {
+                heap.insert(1);
+                heap.insert(2);
+                assertThat(heap.size()).isEqualTo(2);
+
+                heap.insert(3);
+
+                assertThat(heap.size()).isEqualTo(3);
+            }
+
+            @Test @DisplayName("extractMax 후 size가 감소한다.")
+            void size_decreases_after_extractMax() {
+                heap.insert(1);
+                heap.insert(2);
+                assertThat(heap.size()).isEqualTo(2);
+
+                heap.extractMax();
+
+                assertThat(heap.size()).isEqualTo(1);
+            }
+        }
 
         @Nested @DisplayName("isEmpty 메서드 테스트")
         class IsEmptyTest {}
