@@ -400,7 +400,37 @@ public class MyTestCase {
         }
 
         @Nested @DisplayName("clear 메서드 테스트")
-        class ClearTest {}
+        class ClearTest {
+            @Test @DisplayName("요소가 존재하지 않아도 clear가 가능하다.")
+            void clear_empty_heap_remains_empty() {
+                heap.clear();
+
+                assertThat(heap.size()).isZero();
+                assertThat(heap.isEmpty()).isTrue();
+            }
+
+            @Test @DisplayName("요소가 존재하면 빈 heap으로 만든다.")
+            void clear_removes_all_elements() {
+                heap.insert(1);
+                heap.insert(2);
+
+                heap.clear();
+
+                assertThat(heap.size()).isZero();
+                assertThat(heap.isEmpty()).isTrue();
+            }
+
+            @Test @DisplayName("clear 후 다시 요소를 추가할 수 있다.")
+            void clear_allows_insert_after_clear() {
+                heap.insert(1);
+                heap.clear();
+
+                heap.insert(2);
+
+                assertThat(heap.size()).isEqualTo(1);
+                assertThat(heap.peek()).isEqualTo(2);
+            }
+        }
 
         @Nested @DisplayName("heapify 메서드 테스트")
         class HeapifyTest {}
