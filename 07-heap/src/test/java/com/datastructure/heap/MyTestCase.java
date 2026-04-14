@@ -496,7 +496,76 @@ public class MyTestCase {
         }
 
         @Nested @DisplayName("increaseKey 메서드 테스트")
-        class IncreaseKeyTest {}
+        class IncreaseKeyTest {
+
+            @Test @DisplayName("빈 힙에서 호출하면 예외가 발생한다.")
+            void increaseKey_empty_heap_throws_exception() {
+                assertThatThrownBy(() -> heap.increaseKey(1,10))
+                        .isInstanceOf(NoSuchElementException.class);
+            }
+
+            @Test @DisplayName("index가 음수이면 예외가 발생한다.")
+            void increaseKey_negative_index_throws_exception() {
+                heap.insert(1);
+
+                assertThatThrownBy(() -> heap.increaseKey(-1, 10))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
+            }
+
+            @Test @DisplayName("index가 size 이상이면 예외가 발생한다.")
+            void increaseKey_index_out_of_bounds_throws_exception() {
+                heap.insert(1);
+                heap.insert(2);
+                heap.insert(3);
+
+                assertThatThrownBy(() -> heap.increaseKey(3, 10))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
+            }
+
+            @Test @DisplayName("newValue가 null이면 예외가 발생한다.")
+            void increaseKey_null_value_throws_exception() {
+                heap.insert(1);
+                heap.insert(2);
+                heap.insert(3);
+
+                assertThatThrownBy(() -> heap.increaseKey(1, null))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test @DisplayName("기존 값보다 작은 값을 넣으면 예외가 발생한다.")
+            void increaseKey_smaller_value_throws_exception() {
+                heap.insert(1);
+                heap.insert(2);
+                heap.insert(3);
+
+                assertThatThrownBy(() -> heap.increaseKey(2, 1))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test @DisplayName("기존 값과 같은 값을 넣으면 변화가 없다.")
+            void increaseKey_same_value_no_change() {
+                heap.insert(1);
+                heap.insert(2);
+                heap.insert(3);
+                assertThat(heap.peek()).isEqualTo(3);
+
+                heap.increaseKey(2, 3);
+
+                assertThat(heap.peek()).isEqualTo(3);
+            }
+
+            @Test @DisplayName("값 증가 후 힙 속성이 유지된다.")
+            void increaseKey_maintains_max_heap_property() {
+                heap.insert(1);
+                heap.insert(2);
+                heap.insert(3);
+                assertThat(heap.peek()).isEqualTo(3);
+
+                heap.increaseKey(3, 10);
+
+                assertThat(heap.peek()).isEqualTo(10);
+            }
+        }
 
         @Nested @DisplayName("delete 메서드 테스트")
         class DeleteTest {}
