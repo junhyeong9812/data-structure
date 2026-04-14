@@ -7,6 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -433,7 +435,65 @@ public class MyTestCase {
         }
 
         @Nested @DisplayName("heapify 메서드 테스트")
-        class HeapifyTest {}
+        class HeapifyTest {
+
+            @Test @DisplayName("빈 배열이 들어오면 빈 힙을 반환한다.")
+            void heapify_empty_array_returns_empty_heap() {
+                Integer[] array = {};
+                MaxHeap<Integer> result = MaxHeap.heapify(array);
+
+                assertThat(result.isEmpty()).isTrue();
+                assertThat(result.size()).isZero();
+            }
+
+            @Test @DisplayName("요소가 하나인 배열을 힙으로 변환한다.")
+            void heapify_single_element() {
+                Integer[] array = {3};
+                MaxHeap<Integer> result = MaxHeap.heapify(array);
+
+                assertThat(result.size()).isEqualTo(1);
+                assertThat(result.peek()).isEqualTo(3);
+            }
+
+            @Test @DisplayName("여러 요소의 배열을 힙으로 변환한다.")
+            void heapify_multiple_elements() {
+                Integer[] array = {3, 1, 5, 2, 4};
+                MaxHeap<Integer> result = MaxHeap.heapify(array);
+
+                assertThat(result.size()).isEqualTo(5);
+                assertThat(result.peek()).isEqualTo(5);
+            }
+
+            @Test @DisplayName("변환된 힙은 최댓값이 루트에 위치한다.")
+            void heapify_maintains_max_heap_property() {
+                Integer[] array = {3, 1, 5, 2, 4};
+                MaxHeap<Integer> result = MaxHeap.heapify(array);
+
+                assertThat(result.peek()).isEqualTo(5);
+            }
+
+            @Test @DisplayName("중복 값이 있는 배열도 그대로 힙으로 변환한다.")
+            void heapify_with_duplicate_values() {
+                Integer[] array = {3, 3, 5, 2, 5};
+                MaxHeap<Integer> result = MaxHeap.heapify(array);
+
+                assertThat(result.size()).isEqualTo(5);
+                assertThat(result.peek()).isEqualTo(5);
+            }
+
+            @Test @DisplayName("null 배열이 들어오면 예외가 발생한다.")
+            void heapify_null_array_throws_exception() {
+                assertThatThrownBy(() -> MaxHeap.heapify(null))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test @DisplayName("null 요소가 포함된 배열이 들어오면 예외가 발생한다.")
+            void heapify_array_with_null_element_throws_exception() {
+                Integer[] array = {null, 1, 5, 2, 4};
+                assertThatThrownBy(() -> MaxHeap.heapify(array))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+        }
 
         @Nested @DisplayName("increaseKey 메서드 테스트")
         class IncreaseKeyTest {}
