@@ -568,7 +568,79 @@ public class MyTestCase {
         }
 
         @Nested @DisplayName("delete 메서드 테스트")
-        class DeleteTest {}
+        class DeleteTest {
+            @Test @DisplayName("빈 힙에서 호출하면 예외가 발생한다.")
+            void delete_empty_heap_throws_exception() {
+                assertThatThrownBy(() -> heap.delete(1))
+                        .isInstanceOf(NoSuchElementException.class);
+            }
+
+            @Test @DisplayName("index가 음수이면 예외가 발생한다.")
+            void delete_negative_index_throws_exception() {
+                heap.insert(3);
+
+                assertThatThrownBy(() -> heap.delete(-1))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
+            }
+
+            @Test @DisplayName("index가 size 이상이면 예외가 발생한다.")
+            void delete_index_out_of_bounds_throws_exception() {
+                heap.insert(3);
+
+                assertThatThrownBy(() -> heap.delete(1))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
+            }
+
+            @Test @DisplayName("루트 요소를 삭제하면 다음 최댓값이 루트가 된다.")
+            void delete_root_element() {
+                heap.insert(3);
+                heap.insert(5);
+                heap.insert(1);
+                assertThat(heap.peek()).isEqualTo(5);
+
+                heap.delete(0);
+
+                assertThat(heap.peek()).isEqualTo(3);
+            }
+
+            @Test @DisplayName("중간 요소를 삭제해도 힙 속성이 유지된다.")
+            void delete_middle_element_maintains_heap_property() {
+                heap.insert(3);
+                heap.insert(5);
+                heap.insert(1);
+                heap.insert(2);
+                heap.insert(4);
+                assertThat(heap.peek()).isEqualTo(5);
+
+                heap.delete(3);
+
+                assertThat(heap.peek()).isEqualTo(5);
+            }
+
+            @Test @DisplayName("마지막 요소를 삭제하면 size가 감소한다.")
+            void delete_last_element() {
+                heap.insert(3);
+                heap.insert(5);
+                heap.insert(1);
+                heap.insert(2);
+                heap.insert(4);
+                assertThat(heap.size()).isEqualTo(5);
+
+                heap.delete(4);
+
+                assertThat(heap.size()).isEqualTo(4);
+            }
+
+            @Test @DisplayName("삭제된 요소의 값을 반환한다.")
+            void delete_returns_removed_value() {
+                heap.insert(10);
+
+                int result = heap.delete(0);
+
+                assertThat(result).isEqualTo(10);
+                assertThat(heap.isEmpty()).isTrue();
+            }
+        }
 
         @Nested @DisplayName("merge 메서드 테스트")
         class MergeTest {}
