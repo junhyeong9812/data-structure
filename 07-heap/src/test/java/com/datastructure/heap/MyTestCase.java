@@ -32,7 +32,7 @@ public class MyTestCase {
 
             @Test @DisplayName("capacity를 지정할 수 있다.")
             void create_heap_with_capacity() {
-                heap = new MaxHeap(10);
+                heap = new MaxHeap<>(10);
                 assertThat(heap.isEmpty()).isTrue();
                 assertThat(heap.size()).isZero();
             }
@@ -712,6 +712,27 @@ public class MyTestCase {
 
     @Nested @DisplayName("MinHeap 테스트")
     class MinHeapTest {
+
+        MinHeap<Integer> heap;
+        @BeforeEach
+        void setup() {heap = new MinHeap<>();}
+
+        @Nested @DisplayName("creation 테스트")
+        class CreationTest {
+            @Test @DisplayName("빈 Heap을 생성할 수 있다.")
+            void create_empty_heap() {
+                assertThat(heap.isEmpty()).isTrue();
+                assertThat(heap.size()).isZero();
+            }
+
+            @Test @DisplayName("capacity를 지정할 수 있다.")
+            void create_heap_with_capacity() {
+                heap = new MinHeap<>(10);
+                assertThat(heap.isEmpty()).isTrue();
+                assertThat(heap.size()).isZero();
+            }
+        }
+
         @Nested @DisplayName("insert 메서드 테스트")
         class InsertTest {}
 
