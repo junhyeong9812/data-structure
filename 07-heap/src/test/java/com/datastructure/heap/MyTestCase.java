@@ -734,7 +734,54 @@ public class MyTestCase {
         }
 
         @Nested @DisplayName("insert 메서드 테스트")
-        class InsertTest {}
+        class InsertTest {
+
+            @Test @DisplayName("빈 heap에 요소를 추가할 수 있다.")
+            void insert_into_empty_heap() {
+                heap.insert(1);
+
+                assertThat(heap.peek()).isEqualTo(1);
+                assertThat(heap.isEmpty()).isFalse();
+                assertThat(heap.size()).isOne();
+            }
+
+            @Test @DisplayName("요소가 있는 heap에 요소를 추가할 수 있다.")
+            void insert_into_non_empty_heap() {
+                heap.insert(1);
+                heap.insert(5);
+                heap.insert(3);
+
+                assertThat(heap.peek()).isEqualTo(1);
+                assertThat(heap.isEmpty()).isFalse();
+                assertThat(heap.size()).isEqualTo(3);
+            }
+
+            @Test @DisplayName("삽입 시 최솟값이 루트에 위치한다.")
+            void insert_maintains_min_heap_property() {
+                heap.insert(3);
+                heap.insert(1);
+                heap.insert(5);
+                heap.insert(2);
+                heap.insert(4);
+
+                assertThat(heap.peek()).isEqualTo(1);
+            }
+
+            @Test @DisplayName("중복 값을 추가할 수 있다.")
+            void insert_duplicate_values() {
+                heap.insert(3);
+                heap.insert(3);
+
+                assertThat(heap.size()).isEqualTo(2);
+                assertThat(heap.peek()).isEqualTo(3);
+            }
+
+            @Test @DisplayName("null 요소를 추가하면 예외가 발생한다.")
+            void insert_null_throws_exception() {
+                assertThatThrownBy(() -> heap.insert(null))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+        }
 
         @Nested @DisplayName("offer 메서드 테스트")
         class OfferTest {}
