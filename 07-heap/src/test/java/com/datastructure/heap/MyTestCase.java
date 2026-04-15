@@ -991,7 +991,54 @@ public class MyTestCase {
         }
 
         @Nested @DisplayName("getMin 메서드 테스트")
-        class GetMinTest {}
+        class GetMinTest {
+            @Test @DisplayName("빈 요소에서는 예외가 발생한다.")
+            void getMin_empty_heap_throws_exception() {
+                assertThatThrownBy(() -> heap.getMin())
+                        .isInstanceOf(NoSuchElementException.class);
+            }
+
+            @Test @DisplayName("요소가 하나인 경우 해당 값을 반환한다.")
+            void getMin_single_element() {
+                heap.insert(1);
+
+                int result = heap.getMin();
+
+                assertThat(result).isEqualTo(1);
+                assertThat(heap.size()).isEqualTo(1);
+                assertThat(heap.isEmpty()).isFalse();
+            }
+
+            @Test @DisplayName("요소가 여러개인 경우 최솟값을 반환한다.")
+            void getMin_multiple_elements_returns_min() {
+                heap.insert(1);
+                heap.insert(2);
+                heap.insert(3);
+                heap.insert(4);
+
+                int result = heap.getMin();
+
+                assertThat(result).isEqualTo(1);
+                assertThat(heap.size()).isEqualTo(4);
+            }
+
+            @Test @DisplayName("여러번 조회해도 같은 값을 반환한다.")
+            void getMin_multiple_times_returns_same_value() {
+                heap.insert(1);
+                heap.insert(2);
+                heap.insert(3);
+                heap.insert(4);
+
+                int result1 = heap.getMin();
+                int result2 = heap.getMin();
+                int result3 = heap.getMin();
+
+                assertThat(result1).isEqualTo(1);
+                assertThat(result2).isEqualTo(2);
+                assertThat(result3).isEqualTo(3);
+                assertThat(heap.size()).isEqualTo(4);
+            }
+        }
 
         @Nested @DisplayName("size 메서드 테스트")
         class SizeTest {}
