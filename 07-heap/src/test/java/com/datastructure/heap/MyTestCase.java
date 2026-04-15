@@ -643,7 +643,71 @@ public class MyTestCase {
         }
 
         @Nested @DisplayName("merge 메서드 테스트")
-        class MergeTest {}
+        class MergeTest {
+            MaxHeap<Integer> heap2;
+
+            @BeforeEach
+            void setUp() {
+                heap2 = new MaxHeap<Integer>();
+            }
+
+            @Test @DisplayName("빈 힙끼리 병합하면 빈 힙이다.")
+            void merge_empty_heaps() {
+                heap = heap.merge(heap2);
+
+                assertThat(heap.size()).isZero();
+                assertThat(heap.isEmpty()).isTrue();
+            }
+
+            @Test @DisplayName("빈 힙과 요소가 있는 힙을 병합하면 요소가 있는 힙이다.")
+            void merge_empty_with_non_empty() {
+                heap.insert(1);
+                heap.insert(2);
+
+                heap = heap.merge(heap2);
+
+                assertThat(heap.size()).isEqualTo(2);
+                assertThat(heap.peek()).isEqualTo(2);
+            }
+
+            @Test @DisplayName("요소가 있는 두 힙을 병합하면 모든 요소가 포함된다.")
+            void merge_two_non_empty_heaps() {
+                heap.insert(1);
+                heap.insert(3);
+                heap.insert(5);
+
+                heap2.insert(2);
+                heap2.insert(4);
+                heap2.insert(6);
+
+                heap = heap.merge(heap2);
+
+                assertThat(heap.size()).isEqualTo(6);
+                assertThat(heap.peek()).isEqualTo(6);
+            }
+
+            @Test @DisplayName("병합 후 힙 속성이 유지된다.")
+            void merge_maintains_max_heap_property() {
+                heap.insert(1);
+                heap.insert(3);
+
+                heap2.insert(2);
+                heap2.insert(4);
+                assertThat(heap.peek()).isEqualTo(3);
+
+                heap = heap.merge(heap2);
+
+                assertThat(heap.peek()).isEqualTo(4);
+            }
+
+            @Test @DisplayName("null 힙과 병합하면 예외가 발생한다.")
+            void merge_null_throws_exception() {
+                heap.insert(1);
+
+                assertThatThrownBy(() -> heap.merge(null))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+        }
     }
 
     @Nested @DisplayName("MinHeap 테스트")
