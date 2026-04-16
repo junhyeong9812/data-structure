@@ -1189,7 +1189,75 @@ public class MyTestCase {
         }
 
         @Nested @DisplayName("decreaseKey 메서드 테스트")
-        class DecreaseKeyTest {}
+        class DecreaseKeyTest {
+            @Test @DisplayName("빈 힙에서 호출하면 예외가 발생한다.")
+            void decreaseKey_empty_heap_throws_exception() {
+                assertThatThrownBy(() -> heap.decreaseKey(1,10))
+                        .isInstanceOf(NoSuchElementException.class);
+            }
+
+            @Test @DisplayName("index가 음수이면 예외가 발생한다.")
+            void decreaseKey_negative_index_throws_exception() {
+                heap.insert(1);
+
+                assertThatThrownBy(() -> heap.decreaseKey(-1, 10))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
+            }
+
+            @Test @DisplayName("index가 size 이상이면 예외가 발생한다.")
+            void decreaseKey_index_out_of_bounds_throws_exception() {
+                heap.insert(1);
+                heap.insert(2);
+                heap.insert(3);
+
+                assertThatThrownBy(() -> heap.decreaseKey(3, 10))
+                        .isInstanceOf(IndexOutOfBoundsException.class);
+            }
+
+            @Test @DisplayName("newValue가 null이면 예외가 발생한다.")
+            void decreaseKey_null_value_throws_exception() {
+                heap.insert(1);
+                heap.insert(2);
+                heap.insert(3);
+
+                assertThatThrownBy(() -> heap.decreaseKey(1, null))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test @DisplayName("기존 값보다 큰 값을 넣으면 예외가 발생한다.")
+            void decreaseKey_bigger_value_throws_exception() {
+                heap.insert(5);
+
+                assertThatThrownBy(() -> heap.decreaseKey(0, 10))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test @DisplayName("기존 값과 같은 값을 넣으면 변화가 없다.")
+            void decreaseKey_same_value_no_change() {
+                heap.insert(1);
+                heap.insert(2);
+                heap.insert(3);
+                assertThat(heap.peek()).isEqualTo(1);
+
+                heap.decreaseKey(2, 3);
+
+                assertThat(heap.peek()).isEqualTo(1);
+            }
+
+            @Test @DisplayName("값 감소 후 힙 속성이 유지된다.")
+            void decreaseKey_maintains_min_heap_property() {
+                heap.insert(3);
+                heap.insert(5);
+                heap.insert(7);
+                heap.insert(9);
+                heap.insert(8);
+                assertThat(heap.peek()).isEqualTo(3);
+
+                heap.decreaseKey(3, 1);
+
+                assertThat(heap.peek()).isEqualTo(1);
+            }
+        }
 
         @Nested @DisplayName("delete 메서드 테스트")
         class DeleteTest {}
