@@ -1129,7 +1129,64 @@ public class MyTestCase {
         }
 
         @Nested @DisplayName("heapify 메서드 테스트")
-        class HeapifyTest {}
+        class HeapifyTest {
+            @Test @DisplayName("빈 배열이 들어오면 빈 힙을 반환한다.")
+            void heapify_empty_array_returns_empty_heap() {
+                Integer[] array = {};
+                MinHeap<Integer> result = MinHeap.heapify(array);
+
+                assertThat(result.isEmpty()).isTrue();
+                assertThat(result.size()).isZero();
+            }
+
+            @Test @DisplayName("요소가 하나인 배열을 힙으로 변환한다.")
+            void heapify_single_element() {
+                Integer[] array = {3};
+                MinHeap<Integer> result = MinHeap.heapify(array);
+
+                assertThat(result.size()).isEqualTo(1);
+                assertThat(result.peek()).isEqualTo(3);
+            }
+
+            @Test @DisplayName("여러 요소의 배열을 힙으로 변환한다.")
+            void heapify_multiple_elements() {
+                Integer[] array = {3, 1, 5, 2, 4};
+                MinHeap<Integer> result = MinHeap.heapify(array);
+
+                assertThat(result.size()).isEqualTo(5);
+                assertThat(result.peek()).isEqualTo(1);
+            }
+
+            @Test @DisplayName("변환된 힙은 최솟값이 루트에 위치한다.")
+            void heapify_maintains_min_heap_property() {
+                Integer[] array = {3, 1, 5, 2, 4};
+                MinHeap<Integer> result = MinHeap.heapify(array);
+
+                assertThat(result.peek()).isEqualTo(1);
+            }
+
+            @Test @DisplayName("중복 값이 있는 배열도 그대로 힙으로 변환한다.")
+            void heapify_with_duplicate_values() {
+                Integer[] array = {3, 3, 5, 2, 5};
+                MinHeap<Integer> result = MinHeap.heapify(array);
+
+                assertThat(result.size()).isEqualTo(5);
+                assertThat(result.peek()).isEqualTo(2);
+            }
+
+            @Test @DisplayName("null 배열이 들어오면 예외가 발생한다.")
+            void heapify_null_array_throws_exception() {
+                assertThatThrownBy(() -> MinHeap.heapify(null))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test @DisplayName("null 요소가 포함된 배열이 들어오면 예외가 발생한다.")
+            void heapify_array_with_null_element_throws_exception() {
+                Integer[] array = {null, 1, 5, 2, 4};
+                assertThatThrownBy(() -> MinHeap.heapify(array))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+        }
 
         @Nested @DisplayName("decreaseKey 메서드 테스트")
         class DecreaseKeyTest {}
