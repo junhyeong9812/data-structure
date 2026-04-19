@@ -1,5 +1,6 @@
 package com.datastructure.heap;
 
+import com.datastructure.heap.pop.HeapSort;
 import com.datastructure.heap.pop.MaxHeap;
 import com.datastructure.heap.pop.MinHeap;
 import org.junit.jupiter.api.BeforeEach;
@@ -1402,7 +1403,56 @@ public class MyTestCase {
 
     // ── 응용 ──
     @Nested @DisplayName("HeapSort 테스트")
-    class HeapSortTest {}
+    class HeapSortTest {
+
+        @Test @DisplayName("빈 배열 정렬")
+        void sort_empty_array() {
+            int[] array = {};
+            int[] result = HeapSort.sortAscending(array);
+
+            assertThat(result).isEmpty();
+        }
+
+        @Test @DisplayName("요소가 하나인 배열 정렬")
+        void sort_single_element() {
+            int[] array = {3};
+            int[] result = HeapSort.sortAscending(array);
+
+            assertThat(result).containsExactly(3);
+        }
+
+        @Test @DisplayName("여러 요소 오름차순 정렬")
+        void sort_multiple_elements_ascending() {
+            int[] array = {3,1,2,6,5,4};
+            int[] result = HeapSort.sortAscending(array);
+
+            assertThat(result).containsExactly(1, 2, 3, 4, 5, 6);
+        }
+
+        @Test @DisplayName("이미 정렬된 배열")
+        void sort_already_sorted_array() {
+            int[] array = {1, 2, 3, 4, 5, 6};
+            int[] result = HeapSort.sortAscending(array);
+
+            assertThat(result).containsExactly(1, 2, 3, 4, 5, 6);
+        }
+
+        @Test @DisplayName("역순 정렬")
+        void sort_descending_order() {
+            int[] array = {3,1,2,6,5,4};
+            int[] result = HeapSort.sortDescending(array);
+
+            assertThat(result).containsExactly(6, 5, 4, 3, 2, 1);
+        }
+
+        @Test @DisplayName("중복값이 있는 정렬")
+        void sort_with_duplicate_values() {
+            int[] array = {4,1,2,6,4,4};
+            int[] result = HeapSort.sortAscending(array);
+
+            assertThat(result).containsExactly(1, 2, 4, 4, 4, 6);
+        }
+    }
 
     @Nested @DisplayName("Top-K 테스트")
     class TopKTest {}
