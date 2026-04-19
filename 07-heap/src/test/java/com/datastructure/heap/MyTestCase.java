@@ -1,5 +1,6 @@
 package com.datastructure.heap;
 
+import com.datastructure.heap.pop.HeapProblems;
 import com.datastructure.heap.pop.HeapSort;
 import com.datastructure.heap.pop.MaxHeap;
 import com.datastructure.heap.pop.MinHeap;
@@ -1455,7 +1456,35 @@ public class MyTestCase {
     }
 
     @Nested @DisplayName("Top-K 테스트")
-    class TopKTest {}
+    class TopKTest {
+        @Test @DisplayName("k가 0이면 빈 결과")
+        void topK_zero_returns_empty() {
+            int[] array = {0,1};
+            List<Integer> result= HeapProblems.topK(array, 0);
+            assertThat(result.isEmpty()).isTrue();
+        }
+
+        @Test @DisplayName("k가 배열 크기보다 크면 예외 또는 전체 반환")
+        void topK_k_larger_than_size_returns_all() {
+            int[] array = {1,2,3};
+            List<Integer> result = HeapProblems.topK(array, 5);
+            assertThat(result).containsExactlyInAnyOrder(1,2,3);
+        }
+
+        @Test @DisplayName("Top-3 추출 시 상위 3개 반환")
+        void topK_returns_top_three() {
+            int[] array = {1, 2, 3, 4, 5, 6};
+            List<Integer> result = HeapProblems.topK(array, 3);
+            assertThat(result).containsExactlyInAnyOrder(6,5,4);
+        }
+
+        @Test @DisplayName("중복 값이 있는 경우")
+        void topK_with_duplicate_values() {
+            int[] array = {1, 2, 3, 5, 5, 6};
+            List<Integer> result = HeapProblems.topK(array, 3);
+            assertThat(result).containsExactlyInAnyOrder(6,5,5);
+        }
+    }
 
     @Nested @DisplayName("중앙값 스트림 테스트")
     class MedianStreamTest {}
