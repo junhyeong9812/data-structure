@@ -1549,5 +1549,69 @@ public class MyTestCase {
     }
 
     @Nested @DisplayName("다익스트라 최단경로 테스트")
-    class DijkstraTest {}
+    class DijkstraTest {
+        @Test @DisplayName("시작점에서 자기 자신까지 거리는 0")
+        void dijkstra_start_to_self_is_zero() {
+            // 노드 3개, 연결 없음에도 자기 자신은 0
+            int[][] graph = {
+                    {0, 1, -1},
+                    {-1, 0, -1},
+                    {-1, -1, 0}
+            };
+
+            int[] result = HeapProblems.dijkstra(graph, 0);
+
+            assertThat(result[0]).isEqualTo(0);
+        }
+
+        @Test @DisplayName("직접 연결된 노드까지 최단거리")
+        void dijkstra_direct_connection() {
+            //  0 --5--> 1 --3--> 2
+            int[][] graph = {
+                    {0, 5, -1},
+                    {-1, 0, 3},
+                    {-1, -1, 0}
+            };
+
+            int[] result = HeapProblems.dijkstra(graph, 0);
+
+            assertThat(result[0]).isEqualTo(0);
+            assertThat(result[1]).isEqualTo(5);
+            assertThat(result[2]).isEqualTo(8);
+        }
+
+        @Test @DisplayName("경유하는 게 더 짧은 경우")
+        void dijkstra_shorter_via_detour() {
+            //  0 --10--> 2
+            //  0 --1-->  1 --2--> 2
+            //  직접: 10, 경유: 1+2=3
+            int[][] graph = {
+                    {0,  1, 10},
+                    {-1, 0,  2},
+                    {-1, -1, 0}
+            };
+
+            int[] result = HeapProblems.dijkstra(graph, 0);
+
+            assertThat(result[0]).isEqualTo(0);
+            assertThat(result[1]).isEqualTo(1);
+            assertThat(result[2]).isEqualTo(3);
+        }
+
+        @Test @DisplayName("도달 불가능한 노드")
+        void dijkstra_unreachable_node() {
+            //  0 --1--> 1, 노드 2는 연결 없음
+            int[][] graph = {
+                    {0, 1, -1},
+                    {-1, 0, -1},
+                    {-1, -1, 0}
+            };
+
+            int[] result = HeapProblems.dijkstra(graph, 0);
+
+            assertThat(result[0]).isEqualTo(0);
+            assertThat(result[1]).isEqualTo(1);
+            assertThat(result[2]).isEqualTo(-1);
+        }
+    }
 }
