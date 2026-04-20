@@ -1518,7 +1518,35 @@ public class MyTestCase {
     }
 
     @Nested @DisplayName("K번째 큰 요소 테스트")
-    class KthLargestTest {}
+    class KthLargestTest {
+        @Test @DisplayName("k가 1이면 최댓값")
+        void kthLargest_k_is_one_returns_max() {
+            int[] array = {1,2,3,4};
+            int result = HeapProblems.kthLargest(array, 1);
+            assertThat(result).isEqualTo(4);
+        }
+
+        @Test @DisplayName("k가 배열 크기이면 최솟값")
+        void kthLargest_k_is_size_returns_min() {
+            int[] array = {1,2,3,4};
+            int result = HeapProblems.kthLargest(array, 4);
+            assertThat(result).isEqualTo(1);
+        }
+
+        @Test @DisplayName("k가 범위 밖이면 예외")
+        void kthLargest_k_out_of_range_throws_exception() {
+            int[] array = {1,2,3,4};
+            assertThatThrownBy(() -> HeapProblems.kthLargest(array, 5))
+                    .isInstanceOf(IndexOutOfBoundsException.class);
+        }
+
+        @Test @DisplayName("중복 값이 있는 경우")
+        void kthLargest_with_duplicate_values() {
+            int[] array = {1,2,3,3,5};
+            int result = HeapProblems.kthLargest(array, 4);
+            assertThat(result).isEqualTo(3);
+        }
+    }
 
     @Nested @DisplayName("다익스트라 최단경로 테스트")
     class DijkstraTest {}
