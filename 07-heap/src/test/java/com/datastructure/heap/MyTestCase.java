@@ -1487,7 +1487,35 @@ public class MyTestCase {
     }
 
     @Nested @DisplayName("중앙값 스트림 테스트")
-    class MedianStreamTest {}
+    class MedianStreamTest {
+        @Test @DisplayName("요소 하나 → 그 값이 중앙값")
+        void medianStream_single_element() {
+            int[] stream = {1};
+            double[] result = HeapProblems.medianStream(stream);
+            assertThat(result).containsExactly(1.0);
+        }
+
+        @Test @DisplayName("요소 두 개 → 매 시점의 중앙값")
+        void medianStream_two_elements() {
+            int[] stream = {1, 2};
+            double[] result = HeapProblems.medianStream(stream);
+            assertThat(result).containsExactly(1.0, 1.5);
+        }
+
+        @Test @DisplayName("홀수 개 → 매 시점의 중앙값")
+        void medianStream_odd_elements() {
+            int[] stream = {1, 2, 3};
+            double[] result = HeapProblems.medianStream(stream);
+            assertThat(result).containsExactly(1.0, 1.5, 2.0);
+        }
+
+        @Test @DisplayName("짝수 개 → 매 시점의 중앙값")
+        void medianStream_even_elements() {
+            int[] stream = {1, 2, 3, 4};
+            double[] result = HeapProblems.medianStream(stream);
+            assertThat(result).containsExactly(1.0, 1.5, 2.0, 2.5);
+        }
+    }
 
     @Nested @DisplayName("K번째 큰 요소 테스트")
     class KthLargestTest {}
