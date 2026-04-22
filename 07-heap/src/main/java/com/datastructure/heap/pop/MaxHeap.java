@@ -2,8 +2,18 @@ package com.datastructure.heap.pop;
 
 public class MaxHeap<E extends Comparable<E>> {
 
-    public MaxHeap() {}
-    public MaxHeap(int initialCapacity) {}
+    private E[] array;
+    private int size;
+
+    public MaxHeap() {
+        this.array = (E[]) new Comparable[10];
+        this.size = 0;
+    }
+
+    public MaxHeap(int initialCapacity) {
+        this.array = (E[]) new Comparable[initialCapacity];
+        this.size = 0;
+    }
 
     public void insert(E value) {}
     public boolean offer(E value) { return false; }
