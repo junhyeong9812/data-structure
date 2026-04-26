@@ -18,21 +18,17 @@ public class MaxHeap<E extends Comparable<E>> {
     }
 
     public void insert(E value) {
+        if (value == null) throw new IllegalArgumentException("null 넣지 마이소");
+        growCapacity();
         array[size] = value;
-        for (int i = 0; i < array.length; i++) {
-            int cmp = value.compareTo(array[i]);
-            if (cmp == 0) {
-                System.arraycopy(array, i, array, i+1,array.length);
-                array[i] = value;
-                break;
-            }
-            if (cmp > 0) {
-                System.arraycopy(array, i, array, i+1,array.length);
-                array[i] = value;
-                break;
-            }
-        }
+        siftUp(size);
+        size++;
     }
+
+    private void siftUp(int index) {
+
+    }
+
     public boolean offer(E value) { return false; }
 
     public E extractMax() { return null; }
