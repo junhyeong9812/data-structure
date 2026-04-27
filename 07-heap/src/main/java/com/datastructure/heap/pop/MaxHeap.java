@@ -1,6 +1,7 @@
 package com.datastructure.heap.pop;
 
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 public class MaxHeap<E extends Comparable<E>> {
 
@@ -52,7 +53,38 @@ public class MaxHeap<E extends Comparable<E>> {
         size++;
     }
 
-    public E extractMax() { return null; }
+    public E extractMax() {
+        if (size == 0) throw new NoSuchElementException("삭제할 값이 없습니다.");
+        E max = array[0];
+        array[0] = array[size - 1];
+        array[size - 1] = null;
+        size--;
+        siftDown(0);
+        collapseCapacity();
+        return max;
+    }
+
+    private void siftDown(int index) {
+        while (true) {
+            int left = 2 * index + 1;
+            int right = 2 * index + 2;
+            int largest = index;
+
+            if (left < size && array[left].compareTo(array[largest]) > 0) {
+                largest = left;
+            }
+            if (right < size && array[right].compareTo(array[largest]) > 0) {
+                largest = right;
+            }
+            if (largest == index) break;
+            E temp = array[index];
+            array[index] = array[largest];
+            array[largest] = temp;
+            index = largest;
+        }
+    }
+
+
     public E poll() { return null; }
 
     public E getMax() { return null; }
