@@ -39,7 +39,18 @@ public class MaxHeap<E extends Comparable<E>> {
         }
     }
 
-    public boolean offer(E value) { return false; }
+    public boolean offer(E value) {
+        if (value == null) return false;
+        addElement(value);
+        return true;
+    }
+
+    private void addElement(E value) {
+        growCapacity();
+        array[size] = value;
+        siftUp(size);
+        size++;
+    }
 
     public E extractMax() { return null; }
     public E poll() { return null; }
