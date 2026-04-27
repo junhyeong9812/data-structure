@@ -26,7 +26,17 @@ public class MaxHeap<E extends Comparable<E>> {
     }
 
     private void siftUp(int index) {
-
+        while(index > 0) {
+            int parent = (index - 1) / 2;
+            if (array[index].compareTo(array[parent]) > 0) {
+                E tmp = array[index];
+                array[index] = array[parent];
+                array[parent] = tmp;
+                index = parent;
+            } else {
+                break;
+            }
+        }
     }
 
     public boolean offer(E value) { return false; }
