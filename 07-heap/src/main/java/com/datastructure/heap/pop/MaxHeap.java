@@ -104,9 +104,12 @@ public class MaxHeap<E extends Comparable<E>> {
         return array[0];
     }
 
-    public int size() { return 0; }
-    public boolean isEmpty() { return false; }
-    public void clear() {}
+    public int size() { return size; }
+    public boolean isEmpty() { return size == 0; }
+    public void clear() {
+        this.array = (E[]) new Comparable[10];
+        this.size = 0;
+    }
 
     public static <E extends Comparable<E>> MaxHeap<E> heapify(E[] array) { return null; }
 
