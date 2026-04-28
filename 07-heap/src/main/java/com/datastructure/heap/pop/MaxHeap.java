@@ -94,8 +94,15 @@ public class MaxHeap<E extends Comparable<E>> {
         return max;
     }
 
-    public E getMax() { return null; }
-    public E peek() { return null; }
+    public E getMax() {
+        if (size == 0) throw new NoSuchElementException("힙이 비어있습니다.");
+        return array[0];
+    }
+
+    public E peek() {
+        if (size == 0) return null;
+        return array[0];
+    }
 
     public int size() { return 0; }
     public boolean isEmpty() { return false; }
