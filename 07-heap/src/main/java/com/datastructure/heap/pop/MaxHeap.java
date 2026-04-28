@@ -55,13 +55,7 @@ public class MaxHeap<E extends Comparable<E>> {
 
     public E extractMax() {
         if (size == 0) throw new NoSuchElementException("삭제할 값이 없습니다.");
-        E max = array[0];
-        array[0] = array[size - 1];
-        array[size - 1] = null;
-        size--;
-        siftDown(0);
-        collapseCapacity();
-        return max;
+        return removeRoot();
     }
 
     private void siftDown(int index) {
@@ -85,7 +79,20 @@ public class MaxHeap<E extends Comparable<E>> {
     }
 
 
-    public E poll() { return null; }
+    public E poll() {
+        if (size == 0) return null;
+        return removeRoot();
+    }
+
+    private E removeRoot() {
+        E max = array[0];
+        array[0] = array[size - 1];
+        array[size - 1] = null;
+        size--;
+        siftDown(0);
+        collapseCapacity();
+        return max;
+    }
 
     public E getMax() { return null; }
     public E peek() { return null; }
