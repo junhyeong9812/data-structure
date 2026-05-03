@@ -150,7 +150,13 @@ public class MaxHeap<E extends Comparable<E>> {
         return removed;
     }
 
-    public MaxHeap<E> merge(MaxHeap<E> other) { return null; }
+    public MaxHeap<E> merge(MaxHeap<E> other) {
+        if (other == null) throw new IllegalArgumentException();
+        E[] merged = (E[]) new Comparable[this.size + other.size];
+        System.arraycopy(this.array, 0, merged, 0, this.size);
+        System.arraycopy(other.array, 0, merged, this.size, other.size);
+        return heapify(merged);
+    }
 
     private void growCapacity() {
         int capacity = this.array.length;
