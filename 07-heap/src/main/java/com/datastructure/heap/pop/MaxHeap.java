@@ -111,9 +111,23 @@ public class MaxHeap<E extends Comparable<E>> {
         this.size = 0;
     }
 
-    public static <E extends Comparable<E>> MaxHeap<E> heapify(E[] array) { return null; }
+    public static <E extends Comparable<E>> MaxHeap<E> heapify(E[] array) {
+        if (array == null) throw new IllegalArgumentException();
+        for (E e : array) {
+            if (e == null) throw new IllegalArgumentException();
+        }
+        MaxHeap<E> heap = new MaxHeap<>(Math.max(array.length, 1));
+        System.arraycopy(array, 0, heap.array, 0, array.length);
+        heap.size = array.length;
 
-    public void increaseKey(int index, E newValue) {}
+        for (int i = (heap.size - 2) / 2; i >= 0; i--) {
+            heap.siftDown(i);
+        }
+        return heap;
+    }
+
+    public void increaseKey(int index, E newValue) {
+    }
 
     public E delete(int index) { return null; }
 
