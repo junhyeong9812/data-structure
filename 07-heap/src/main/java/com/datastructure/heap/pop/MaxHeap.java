@@ -135,7 +135,20 @@ public class MaxHeap<E extends Comparable<E>> {
         siftUp(index);
     }
 
-    public E delete(int index) { return null; }
+    public E delete(int index) {
+        if (size == 0) throw new NoSuchElementException("힙이 비어있습니다.");
+        if (index < 0 || index >= size) throw new IndexOutOfBoundsException();
+        E removed = array[index];
+        array[index] = array[size - 1];
+        array[size - 1] = null;
+        size--;
+        if (index < size) {
+            siftDown(index);
+            siftUp(index);
+        }
+        collapseCapacity();
+        return removed;
+    }
 
     public MaxHeap<E> merge(MaxHeap<E> other) { return null; }
 
