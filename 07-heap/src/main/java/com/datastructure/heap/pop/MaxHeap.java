@@ -127,6 +127,12 @@ public class MaxHeap<E extends Comparable<E>> {
     }
 
     public void increaseKey(int index, E newValue) {
+        if (size == 0) throw new NoSuchElementException("힙이 비어있습니다.");
+        if (index < 0 || index >= size) throw new IndexOutOfBoundsException();
+        if (newValue == null) throw new IllegalArgumentException();
+        if (newValue.compareTo(array[index]) < 0) throw new IllegalArgumentException("기존 값보다 작습니다.");
+        array[index] = newValue;
+        siftUp(index);
     }
 
     public E delete(int index) { return null; }
