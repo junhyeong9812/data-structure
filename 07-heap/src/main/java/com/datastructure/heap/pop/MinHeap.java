@@ -21,7 +21,11 @@ public class MinHeap<E extends Comparable<E>> {
         addElement(value);
     }
 
-    public boolean offer(E value) { return false; }
+    public boolean offer(E value) {
+        if (value == null) return false;
+        addElement(value);
+        return true;
+    }
 
     private void addElement(E value) {
         growCapacity();
