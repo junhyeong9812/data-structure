@@ -53,7 +53,11 @@ public class MinHeap<E extends Comparable<E>> {
         if (size == 0) throw new NoSuchElementException("삭제할 값이 없는데용?");
         return removeRoot();
     }
-    public E poll() { return null; }
+
+    public E poll() {
+        if (size == 0) return null;
+        return removeRoot();
+    }
 
     private E removeRoot() {
         E min = array[0];
