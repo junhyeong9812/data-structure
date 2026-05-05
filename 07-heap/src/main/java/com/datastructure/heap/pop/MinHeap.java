@@ -89,8 +89,15 @@ public class MinHeap<E extends Comparable<E>> {
         }
     }
 
-    public E getMin() { return null; }
-    public E peek() { return null; }
+    public E getMin() {
+        if (size == 0) throw new NoSuchElementException("힙이 비어있습니다.");
+        return array[0];
+    }
+
+    public E peek() {
+        if (size == 0) return null;
+        return array[0];
+    }
 
     public int size() { return 0; }
     public boolean isEmpty() { return false; }
