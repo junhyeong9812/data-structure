@@ -1,5 +1,7 @@
 package com.datastructure.heap.pop;
 
+import java.util.Arrays;
+
 public class MinHeap<E extends Comparable<E>> {
 
     private E[] array;
@@ -14,8 +16,33 @@ public class MinHeap<E extends Comparable<E>> {
         this.size = 0;
     }
 
-    public void insert(E value) {}
+    public void insert(E value) {
+        if (value == null) throw new IllegalArgumentException("null 넣지 마이소");
+        addElement(value);
+    }
+
     public boolean offer(E value) { return false; }
+
+    private void addElement(E value) {
+        growCapacity();
+        array[size] = value;
+        siftUp(size);
+        size++;
+    }
+
+    private void siftUp(int index) {
+        while (index > 0) {
+            int parent = (index - 1) / 2;
+            if (array[index].compareTo(array[parent]) < 0) {
+                E tmp = array[index];
+                array[index] = array[parent];
+                array[parent] = tmp;
+                index = parent;
+            } else {
+                break;
+            }
+        }
+    }
 
     public E extractMin() { return null; }
     public E poll() { return null; }
@@ -34,4 +61,11 @@ public class MinHeap<E extends Comparable<E>> {
     public E delete(int index) { return null; }
 
     public MinHeap<E> merge(MinHeap<E> other) { return null; }
+
+    private void growCapacity() {
+        int capacity = this.array.length;
+        if (this.size >= capacity) {
+            array = Arrays.copyOf(array, (int)(capacity * 1.5));
+        }
+    }
 }
