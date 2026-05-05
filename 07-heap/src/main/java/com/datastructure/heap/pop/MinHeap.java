@@ -2,8 +2,17 @@ package com.datastructure.heap.pop;
 
 public class MinHeap<E extends Comparable<E>> {
 
-    public MinHeap() {}
-    public MinHeap(int initialCapacity) {}
+    private E[] array;
+    private int size;
+
+    public MinHeap() {
+        this.array = (E[]) new Comparable[10];
+        this.size = 0;
+    }
+    public MinHeap(int initialCapacity) {
+        this.array = (E[]) new Comparable[initialCapacity];
+        this.size = 0;
+    }
 
     public void insert(E value) {}
     public boolean offer(E value) { return false; }
