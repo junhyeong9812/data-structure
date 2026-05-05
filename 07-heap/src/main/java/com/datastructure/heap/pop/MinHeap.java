@@ -1,6 +1,7 @@
 package com.datastructure.heap.pop;
 
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 public class MinHeap<E extends Comparable<E>> {
 
@@ -48,8 +49,41 @@ public class MinHeap<E extends Comparable<E>> {
         }
     }
 
-    public E extractMin() { return null; }
+    public E extractMin() {
+        if (size == 0) throw new NoSuchElementException("삭제할 값이 없는데용?");
+        return removeRoot();
+    }
     public E poll() { return null; }
+
+    private E removeRoot() {
+        E min = array[0];
+        array[0] = array[size - 1];
+        array[size - 1] = null;
+        size--;
+        siftDown(0);
+        collapseCapacity();
+        return min;
+    }
+
+    private void siftDown(int index) {
+        while (true) {
+            int left = 2 * index + 1;
+            int right = 2* index + 2;
+            int smallest = index;
+
+            if (left < size && array[left].compareTo(array[smallest]) < 0) {
+                smallest = left;
+            }
+            if (right < size && array[right].compareTo(array[smallest]) < 0) {
+                smallest = right;
+            }
+            if (smallest == index) break;
+            E temp = array[index];
+            array[index] = array[smallest];
+            array[smallest] = temp;
+            index = smallest;
+        }
+    }
 
     public E getMin() { return null; }
     public E peek() { return null; }
@@ -70,6 +104,13 @@ public class MinHeap<E extends Comparable<E>> {
         int capacity = this.array.length;
         if (this.size >= capacity) {
             array = Arrays.copyOf(array, (int)(capacity * 1.5));
+        }
+    }
+
+    private void collapseCapacity() {
+        int capacity = this.array.length;
+        if (this.size <= capacity / 4 && capacity > 10) {
+            array = Arrays.copyOf(array, Math.max(capacity / 2, 10));
         }
     }
 }
