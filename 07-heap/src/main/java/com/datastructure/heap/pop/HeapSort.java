@@ -22,7 +22,26 @@ public class HeapSort {
         }
         return result; }
 
-    public static int[] sortDescending(int[] array) { return null; }
+    public static int[] sortDescending(int[] array) {
+        if (array == null || array.length <= 1) return array != null ? array.clone() : new int[0];
+
+        int[] result = array.clone();
+        int n = result.length;
+
+        // heapify:MinHeap 구성
+        for (int i = (n - 2) / 2; i >= 0; i--) {
+            siftDownMin(result, i, n);
+        }
+
+        for (int i = n - 1; i > 0; i--) {
+            int temp = result[0];
+            result[0] = result[i];
+            result[i] = temp;
+            siftDownMin(result, 0, i);
+        }
+
+        return result;
+    }
 
     private static void siftDown(int[] array, int index, int size) {
         while (true) {
@@ -37,6 +56,23 @@ public class HeapSort {
             array[index] = array[largest];
             array[largest] = temp;
             index = largest;
+        }
+    }
+
+    private static void siftDownMin(int[] array, int index, int size) {
+        while (true) {
+            int left = 2 * index + 1;
+            int right = 2* index + 2;
+            int smallest = index;
+
+            if (left < size && array[left] < array[smallest]) smallest = left;
+            if (right < size && array[right] < array[smallest]) smallest = right;
+            if (smallest == index) break;
+
+            int temp = array[index];
+            array[index] = array[smallest];
+            array[smallest] = temp;
+            index = smallest;
         }
     }
 }
