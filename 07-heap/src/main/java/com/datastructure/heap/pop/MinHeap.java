@@ -107,8 +107,18 @@ public class MinHeap<E extends Comparable<E>> {
     }
 
     public static <E extends Comparable<E>> MinHeap<E> heapify(E[] array) {
+        if (array == null) throw new IllegalArgumentException();
+        for (E e: array) {
+            if (e == null) throw new IllegalArgumentException();
+        }
+        MinHeap<E> heap = new MinHeap<>(Math.max(array.length, 1));
+        System.arraycopy(array, 0, heap.array, 0, array.length);
+        heap.size = array.length;
 
-        return null;
+        for (int i = (heap.size - 2)/2; i >= 0; i--) {
+            heap.siftDown(i);
+        }
+        return heap;
     }
 
     public void decreaseKey(int index, E newValue) {}
