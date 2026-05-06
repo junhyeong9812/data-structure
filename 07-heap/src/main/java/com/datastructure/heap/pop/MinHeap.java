@@ -145,7 +145,13 @@ public class MinHeap<E extends Comparable<E>> {
         return removed;
     }
 
-    public MinHeap<E> merge(MinHeap<E> other) { return null; }
+    public MinHeap<E> merge(MinHeap<E> other) {
+        if (other == null) throw new IllegalArgumentException();
+        E[] merged = (E[]) new Comparable[this.size + other.size];
+        System.arraycopy(this.array, 0, merged, 0, this.size);
+        System.arraycopy(other.array, 0, merged, this.size, other.size);
+        return heapify(merged);
+    }
 
     private void growCapacity() {
         int capacity = this.array.length;
