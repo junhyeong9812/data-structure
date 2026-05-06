@@ -33,7 +33,21 @@ public class HeapProblems {
     }
 
     // K번째 큰 요소: 배열에서 k번째로 큰 값 반환
-    public static int kthLargest(int[] array, int k) { return 0; }
+    public static int kthLargest(int[] array, int k) {
+        if ( k <= 0 || k > array.length) throw new IndexOutOfBoundsException();
+
+        // MinHeap으로 크기 K를 유지
+        MinHeap<Integer> heap = new MinHeap<>();
+        for (int v : array) {
+            if (heap.size() < k) {
+                heap.insert(v);
+            } else if ( v > heap.peek()) {
+                heap.extractMin();
+                heap.insert(v);
+            }
+        }
+        return heap.peek();
+    }
 
     // 중앙값 스트림: 숫자가 하나씩 들어올 때마다 현재까지의 중앙값 반환
     public static double[] medianStream(int[] stream) { return null; }
