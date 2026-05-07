@@ -50,7 +50,39 @@ public class HeapProblems {
     }
 
     // 중앙값 스트림: 숫자가 하나씩 들어올 때마다 현재까지의 중앙값 반환
-    public static double[] medianStream(int[] stream) { return null; }
+    public static double[] medianStream(int[] stream) {
+        if (stream == null || stream.length == 0) return new double[0];
+
+        double[] result = new double[stream.length];
+        MaxHeap<Integer> lower = new MaxHeap<>();
+        MinHeap<Integer> upper = new MinHeap<>();
+
+        for (int i = 0; i < stream.length; i++) {
+            int num = stream[i];
+
+            // 데이터 삽입
+            if (lower.isEmpty() || num <= lower.peek()) {
+                lower.insert(num);
+            } else {
+                upper.insert(num);
+            }
+
+            // 균형 유지: lower가 같거나 1개 더 많게
+            if (lower.size() > upper.size() + 1) {
+                upper.insert(lower.extractMax());
+            } else if (upper.size() > lower.size()) {
+                lower.insert(upper.extractMin());
+            }
+
+            // 중앙값 계산
+            if (lower.size() > upper.size()) {
+                result[i] = lower.peek();
+            } else {
+                result[i] = (lower.peek() + upper.peek()) / 2.0;
+            }
+        }
+        return result;
+    }
 
     // 다익스트라: 가중치 그래프에서 시작점으로부터 각 노드까지 최단거리
     public static int[] dijkstra(int[][] graph, int start) { return null; }
