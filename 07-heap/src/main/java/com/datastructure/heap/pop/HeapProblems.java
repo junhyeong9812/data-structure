@@ -1,6 +1,7 @@
 package com.datastructure.heap.pop;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class HeapProblems {
@@ -85,5 +86,50 @@ public class HeapProblems {
     }
 
     // 다익스트라: 가중치 그래프에서 시작점으로부터 각 노드까지 최단거리
-    public static int[] dijkstra(int[][] graph, int start) { return null; }
+    public static int[] dijkstra(int[][] graph, int start) {
+        int n = graph.length;
+        int[] dist = new int[n];
+        boolean[] visited = new boolean[n];
+        Arrays.fill(dist, -1);
+        dist[start] = 0;
+
+        for (int count = 0; count < n; count++) {
+            // 미방문 노드 중 최소 거리 찾기
+            int u = -1;
+            int minDist = Integer.MAX_VALUE;
+            for (int i = 0; i < n; i++) {
+                if (!visited[i] && dist[i] != -1 && dist[i] < minDist) {
+                    minDist = dist[i];
+                    u = i;
+                }
+            }
+            if (u == -1) break;
+            visited[u] = true;
+
+            for (int v = 0; v < n; v++) {
+                if (graph[u][v] != -1 && u != v && !visited[v]) {
+                    int newDist = dist[u] + graph[u][v];
+                    if (dist[v] == -1 || newDist < dist[v]) {
+                        dist[v] = newDist;
+                    }
+                }
+            }
+        }
+        return dist;
+    }
+
+    private static class Node implements Comparable<Node> {
+        int vertex;
+        int distance;
+
+        Node (int vertex, int distance) {
+            this.vertex = vertex;
+            this.distance = distance;
+        }
+
+        @Override
+        public int compareTo(Node other) {
+            return Integer.compare(this.distance, other.distance);
+        }
+    }
 }
