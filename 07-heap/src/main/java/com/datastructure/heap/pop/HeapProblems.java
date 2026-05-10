@@ -93,17 +93,13 @@ public class HeapProblems {
         Arrays.fill(dist, -1);
         dist[start] = 0;
 
-        for (int count = 0; count < n; count++) {
-            // 미방문 노드 중 최소 거리 찾기
-            int u = -1;
-            int minDist = Integer.MAX_VALUE;
-            for (int i = 0; i < n; i++) {
-                if (!visited[i] && dist[i] != -1 && dist[i] < minDist) {
-                    minDist = dist[i];
-                    u = i;
-                }
-            }
-            if (u == -1) break;
+        MinHeap<Node> pq = new MinHeap<>();
+        pq.insert(new Node(start, 0));
+
+        while (!pq.isEmpty()) {
+            Node node = pq.extractMin();
+            int u = node.vertex;
+            if (visited[u]) continue;
             visited[u] = true;
 
             for (int v = 0; v < n; v++) {
@@ -111,6 +107,7 @@ public class HeapProblems {
                     int newDist = dist[u] + graph[u][v];
                     if (dist[v] == -1 || newDist < dist[v]) {
                         dist[v] = newDist;
+                        pq.insert(new Node(v, newDist));
                     }
                 }
             }
