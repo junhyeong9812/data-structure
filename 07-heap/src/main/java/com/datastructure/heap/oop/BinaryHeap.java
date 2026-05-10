@@ -33,6 +33,13 @@ public class BinaryHeap<E> implements Heap<E>, PriorityQueue<E> {
         size++;
     }
 
+    @Override
+    public boolean offer(E value) {
+        if (value == null) return false;
+        insert(value);
+        return true;
+    }
+
     private void siftUp(int index) {
         while (index > 0) {
             int parent = (index - 1) / 2;
