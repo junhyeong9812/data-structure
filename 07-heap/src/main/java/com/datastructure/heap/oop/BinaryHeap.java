@@ -53,6 +53,12 @@ public class BinaryHeap<E> implements Heap<E>, PriorityQueue<E> {
         return removeRoot();
     }
 
+    @Override
+    public E peek() {
+        if (size == 0) return null;
+        return array[0];
+    }
+
     private E removeRoot() {
         E root = array[0];
         array[0] = array[size - 1];
