@@ -59,6 +59,18 @@ public class BinaryHeap<E> implements Heap<E>, PriorityQueue<E> {
         return array[0];
     }
 
+    @Override
+    public int size() { return size; }
+
+    @Override
+    public boolean isEmpty() { return size == 0; }
+
+    @Override
+    public void clear() {
+        this.array = (E[]) new Object[10];
+        this.size = 0;
+    }
+
     private E removeRoot() {
         E root = array[0];
         array[0] = array[size - 1];
