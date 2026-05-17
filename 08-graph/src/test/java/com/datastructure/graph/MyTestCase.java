@@ -1,7 +1,12 @@
 package com.datastructure.graph;
 
+import com.datastructure.graph.pop.Graph;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.*;
 
 public class MyTestCase {
 
@@ -9,8 +14,68 @@ public class MyTestCase {
 
     @Nested @DisplayName("Graph (무방향, 인접 리스트) 테스트")
     class GraphTest {
+
+        private Graph graph;
+
+        @BeforeEach
+        void setup() {
+            graph = new Graph();
+        }
+
         @Nested @DisplayName("addVertex 테스트")
-        class AddVertexTest {}
+        class AddVertexTest {
+
+            @Test @DisplayName("빈 Graph에 정점을 추가할 수 있다")
+            void add_vertex_to_empty_graph() {
+                assertThat(graph.isEmpty()).isTrue();
+
+                graph.addVertex(1);
+
+                assertThat(graph.isEmpty()).isFalse();
+                assertThat(graph.vertexCount()).isEqualTo(1);
+            }
+
+            @Test @DisplayName("요소가 있는 Graph에 정점을 추가할 수 있다")
+            void add_vertex_to_non_empty_graph() {
+                graph.addVertex(1);
+                assertThat(graph.vertexCount()).isEqualTo(1);
+
+                graph.addVertex(2);
+                assertThat(graph.vertexCount()).isEqualTo(2);
+            }
+
+            @Test @DisplayName("이미 존재하는 정점을 추가하면 예외가 발생한다")
+            void add_duplicate_vertex_throws_exception() {
+                graph.addVertex(1);
+                assertThat(graph.vertexCount()).isEqualTo(1);
+
+                assertThatThrownBy(() -> graph.addVertex(1))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test @DisplayName("정점 추가 후 vertexCount가 증가한다")
+            void add_vertex_increases_vertex_count() {
+                graph.addVertex(1);
+                assertThat(graph.vertexCount()).isEqualTo(1);
+
+                graph.addVertex(2);
+                assertThat(graph.vertexCount()).isEqualTo(2);
+
+                graph.addVertex(3);
+                assertThat(graph.vertexCount()).isEqualTo(3);
+
+                graph.addVertex(4);
+                assertThat(graph.vertexCount()).isEqualTo(4);
+            }
+
+            @Test @DisplayName("정점 추가 후 hasVertex가 true를 반환한다")
+            void add_vertex_then_has_vertex_returns_true() {
+                assertThat(graph.hasVertex(1)).isFalse();
+
+                graph.addVertex(1);
+                assertThat(graph.hasVertex(1)).isTrue();
+            }
+        }
 
         @Nested @DisplayName("addEdge 테스트")
         class AddEdgeTest {}
