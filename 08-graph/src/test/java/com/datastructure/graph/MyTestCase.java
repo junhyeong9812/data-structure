@@ -129,6 +129,7 @@ public class MyTestCase {
                         .isInstanceOf(IllegalArgumentException.class);
             }
 
+            @Test @DisplayName("간선 추가 후 edgeCount가 증가한다")
             void add_edge_increases_edge_count() {
                 graph.addVertex(1);
                 graph.addVertex(2);
@@ -146,7 +147,82 @@ public class MyTestCase {
         }
 
         @Nested @DisplayName("removeVertex 테스트")
-        class RemoveVertexTest {}
+        class RemoveVertexTest {
+            @Test @DisplayName("존재하지 않는 정점을 제거하면 예외가 발생한다")
+            void remove_non_existent_vertex_throws_exception() {
+                assertThatThrownBy(() -> graph.removeVertex(1))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test @DisplayName("정점이 하나일 때 제거하면 빈 그래프가 된다")
+            void remove_single_vertex_makes_empty_graph() {
+                graph.addVertex(1);
+                assertThat(graph.isEmpty()).isFalse();
+
+                graph.removeVertex(1);
+
+                assertThat(graph.isEmpty()).isTrue();
+            }
+
+            @Test @DisplayName("간선이 없는 정점을 제거할 수 있다")
+            void remove_vertex_without_edges() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                assertThat(graph.vertexCount()).isEqualTo(2);
+
+                graph.removeVertex(2);
+
+                assertThat(graph.vertexCount()).isEqualTo(1);
+            }
+
+            @Test @DisplayName("정점 제거 시 연결된 간선도 함께 제거된다")
+            void remove_vertex_also_removes_connected_edges() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addEdge(1, 2);
+                assertThat(graph.vertexCount()).isEqualTo(2);
+                assertThat(graph.edgeCount()).isEqualTo(1);
+
+                graph.removeVertex(2);
+
+                assertThat(graph.vertexCount()).isEqualTo(1);
+                assertThat(graph.edgeCount()).isEqualTo(0);
+            }
+
+            @Test @DisplayName("정점 제거 후 vertexCount가 감소한다")
+            void remove_vertex_decreases_vertex_count() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addVertex(3);
+                assertThat(graph.vertexCount()).isEqualTo(3);
+
+                graph.removeVertex(3);
+                assertThat(graph.vertexCount()).isEqualTo(2);
+
+                graph.removeVertex(2);
+                assertThat(graph.vertexCount()).isEqualTo(1);
+
+                graph.removeVertex(1);
+                assertThat(graph.vertexCount()).isEqualTo(0);
+            }
+
+            @Test @DisplayName("정점 제거 후 edgeCount가 감소한다")
+            void remove_vertex_decreases_edge_count() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addVertex(3);
+                graph.addEdge(1, 2);
+                graph.addEdge(2, 3);
+                graph.addEdge(1, 3);
+                assertThat(graph.edgeCount()).isEqualTo(3);
+
+                graph.removeVertex(1);
+                assertThat(graph.edgeCount()).isEqualTo(1);
+
+                graph.removeVertex(2);
+                assertThat(graph.edgeCount()).isEqualTo(0);
+            }
+        }
 
         @Nested @DisplayName("removeEdge 테스트")
         class RemoveEdgeTest {}
