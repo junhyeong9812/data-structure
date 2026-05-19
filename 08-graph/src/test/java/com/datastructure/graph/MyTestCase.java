@@ -225,7 +225,78 @@ public class MyTestCase {
         }
 
         @Nested @DisplayName("removeEdge 테스트")
-        class RemoveEdgeTest {}
+        class RemoveEdgeTest {
+            @Test @DisplayName("존재하지 않는 간선을 제거하면 예외가 발생한다")
+            void remove_non_existent_edge_throws_exception() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                assertThatThrownBy(()-> graph.removeEdge(1, 2))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test @DisplayName("존재하지 않는 정점 간의 간선을 제거하면 예외가 발생한다")
+            void remove_edge_with_non_existent_vertex_throws_exception() {
+                assertThatThrownBy(()-> graph.removeEdge(1, 2))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test @DisplayName("간선 제거 후 양쪽 방향 모두 연결이 해제된다")
+            void remove_edge_disconnects_both_directions() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addEdge(1, 2);
+                assertThat(graph.hasEdge(1,2)).isTrue();
+                assertThat(graph.hasEdge(2,1)).isTrue();
+
+                graph.removeEdge(1, 2);
+
+                assertThat(graph.hasEdge(1,2)).isFalse();
+                assertThat(graph.hasEdge(2,1)).isFalse();
+            }
+
+            @Test @DisplayName("간선 제거 후 정점은 유지된다")
+            void remove_edge_keeps_vertices() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addEdge(1, 2);
+                assertThat(graph.hasVertex(1)).isTrue();
+                assertThat(graph.hasVertex(2)).isTrue();
+
+                graph.removeEdge(1, 2);
+
+                assertThat(graph.hasVertex(1)).isTrue();
+                assertThat(graph.hasVertex(2)).isTrue();
+            }
+
+            @Test @DisplayName("간선이 하나일 때 제거하면 edgeCount가 0이 된다")
+            void remove_single_edge_makes_edge_count_zero() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addEdge(1, 2);
+                assertThat(graph.edgeCount()).isOne();
+
+                graph.removeEdge(1, 2);
+
+                assertThat(graph.edgeCount()).isZero();
+            }
+
+            @Test @DisplayName("간선 제거 후 edgeCount가 감소한다")
+            void remove_edge_decreases_edge_count() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addVertex(3);
+                graph.addEdge(1, 2);
+                graph.addEdge(2, 3);
+                graph.addEdge(1, 3);
+                assertThat(graph.edgeCount()).isEqualTo(3);
+
+                graph.removeEdge(1, 2);
+                assertThat(graph.edgeCount()).isEqualTo(2);
+
+                graph.removeEdge(2, 3);
+                assertThat(graph.edgeCount()).isEqualTo(1);
+            }
+        }
 
         @Nested @DisplayName("hasVertex 테스트")
         class HasVertexTest {}
