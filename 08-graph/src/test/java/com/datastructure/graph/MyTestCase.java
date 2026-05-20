@@ -299,10 +299,41 @@ public class MyTestCase {
         }
 
         @Nested @DisplayName("hasVertex 테스트")
-        class HasVertexTest {}
+        class HasVertexTest {
+
+            @Test @DisplayName("빈 graph에서는 false를 반환한다")
+            void has_vertex_on_empty_graph_returns_false() {
+                assertThat(graph.hasVertex(1)).isFalse();
+            }
+
+            @Test @DisplayName("추가하지 않은 정점 조회 시 false를 반환한다")
+            void has_vertex_not_added_returns_false() {
+                graph.addVertex(1);
+
+                assertThat(graph.hasVertex(2)).isFalse();
+            }
+
+            @Test @DisplayName("추가한 정점 조회 시 true를 반환한다")
+            void has_vertex_added_returns_true() {
+                graph.addVertex(1);
+
+                assertThat(graph.hasVertex(1)).isTrue();
+            }
+
+            @Test @DisplayName("제거한 정점 조회 시 false를 반환한다")
+            void has_vertex_after_remove_returns_false() {
+                graph.addVertex(1);
+                assertThat(graph.hasVertex(1)).isTrue();
+
+                graph.removeVertex(1);
+
+                assertThat(graph.hasVertex(1)).isFalse();
+            }
+        }
 
         @Nested @DisplayName("hasEdge 테스트")
-        class HasEdgeTest {}
+        class HasEdgeTest {
+        }
 
         @Nested @DisplayName("getNeighbors 테스트")
         class GetNeighborsTest {}
