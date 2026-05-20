@@ -333,6 +333,43 @@ public class MyTestCase {
 
         @Nested @DisplayName("hasEdge 테스트")
         class HasEdgeTest {
+
+            @Test @DisplayName("추가하지 않은 간선 조회 시 false를 반환한다")
+            void has_edge_not_added_returns_false() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+
+                assertThat(graph.hasEdge(1, 2)).isFalse();
+            }
+
+            @Test @DisplayName("추가한 간선 조회 시 true를 반환한다")
+            void has_edge_added_returns_true() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addEdge(1, 2);
+
+                assertThat(graph.hasEdge(1, 2)).isTrue();
+                assertThat(graph.hasEdge(2, 1)).isTrue();
+            }
+
+            @Test @DisplayName("제거한 간선 조회 시 false를 반환한다")
+            void has_edge_after_remove_returns_false() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addEdge(1, 2);
+                assertThat(graph.hasEdge(1, 2)).isTrue();
+                assertThat(graph.hasEdge(2, 1)).isTrue();
+
+                graph.removeEdge(1, 2);
+                assertThat(graph.hasEdge(1, 2)).isFalse();
+                assertThat(graph.hasEdge(2, 1)).isFalse();
+            }
+
+            @Test @DisplayName("존재하지 않는 정점으로 조회 시 예외가 발생한다")
+            void has_edge_with_non_existent_vertex_throws_exception() {
+                assertThatThrownBy(() -> graph.hasEdge(1, 2))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
         }
 
         @Nested @DisplayName("getNeighbors 테스트")
