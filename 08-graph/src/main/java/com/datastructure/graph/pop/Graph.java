@@ -56,7 +56,9 @@ public class Graph {
 
     public int vertexCount() { return adjList.size(); }
 
-    public int edgeCount() { return 0; }
+    public int edgeCount() {
+        return 0;
+    }
 
-    public boolean isEmpty() { return false; }
+    public boolean isEmpty() { return adjList.isEmpty(); }
 }
