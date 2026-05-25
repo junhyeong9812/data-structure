@@ -402,7 +402,61 @@ public class MyTestCase {
 
         @Nested @DisplayName("vertexCount / edgeCount 테스트")
         class CountTest {
+            @Test @DisplayName("빈 그래프에서 vertexCount와 edgeCount는 0이다")
+            void empty_graph_counts_are_zero() {
+                assertThat(graph.vertexCount()).isZero();
+                assertThat(graph.edgeCount()).isZero();
+            }
 
+            @Test @DisplayName("정점 추가/삭제를 반복하면 vertexCount가 정확하다")
+            void vertex_count_after_add_and_remove() {
+                assertThat(graph.vertexCount()).isZero();
+
+                graph.addVertex(1);
+                assertThat(graph.vertexCount()).isOne();
+
+                graph.addVertex(2);
+                assertThat(graph.vertexCount()).isEqualTo(2);
+
+                graph.removeVertex(2);
+                assertThat(graph.vertexCount()).isEqualTo(1);
+            }
+
+            @Test @DisplayName("간선 추가/삭제를 반복하면 edgeCount가 정확하다")
+            void edge_count_after_add_and_remove() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addVertex(3);
+                assertThat(graph.edgeCount()).isZero();
+
+                graph.addEdge(1,2);
+                assertThat(graph.edgeCount()).isOne();
+
+                graph.addEdge(2, 3);
+                assertThat(graph.edgeCount()).isEqualTo(2);
+
+                graph.removeEdge(2, 3);
+                assertThat(graph.edgeCount()).isEqualTo(1);
+            }
+
+            @Test @DisplayName("정점 삭제 시 vertexCount와 edgeCount가 동시에 감소한다")
+            void remove_vertex_decreases_both_counts() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addVertex(3);
+                assertThat(graph.edgeCount()).isZero();
+
+                graph.addEdge(1,2);
+                assertThat(graph.edgeCount()).isOne();
+
+                graph.addEdge(2, 3);
+                assertThat(graph.edgeCount()).isEqualTo(2);
+                assertThat(graph.vertexCount()).isEqualTo(3);
+
+                graph.removeVertex(3);
+                assertThat(graph.edgeCount()).isEqualTo(1);
+                assertThat(graph.vertexCount()).isEqualTo(2);
+            }
         }
     }
 
