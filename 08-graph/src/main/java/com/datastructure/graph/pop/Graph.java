@@ -15,7 +15,14 @@ public class Graph {
         adjList.put(v,new ArrayList<>());
     }
 
-    public void addEdge(int u, int v) {}
+    public void addEdge(int u, int v) {
+        if (!adjList.containsKey(u)) throw new IllegalArgumentException("존재하지 않는 정점입니다: " + u);
+        if (!adjList.containsKey(v)) throw new IllegalArgumentException("존재하지 않는 정점입니다: " + v);
+        if (u == v) throw new IllegalArgumentException("자기 루프는 허용하지 않습니다: " + u);
+        if (adjList.get(u).contains(v)) throw new IllegalArgumentException("이미 존재하는 간선입니다: " + u + "-" + v);
+        adjList.get(u).add(v);
+        adjList.get(v).add(u);
+    }
 
     public void removeVertex(int v) {}
 
