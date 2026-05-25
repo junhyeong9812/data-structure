@@ -4,6 +4,12 @@ import java.util.*;
 
 public class Graph {
 
+    private Map<Integer, List<Integer>> adjList;
+
+    public Graph() {
+        this.adjList = new HashMap<>();
+    }
+
     public void addVertex(int v) {}
 
     public void addEdge(int u, int v) {}
