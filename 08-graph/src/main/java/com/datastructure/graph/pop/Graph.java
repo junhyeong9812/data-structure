@@ -57,7 +57,11 @@ public class Graph {
     public int vertexCount() { return adjList.size(); }
 
     public int edgeCount() {
-        return 0;
+        int count = 0;
+        for (List<Integer> neighbors: adjList.values()) {
+            count += neighbors.size();
+        }
+        return count/2;
     }
 
     public boolean isEmpty() { return adjList.isEmpty(); }
