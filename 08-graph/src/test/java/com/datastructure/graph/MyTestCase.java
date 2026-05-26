@@ -589,7 +589,33 @@ public class MyTestCase {
         }
 
         @Nested @DisplayName("getNeighbors 테스트")
-        class GetNeighborsTest {}
+        class GetNeighborsTest {
+            @Test @DisplayName("존재하지 않는 정점 조회 시 예외가 발생한다")
+            void get_neighbors_non_existent_vertex_throws_exception() {
+                assertThatThrownBy(() -> graph.getNeighbors(1))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test @DisplayName("간선이 없는 정점은 빈 리스트를 반환한다")
+            void get_neighbors_without_edges_returns_empty_list() {
+                graph.addVertex(1);
+                assertThat(graph.getNeighbors(1)).isEmpty();
+            }
+
+            @Test @DisplayName("나가는 방향의 이웃만 반환한다")
+            void get_neighbors_returns_only_outgoing_vertices() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addVertex(3);
+                graph.addVertex(4);
+                graph.addEdge(1,2);
+                graph.addEdge(1,3);
+                graph.addEdge(4,1);
+
+                assertThat(graph.getNeighbors(1)).containsExactlyInAnyOrder(2,3);
+                assertThat(graph.getNeighbors(1)).doesNotContain(4);
+            }
+        }
     }
 
     @Nested @DisplayName("WeightedGraph (가중치, 인접 리스트) 테스트")
