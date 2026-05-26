@@ -1,5 +1,6 @@
 package com.datastructure.graph;
 
+import com.datastructure.graph.pop.DirectedGraph;
 import com.datastructure.graph.pop.Graph;
 import com.sun.jdi.request.DuplicateRequestException;
 import org.junit.jupiter.api.BeforeEach;
@@ -462,8 +463,64 @@ public class MyTestCase {
 
     @Nested @DisplayName("DirectedGraph (방향, 인접 리스트) 테스트")
     class DirectedGraphTest {
+
+        private DirectedGraph graph;
+
+        @BeforeEach
+        void setup() {
+            graph = new DirectedGraph();
+        }
+
         @Nested @DisplayName("addEdge 테스트")
-        class AddEdgeTest {}
+        class AddEdgeTest {
+            @Test @DisplayName("존재하지 않는 정점에 간선 추가 시 예외가 발생한다")
+            void add_edge_to_non_existent_vertex_throws_exception() {
+                assertThatThrownBy(() -> graph.addEdge(1, 2))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test @DisplayName("두 정점 사이에 간선이 단방향으로 추가된다")
+            void add_edge_connects_one_direction_only() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+
+                graph.addEdge(1,2);
+
+                assertThat(graph.hasEdge(1, 2)).isTrue();
+                assertThat(graph.hasEdge(2, 1)).isFalse();
+            }
+
+            @Test @DisplayName("같은 정점 쌍이라도 반대 방향 간선을 추가할 수 있다")
+            void add_edge_reverse_direction_is_allowed() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+
+                graph.addEdge(1,2);
+                graph.addEdge(2,1);
+
+                assertThat(graph.hasEdge(1, 2)).isTrue();
+                assertThat(graph.hasEdge(2, 1)).isTrue();
+            }
+
+            @Test @DisplayName("이미 존재하는 간선을 중복 추가하면 예외가 발생한다")
+            void add_duplicate_edge_throws_exception() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+
+                graph.addEdge(1,2);
+
+                assertThatThrownBy(() -> graph.addEdge(1, 2))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test @DisplayName("자기 루프 시 예외가 발생한다")
+            void add_self_loop_throws_exception() {
+                graph.addVertex(1);
+
+                assertThatThrownBy(() -> graph.addEdge(1, 1))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+        }
 
         @Nested @DisplayName("removeEdge 테스트")
         class RemoveEdgeTest {}
