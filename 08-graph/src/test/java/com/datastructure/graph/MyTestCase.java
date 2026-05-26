@@ -554,7 +554,39 @@ public class MyTestCase {
         }
 
         @Nested @DisplayName("hasEdge 테스트")
-        class HasEdgeTest {}
+        class HasEdgeTest {
+            @Test @DisplayName("존재하지 않는 간선의 경우 false를 반환한다")
+            void has_edge_not_added_returns_false() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+
+                assertThat(graph.hasEdge(1,2)).isFalse();
+            }
+
+            @Test @DisplayName("간선이 존재할 경우 true를 반환한다")
+            void has_edge_added_returns_true() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addEdge(1,2);
+
+                assertThat(graph.hasEdge(1,2)).isTrue();
+            }
+
+            @Test @DisplayName("반대 방향 간선은 false를 반환한다")
+            void has_edge_reverse_direction_returns_false() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addEdge(1,2);
+
+                assertThat(graph.hasEdge(2,1)).isFalse();
+            }
+
+            @Test @DisplayName("존재하지 않는 정점일 경우 예외가 발생한다")
+            void has_edge_with_non_existent_vertex_throws_exception() {
+                assertThatThrownBy(() -> graph.hasEdge(1,2))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+        }
 
         @Nested @DisplayName("getNeighbors 테스트")
         class GetNeighborsTest {}
