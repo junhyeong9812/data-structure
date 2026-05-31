@@ -629,7 +629,7 @@ public class MyTestCase {
             }
 
             @Test @DisplayName("양방향 간선 추가 시 edgeCount가 2이다")
-            void edge_count_after_bidirectional_edges() {graph.addVertex(1);
+            void edge_count_after_bidirectional_edges() {
                 graph.addVertex(1);
                 graph.addVertex(2);
                 graph.addEdge(1, 2);
