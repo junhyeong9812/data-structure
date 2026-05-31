@@ -616,6 +616,41 @@ public class MyTestCase {
                 assertThat(graph.getNeighbors(1)).doesNotContain(4);
             }
         }
+
+        @Nested @DisplayName("edgeCount 테스트")
+        class EdgeCountTest {
+            @Test @DisplayName("간선 하나 추가 시 edgeCount가 1이다")
+            void edge_count_after_single_edge() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addEdge(1, 2);
+
+                assertThat(graph.edgeCount()).isEqualTo(1);
+            }
+
+            @Test @DisplayName("양방향 간선 추가 시 edgeCount가 2이다")
+            void edge_count_after_bidirectional_edges() {graph.addVertex(1);
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addEdge(1, 2);
+                graph.addEdge(2, 1);
+
+                assertThat(graph.edgeCount()).isEqualTo(2);
+            }
+
+            @Test @DisplayName("간선 제거 후 edgeCount가 감소한다")
+            void edge_count_after_remove_edge() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addEdge(1, 2);
+                graph.addEdge(2, 1);
+                assertThat(graph.edgeCount()).isEqualTo(2);
+
+                graph.removeEdge(2, 1);
+
+                assertThat(graph.edgeCount()).isEqualTo(1);
+            }
+        }
     }
 
     @Nested @DisplayName("WeightedGraph (가중치, 인접 리스트) 테스트")
