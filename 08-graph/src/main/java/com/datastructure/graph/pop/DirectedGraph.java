@@ -53,7 +53,7 @@ public class DirectedGraph {
         return adjList.get(v);
     }
 
-    public int vertexCount() { return 0; }
+    public int vertexCount() { return adjList.size(); }
 
     public int edgeCount() { return 0; }
 
