@@ -31,7 +31,12 @@ public class DirectedGraph {
         }
     }
 
-    public void removeEdge(int u, int v) {}
+    public void removeEdge(int u, int v) {
+        if (!adjList.containsKey(u)) throw new IllegalArgumentException("존재하지 않는 정점입니다: "+ u);
+        if (!adjList.containsKey(v)) throw new IllegalArgumentException("존재하지 않는 정점입니다: "+ v);
+        if (!adjList.get(u).contains(v)) throw new IllegalArgumentException("존재하지 않는 간선입니다: " + u + "-" + v);
+        adjList.get(u).remove(Integer.valueOf(v));
+    }
 
     public boolean hasVertex(int v) { return false; }
 
