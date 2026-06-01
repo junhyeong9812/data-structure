@@ -42,7 +42,11 @@ public class DirectedGraph {
         return adjList.containsKey(v);
     }
 
-    public boolean hasEdge(int u, int v) { return false; }
+    public boolean hasEdge(int u, int v) {
+        if (!adjList.containsKey(u)) throw new IllegalArgumentException("존재하지 않는 정점입니다: " + u);
+        if (!adjList.containsKey(v)) throw new IllegalArgumentException("존재하지 않는 정점입니다: " + v);
+        return adjList.get(u).contains(v);
+    }
 
     public List<Integer> getNeighbors(int v) { return null; }
 
