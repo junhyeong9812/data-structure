@@ -48,7 +48,10 @@ public class DirectedGraph {
         return adjList.get(u).contains(v);
     }
 
-    public List<Integer> getNeighbors(int v) { return null; }
+    public List<Integer> getNeighbors(int v) {
+        if (!adjList.containsKey(v)) throw new IllegalArgumentException("존재하지 않는 정점입니다: " + v);
+        return adjList.get(v);
+    }
 
     public int vertexCount() { return 0; }
 
