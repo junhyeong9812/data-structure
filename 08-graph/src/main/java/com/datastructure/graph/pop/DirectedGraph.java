@@ -23,7 +23,13 @@ public class DirectedGraph {
         adjList.get(u).add(v);
     }
 
-    public void removeVertex(int v) {}
+    public void removeVertex(int v) {
+        if (!adjList.containsKey(v)) throw new IllegalArgumentException("존재하지 않는 정점입니다: " + v);
+        adjList.remove(v);
+        for (List<Integer> neighbors: adjList.values()) {
+            neighbors.remove(Integer.valueOf(v));
+        }
+    }
 
     public void removeEdge(int u, int v) {}
 
