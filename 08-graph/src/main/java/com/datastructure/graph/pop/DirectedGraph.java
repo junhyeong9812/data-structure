@@ -55,7 +55,13 @@ public class DirectedGraph {
 
     public int vertexCount() { return adjList.size(); }
 
-    public int edgeCount() { return 0; }
+    public int edgeCount() {
+        int count = 0;
+        for (List<Integer> neighbors : adjList.values()) {
+            count += neighbors.size();
+        }
+        return count;
+    }
 
     public boolean isEmpty() { return false; }
 }
