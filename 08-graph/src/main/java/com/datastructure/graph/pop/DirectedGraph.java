@@ -38,7 +38,9 @@ public class DirectedGraph {
         adjList.get(u).remove(Integer.valueOf(v));
     }
 
-    public boolean hasVertex(int v) { return false; }
+    public boolean hasVertex(int v) {
+        return adjList.containsKey(v);
+    }
 
     public boolean hasEdge(int u, int v) { return false; }
 
