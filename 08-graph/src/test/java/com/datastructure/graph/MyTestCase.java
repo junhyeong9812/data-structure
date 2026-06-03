@@ -2,6 +2,7 @@ package com.datastructure.graph;
 
 import com.datastructure.graph.pop.DirectedGraph;
 import com.datastructure.graph.pop.Graph;
+import com.datastructure.graph.pop.WeightedGraph;
 import com.sun.jdi.request.DuplicateRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -655,8 +656,138 @@ public class MyTestCase {
 
     @Nested @DisplayName("WeightedGraph (가중치, 인접 리스트) 테스트")
     class WeightedGraphTest {
+
+        private WeightedGraph graph;
+
+        @BeforeEach
+        void setUp() {
+            graph = new WeightedGraph();
+        }
+
         @Nested @DisplayName("addEdge 가중치 간선 테스트")
-        class AddEdgeTest {}
+        class AddEdgeTest {
+            @Test @DisplayName("존재하지 않는 정점에 addEdge를 하면 예외가 발생한다")
+            void add_edge_to_non_existent_vertex_throws_exception() {
+                assertThatThrownBy(() -> graph.addEdge(1,2,1))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test @DisplayName("존재하는 두 정점에 대해 가중치 간선을 생성할 수 있다.")
+            void add_edge_with_weight() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                assertThat(graph.edgeCount()).isEqualTo(0);
+
+                graph.addEdge(1, 2, 3);
+
+                assertThat(graph.getWeight(1, 2)).isEqualTo(3);
+                assertThat(graph.edgeCount()).isEqualTo(1);
+            }
+
+            @Test @DisplayName("반대 방향의 간선을 생성할 수 있다")
+            void add_edge_reverse_direction_is_allowed() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addEdge(1, 2, 3);
+
+                graph.addEdge(2, 1, 2);
+
+                assertThat(graph.getWeight(2,1)).isEqualTo(2);
+                assertThat(graph.edgeCount()).isEqualTo(2);
+            }
+
+            @Test @DisplayName("이미 존재하는 간선을 중복 추가하면 예외가 발생한다")
+            void add_duplicate_edge_throws_exception() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addEdge(1,2,3);
+
+                assertThatThrownBy(() -> graph.addEdge(1,2,3))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test @DisplayName("자기 루프 시 예외가 발생한다")
+            void add_self_loop_throws_exception() {
+                graph.addVertex(1);
+
+                assertThatThrownBy(() -> graph.addEdge(1,1,1))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test @DisplayName("간선 추가 후 가중치가 정확히 저장된다")
+            void add_edge_stores_correct_weight() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addVertex(3);
+
+                graph.addEdge(1, 2, 4);
+                graph.addEdge(1, 3, 7);
+                graph.addEdge(2, 3, 2);
+
+                assertThat(graph.getWeight(1,2)).isEqualTo(4);
+                assertThat(graph.getWeight(1,3)).isEqualTo(7);
+                assertThat(graph.getWeight(2,3)).isEqualTo(2);
+            }
+        }
+
+        @Nested @DisplayName("removeEdge 테스트")
+        class RemoveEdgeTest {
+            @Test @DisplayName("존재하지 않는 정점의 간선을 삭제 시 예외가 발생한다")
+            void remove_edge_with_non_existent_vertex_throws_exception() {
+                assertThatThrownBy(() -> graph.removeEdge(1,2))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test @DisplayName("존재하지 않는 간선 삭제 시 예외가 발생한다")
+            void remove_non_existent_edge_throws_exception() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+
+                assertThatThrownBy(() -> graph.removeEdge(1,2))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test @DisplayName("간선이 삭제된다")
+            void remove_edge_removes_edge() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addEdge(1,2,3);
+
+                graph.removeEdge(1,2);
+                assertThat(graph.edgeCount()).isZero();
+            }
+
+            @Test @DisplayName("한 방향 간선 삭제 시 역방향 간선은 유지된다")
+            void remove_edge_keeps_reverse_direction() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addEdge(1,2,3);
+                graph.addEdge(2,1,3);
+
+                graph.removeEdge(1,2);
+                assertThat(graph.hasEdge(2,1)).isTrue();
+            }
+
+            @Test @DisplayName("간선 삭제 후 edgeCount가 감소한다")
+            void remove_edge_decreases_edge_count() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addVertex(3);
+                graph.addEdge(1,2,3);
+                graph.addEdge(1,3,4);
+                graph.addEdge(2,3,5);
+                assertThat(graph.edgeCount()).isEqualTo(3);
+
+                graph.removeEdge(1,2);
+                assertThat(graph.edgeCount()).isEqualTo(2);
+            }
+        }
+
+        @Nested @DisplayName("getWeight 테스트")
+        class GetWeightTest {}
+
+        @Nested @DisplayName("edgeCount 테스트")
+        class EdgeCountTest {}
     }
 
     // ===== 인접 행렬 구현체 (CRUD) =====
