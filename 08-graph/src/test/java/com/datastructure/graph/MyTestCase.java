@@ -784,7 +784,31 @@ public class MyTestCase {
         }
 
         @Nested @DisplayName("getWeight 테스트")
-        class GetWeightTest {}
+        class GetWeightTest {
+            @Test @DisplayName("존재하지 않는 정점일 경우 예외가 발생한다")
+            void get_weight_with_non_existent_vertex_throws_exception() {
+                assertThatThrownBy(() -> graph.getWeight(1,2))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test @DisplayName("존재하지 않는 간선일 경우 예외가 발생한다")
+            void get_weight_non_existent_edge_throws_exception() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+
+                assertThatThrownBy(() -> graph.getWeight(1,2))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test @DisplayName("존재하는 간선일 경우 가중치를 반환한다")
+            void get_weight_returns_correct_weight() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addEdge(1,2,5);
+
+                assertThat(graph.getWeight(1, 2)).isEqualTo(5);
+            }
+        }
 
         @Nested @DisplayName("edgeCount 테스트")
         class EdgeCountTest {}
