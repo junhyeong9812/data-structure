@@ -24,7 +24,13 @@ public class WeightedGraph {
         adjList.get(u).put(v, weight);
     }
 
-    public void removeVertex(int v) {}
+    public void removeVertex(int v) {
+        if (!adjList.containsKey(v)) throw new IllegalArgumentException("존재하지 않는 정점입니다: " + v);
+        adjList.remove(v);
+        for(Map<Integer, Integer> values: adjList.values()) {
+            values.remove(v);
+        }
+    }
 
     public void removeEdge(int u, int v) {}
 
