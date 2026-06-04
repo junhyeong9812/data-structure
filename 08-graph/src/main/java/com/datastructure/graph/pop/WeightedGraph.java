@@ -74,5 +74,5 @@ public class WeightedGraph {
         return count;
     }
 
-    public boolean isEmpty() {return false;}
+    public boolean isEmpty() {return adjList.isEmpty();}
 }
