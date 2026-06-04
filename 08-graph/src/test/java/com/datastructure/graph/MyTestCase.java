@@ -811,7 +811,30 @@ public class MyTestCase {
         }
 
         @Nested @DisplayName("edgeCount 테스트")
-        class EdgeCountTest {}
+        class EdgeCountTest {
+            @Test @DisplayName("정점이 존재하지 않으면 count는 0이다")
+            void edge_count_without_vertices_is_zero() {
+                assertThat(graph.edgeCount()).isZero();
+            }
+
+            @Test @DisplayName("간선이 존재하지 않으면 count는 0이다")
+            void edge_count_without_edges_is_zero() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                assertThat(graph.edgeCount()).isZero();
+            }
+
+            @Test @DisplayName("간선의 개수만큼 반환한다")
+            void edge_count_returns_number_of_edges() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addEdge(1,2,3);
+                assertThat(graph.edgeCount()).isEqualTo(1);
+
+                graph.addEdge(2,1,4);
+                assertThat(graph.edgeCount()).isEqualTo(2);
+            }
+        }
     }
 
     // ===== 인접 행렬 구현체 (CRUD) =====
