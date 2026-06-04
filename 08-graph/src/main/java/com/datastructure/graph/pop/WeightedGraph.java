@@ -44,7 +44,9 @@ public class WeightedGraph {
     }
 
     public boolean hasEdge(int u, int v) {
-        return false;
+        if (!adjList.containsKey(u)) throw new IllegalArgumentException("존재하지 않는 정점입니다: " + u);
+        if (!adjList.containsKey(v)) throw new IllegalArgumentException("존재하지 않는 정점입니다: " + v);
+        return adjList.get(u).containsKey(v);
     }
 
     public int getWeight(int u, int v) {
