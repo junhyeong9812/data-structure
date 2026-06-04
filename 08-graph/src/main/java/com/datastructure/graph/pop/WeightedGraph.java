@@ -11,7 +11,10 @@ public class WeightedGraph {
         this.adjList = new HashMap<>();
     }
 
-    public void addVertex(int v) {}
+    public void addVertex(int v) {
+        if (adjList.containsKey(v)) throw new IllegalArgumentException("이미 존재하는 정점입니다: " + v);
+        adjList.put(v, new HashMap<>());
+    }
 
     public void addEdge(int u, int v, int weight) {}
 
