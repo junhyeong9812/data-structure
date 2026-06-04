@@ -50,7 +50,10 @@ public class WeightedGraph {
     }
 
     public int getWeight(int u, int v) {
-        return 0;
+        if (!adjList.containsKey(u)) throw new IllegalArgumentException("존재하지 않는 정점입니다: " + u);
+        if (!adjList.containsKey(v)) throw new IllegalArgumentException("존재하지 않는 정점입니다: " + v);
+        if (!adjList.get(u).containsKey(v)) throw new IllegalArgumentException("존재하지 않는 간선입니다: " + u + "-" + v);
+        return adjList.get(u).get(v);
     }
 
     public List<Integer> getNeighbors(int v) {return null;}
