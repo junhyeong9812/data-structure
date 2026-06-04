@@ -1,5 +1,6 @@
 package com.datastructure.graph.pop;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -56,7 +57,10 @@ public class WeightedGraph {
         return adjList.get(u).get(v);
     }
 
-    public List<Integer> getNeighbors(int v) {return null;}
+    public List<Integer> getNeighbors(int v) {
+        if (!adjList.containsKey(v)) throw new IllegalArgumentException("존재하지 않는 정점입니다: " + v);
+        return new ArrayList<>(adjList.get(v).keySet());
+    }
 
     public int vertexCount() { return 0;}
 
