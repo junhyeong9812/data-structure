@@ -39,8 +39,8 @@ public class WeightedGraph {
         adjList.get(u).remove(v);
     }
 
-    public boolean basVertex(int v) {
-        return false;
+    public boolean hasVertex(int v) {
+        return adjList.containsKey(v);
     }
 
     public boolean hasEdge(int u, int v) {
