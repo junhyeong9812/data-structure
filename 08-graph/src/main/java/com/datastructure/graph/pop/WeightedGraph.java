@@ -62,9 +62,17 @@ public class WeightedGraph {
         return new ArrayList<>(adjList.get(v).keySet());
     }
 
-    public int vertexCount() { return 0;}
+    public int vertexCount() {
+        return adjList.keySet().size();
+    }
 
-    public int edgeCount() {return 0;}
+    public int edgeCount() {
+        int count = 0;
+        for(Map<Integer,Integer> values: adjList.values()) {
+            count += values.size();
+        }
+        return count;
+    }
 
     public boolean isEmpty() {return false;}
 }
