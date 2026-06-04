@@ -16,7 +16,13 @@ public class WeightedGraph {
         adjList.put(v, new HashMap<>());
     }
 
-    public void addEdge(int u, int v, int weight) {}
+    public void addEdge(int u, int v, int weight) {
+        if (!adjList.containsKey(u)) throw new IllegalArgumentException("존재하지 않는 정점입니다: "+u);
+        if (!adjList.containsKey(v)) throw new IllegalArgumentException("존재하지 않는 정점입니다: "+v);
+        if (u == v) throw new IllegalArgumentException("자기 루프는 허용하지 않습니다: " + u);
+        if (adjList.get(u).containsKey(v)) throw new IllegalArgumentException("이미 존재하는 간선입니다: " + u + "-" + v);
+        adjList.get(u).put(v, weight);
+    }
 
     public void removeVertex(int v) {}
 
