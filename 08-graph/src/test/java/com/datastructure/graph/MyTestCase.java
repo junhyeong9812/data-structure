@@ -897,7 +897,52 @@ public class MyTestCase {
         }
 
         @Nested @DisplayName("addEdge 테스트")
-        class AddEdgeTest {}
+        class AddEdgeTest {
+            @Test @DisplayName("존재하지 않는 정점에 간선 추가 시 예외가 발생한다")
+            void add_edge_to_non_existent_vertex_throws_exception() {
+                assertThatThrownBy(() -> graph.addEdge(1,2))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test @DisplayName("간선이 생성된다")
+            void add_edge_between_two_vertices() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+
+                graph.addEdge(1,2);
+
+                assertThat(graph.edgeCount()).isEqualTo(1);
+            }
+
+            @Test @DisplayName("무방향이므로 양쪽 다 연결된다")
+            void add_edge_connects_both_directions() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+
+                graph.addEdge(1,2);
+
+                assertThat(graph.hasEdge(2,1)).isTrue();
+            }
+
+            @Test @DisplayName("이미 존재하는 간선인 경우 예외가 발생한다")
+            void add_duplicate_edge_throws_exception() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+
+                graph.addEdge(1,2);
+
+                assertThatThrownBy(() -> graph.addEdge(2,1))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test @DisplayName("자기 루프 시 예외가 발생한다")
+            void add_self_loop_throws_exception() {
+                graph.addVertex(1);
+
+                assertThatThrownBy(() -> graph.addEdge(1,1))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+        }
 
         @Nested @DisplayName("removeVertex 테스트")
         class RemoveVertexTest {}
