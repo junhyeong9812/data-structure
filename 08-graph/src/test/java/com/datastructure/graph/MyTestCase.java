@@ -1,5 +1,6 @@
 package com.datastructure.graph;
 
+import com.datastructure.graph.pop.AdjacencyMatrixGraph;
 import com.datastructure.graph.pop.DirectedGraph;
 import com.datastructure.graph.pop.Graph;
 import com.datastructure.graph.pop.WeightedGraph;
@@ -841,8 +842,59 @@ public class MyTestCase {
 
     @Nested @DisplayName("AdjacencyMatrixGraph (무방향, 인접 행렬) 테스트")
     class AdjacencyMatrixGraphTest {
+
+        AdjacencyMatrixGraph graph;
+
+        @BeforeEach
+        void setup() {graph = new AdjacencyMatrixGraph(10);}
+
         @Nested @DisplayName("addVertex 테스트")
-        class AddVertexTest {}
+        class AddVertexTest {
+            @Test @DisplayName("빈 그래프에 정점을 추가할 수 있다")
+            void add_vertex_to_empty_graph() {
+                assertThat(graph.hasVertex(1)).isFalse();
+
+                graph.addVertex(1);
+
+                assertThat(graph.hasVertex(1)).isTrue();
+            }
+
+            @Test @DisplayName("정점이 있는 그래프에 정점을 추가할 수 있다")
+            void add_vertex_to_non_empty_graph() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addVertex(3);
+
+                assertThat(graph.vertexCount()).isEqualTo(3);
+            }
+
+            @Test @DisplayName("이미 존재하는 정점을 추가하면 예외가 발생한다")
+            void add_duplicate_vertex_throws_exception() {
+                graph.addVertex(1);
+
+                assertThatThrownBy(() -> graph.addVertex(1))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test @DisplayName("정점 추가 후 vertexCount가 증가한다")
+            void add_vertex_increases_vertex_count() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                assertThat(graph.vertexCount()).isEqualTo(2);
+
+                graph.addVertex(3);
+
+                assertThat(graph.vertexCount()).isEqualTo(3);
+            }
+
+            @Test @DisplayName("용량을 초과하면 예외가 발생한다")
+            void add_vertex_exceeds_capacity_throws_exception() {
+                for (int i = 0; i < 10; i++) graph.addVertex(i);
+
+                assertThatThrownBy(() -> graph.addVertex(11))
+                .isInstanceOf(IllegalArgumentException.class);
+            }
+        }
 
         @Nested @DisplayName("addEdge 테스트")
         class AddEdgeTest {}
