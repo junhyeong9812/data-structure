@@ -14,7 +14,12 @@ public class AdjacencyMatrixGraph {
         this.size = 0;
     }
 
-    public void addVertex(int v) {}
+    public void addVertex(int v) {
+        if (vertexToIndex.containsKey(v)) throw new IllegalArgumentException("이미 존재하는 정점입니다: " + v);
+        if (size >= matrix.length) throw new IllegalArgumentException("용량을 초과했습니다");
+        vertexToIndex.put(v, size);
+        size++;
+    }
 
     public void addEdge(int u, int v) {}
 
