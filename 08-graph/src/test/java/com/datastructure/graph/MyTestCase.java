@@ -996,7 +996,46 @@ public class MyTestCase {
         }
 
         @Nested @DisplayName("removeEdge 테스트")
-        class RemoveEdgeTest {}
+        class RemoveEdgeTest {
+            @Test @DisplayName("존재하지 않는 정점의 간선 제거 시 예외가 발생한다")
+            void remove_edge_with_non_existent_vertex_throws_exception() {
+                graph.addVertex(2);
+                assertThatThrownBy(() -> graph.removeEdge(1,2))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test @DisplayName("존재하지 않는 간선 제거 시 예외가 발생한다")
+            void remove_non_existent_edge_throws_exception() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                assertThatThrownBy(() -> graph.removeEdge(1,2))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test @DisplayName("간선이 삭제된다")
+            void remove_edge_removes_edge() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addEdge(1,2);
+                assertThat(graph.edgeCount()).isEqualTo(1);
+
+                graph.removeEdge(1,2);
+
+                assertThat(graph.edgeCount()).isZero();
+            }
+
+            @Test @DisplayName("간선 삭제 시 역방향 간선도 삭제된다")
+            void remove_edge_also_removes_reverse_direction() {
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addEdge(1,2);
+                assertThat(graph.edgeCount()).isEqualTo(1);
+
+                graph.removeEdge(2,1);
+
+                assertThat(graph.edgeCount()).isZero();
+            }
+        }
 
         @Nested @DisplayName("hasEdge 테스트")
         class HasEdgeTest {}
