@@ -75,7 +75,7 @@ public class AdjacencyMatrixGraph {
         matrix[j][i] = false;
     }
 
-    public boolean hasVertex(int v) { return false; }
+    public boolean hasVertex(int v) { return vertexToIndex.containsKey(v); }
 
     public boolean hasEdge(int u, int v) { return false; }
 
