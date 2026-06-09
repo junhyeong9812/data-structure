@@ -65,7 +65,15 @@ public class AdjacencyMatrixGraph {
         size--;
     }
 
-    public void removeEdge(int u, int v) {}
+    public void removeEdge(int u, int v) {
+        if (!vertexToIndex.containsKey(u)) throw new IllegalArgumentException("존재하지 않는 정점입니다: " + u);
+        if (!vertexToIndex.containsKey(v)) throw new IllegalArgumentException("존재하지 않는 정점입니다: " + v);
+        int i = vertexToIndex.get(u);
+        int j = vertexToIndex.get(v);
+        if (!matrix[i][j]) throw new IllegalArgumentException("존재하지 않는 간선입니다: " + u + "-" + v);
+        matrix[i][j] = false;
+        matrix[j][i] = false;
+    }
 
     public boolean hasVertex(int v) { return false; }
 
