@@ -85,7 +85,17 @@ public class AdjacencyMatrixGraph {
         return matrix[i][j];
     }
 
-    public List<Integer> getNeighbors(int v) { return null; }
+    public List<Integer> getNeighbors(int v) {
+        if (!vertexToIndex.containsKey(v)) throw new IllegalArgumentException("존재하지 않는 정점입니다: " + v);
+        int idx = vertexToIndex.get(v);
+        List<Integer> result = new ArrayList<>();
+        for (Map.Entry<Integer,Integer> entry : vertexToIndex.entrySet()) {
+            if (matrix[idx][entry.getValue()]) {
+                result.add(entry.getKey());
+            }
+        }
+        return result;
+    }
 
     public int vertexCount() { return 0; }
 
