@@ -97,9 +97,17 @@ public class AdjacencyMatrixGraph {
         return result;
     }
 
-    public int vertexCount() { return 0; }
+    public int vertexCount() { return size; }
 
-    public int edgeCount() { return 0; }
+    public int edgeCount() {
+        int count = 0;
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (matrix[i][j]) count++;
+            }
+        }
+        return count / 2;
+    }
 
-    public boolean isEmpty() { return false; }
+    public boolean isEmpty() { return size==0; }
 }
