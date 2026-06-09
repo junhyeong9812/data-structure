@@ -32,7 +32,38 @@ public class AdjacencyMatrixGraph {
         matrix[j][i] = true;
     }
 
-    public void removeVertex(int v) {}
+    public void removeVertex(int v) {
+        if (!vertexToIndex.containsKey(v)) throw new IllegalArgumentException("존재하지 않는 정점입니다: " + v);
+        int removeIndex = vertexToIndex.get(v);
+        int lastIndex = size - 1;
+
+        if (removeIndex != lastIndex) {
+            // 마지막 인덱스를 가진 정점 찾기
+            int lastVertex = -1;
+            for (Map.Entry<Integer, Integer> entry : vertexToIndex.entrySet()) {
+                if (entry.getValue() == lastIndex) {
+                    lastVertex = entry.getKey();
+                    break;
+                }
+            }
+            // 행렬에서 마지막 행/열을 삭제된 위치로 복사
+            for (int i = 0; i < size; i++) {
+                matrix[removeIndex][i] = matrix[lastIndex][i];
+                matrix[i][removeIndex] = matrix[i][lastIndex];
+            }
+            //매핑 업데이트
+            vertexToIndex.put(lastVertex, removeIndex);
+        }
+
+        // 마지막 행/열 초기화
+        for (int i = 0; i < size; i++) {
+            matrix[lastIndex][i] = false;
+            matrix[i][lastIndex] = false;
+        }
+
+        vertexToIndex.remove(v);
+        size--;
+    }
 
     public void removeEdge(int u, int v) {}
 
