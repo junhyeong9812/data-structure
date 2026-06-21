@@ -21,7 +21,15 @@ public class DirectedAdjacencyMatrixGraph {
         size++;
     }
 
-    public void addEdge(int u, int v) {}
+    public void addEdge(int u, int v) {
+        if (!vertexToIndex.containsKey(u)) throw new IllegalArgumentException("존재하지 않는 정점입니다: " + u);
+        if (!vertexToIndex.containsKey(v)) throw new IllegalArgumentException("존재하지 않는 정점입니다: " + v);
+        if (u == v) throw new IllegalArgumentException("자기 루프는 허용하지 않습니다: " + u);
+        int i = vertexToIndex.get(u);
+        int j = vertexToIndex.get(v);
+        if (matrix[i][j]) throw new IllegalArgumentException("이미 존재하는 간선입니다: " + u + "-" + v);
+        matrix[i][j] = true;
+    }
 
     public void removeVertex(int v) {}
 
