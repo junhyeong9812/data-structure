@@ -71,9 +71,15 @@ public class DirectedAdjacencyMatrixGraph {
         matrix[j][i] = false;
     }
 
-    public boolean hasVertex(int v) { return false; }
+    public boolean hasVertex(int v) { return vertexToIndex.containsKey(v); }
 
-    public boolean hasEdge(int u, int v) { return false; }
+    public boolean hasEdge(int u, int v) {
+        if (!vertexToIndex.containsKey(u)) throw new IllegalArgumentException("존재하지 않는 정점입니다: " + u);
+        if (!vertexToIndex.containsKey(v)) throw new IllegalArgumentException("존재하지 않는 정점입니다: " + v);
+        int i = vertexToIndex.get(u);
+        int j = vertexToIndex.get(v);
+        return matrix[i][j];
+    }
 
     public List<Integer> getNeighbors(int v) { return null; }
 
