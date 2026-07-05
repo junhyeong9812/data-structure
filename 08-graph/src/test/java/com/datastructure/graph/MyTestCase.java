@@ -1173,33 +1173,76 @@ public class MyTestCase {
 
     @Nested @DisplayName("GraphProblems 테스트")
     class GraphProblemsTest {
-        @Nested @DisplayName("BFS 테스트")
-        class BfsTest {}
 
+        GraphProblems problems;
+
+        @BeforeEach
+        void setup() {
+
+        }
+
+//        BFS(너비 우선 탐색): 시작 정점에서 가까운 정점부터 차례로 방문합니다. 같은 거리의 정점을
+//        다 방문한 후 다음 거리로 넘어간다.
+        @Nested @DisplayName("BFS 테스트")
+        class BfsTest {
+
+            @Test @DisplayName("정점이 하나면 해당 정점만 반환한다")
+            void bfs_single_vertex() {}
+
+            @Test @DisplayName("일렬로 연결된 그래프를 순서대로 방문한다")
+            void bfs_linear_graph() {}
+
+            @Test @DisplayName("같은 거리의 정점을 먼저 방문한 후 다음 거리로 넘어간다")
+            void bfs_visits_by_level() {}
+
+            @Test @DisplayName("이미 방문한 정점은 다시 방문하지 않는다")
+            void bfs_does_not_revisit() {}
+
+            @Test @DisplayName("연결되지 않은 정점은 방문하지 않는다")
+            void bfs_does_not_visit_disconnected() {}
+
+            @Test @DisplayName("존재하지 않는 정점에서 시작하면 예외가 발생한다")
+            void bfs_non_existent_start_throws_exception() {}
+        }
+
+//        DFS(깊이 우선 탐색): 한 방향으로 끝까지 깊이 들어간 뒤, 막히면 돌아와서 다른 방향으로 탐색합니다
         @Nested @DisplayName("DFS 테스트")
         class DfsTest {}
 
+//        최단 경로(비가중치):BFS로 시작점에서 도착점까지의 최단 경로를 찾습니다.
         @Nested @DisplayName("최단 경로 (비가중치) 테스트")
         class ShortestPathTest {}
 
+//        가중치 그래프에서 시작점에서 모든 정점까지의 최단 거리를 구합니다.
+//        음수 가중치는 불가, 우선순위 큐를 사용해서 가장 가까운 정점부터 처리한다
         @Nested @DisplayName("다익스트라 테스트")
         class DijkstraTest {}
 
+//        다익스트라와 같은 목적인데 음수 가중치도 처리 가능하다.
+//        모든 간선을 V-1번 반복 확인하는 방식이라 느리지만, 음수 사이클도 탐지할 수있다.
         @Nested @DisplayName("벨만-포드 테스트")
         class BellmanFordTest {}
 
+//        모든 정점 쌍 간의 최단거리를 한꺼번에 구한다.
+//        3중 반복문으로 K를 거쳐가는 게 더 빠른가?를 모두 확인한다
         @Nested @DisplayName("플로이드-워셜 테스트")
         class FloydWarshallTest {}
 
+//        그래프에 순환이 있는지 확인한다.
+//        방향 그래프에서는 DFS중 현재 탐색 경로에 있는 정점을 다시 만나면 사이클이다.
         @Nested @DisplayName("사이클 탐지 테스트")
         class CycleDetectionTest {}
 
+//        방향 비순환 그래프(DAG)에서 선후관계를 지키는 순서를 정렬한다.
+//        선수 과목처럼 A를 전저 해야 B를 할 수 있다를 정렬한다
         @Nested @DisplayName("위상 정렬 테스트")
         class TopologicalSortTest {}
 
+//        서로 연결된 정점들의 그룹을 찾는다. 떨어져 있는 그래프가 몇 덩어리인 지 파악한다
         @Nested @DisplayName("연결 요소 테스트")
         class ConnectedComponentsTest {}
 
+//        정점을 두 그룹으로 나눠서, 같은 그룹 안에서는 간선이 없도록 할 수 있는 지 판별한다.
         @Nested @DisplayName("이분 그래프 테스트")
         class BipartiteTest {}
 
