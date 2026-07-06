@@ -7,6 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.*;
 
 public class MyTestCase {
@@ -1178,7 +1180,7 @@ public class MyTestCase {
 
         @BeforeEach
         void setup() {
-
+            problems = new GraphProblems();
         }
 
 //        BFS(너비 우선 탐색): 시작 정점에서 가까운 정점부터 차례로 방문합니다. 같은 거리의 정점을
@@ -1186,14 +1188,43 @@ public class MyTestCase {
         @Nested @DisplayName("BFS 테스트")
         class BfsTest {
 
+            Graph graph;
+            List<Integer> bfs;
+
+            @BeforeEach
+            void setup() {
+                graph = new Graph();
+            }
+
             @Test @DisplayName("정점이 하나면 해당 정점만 반환한다")
-            void bfs_single_vertex() {}
+            void bfs_single_vertex() {
+                graph.addVertex(0);
+                assertThat(problems.bfs(graph,0)).contains(0);
+            }
 
             @Test @DisplayName("일렬로 연결된 그래프를 순서대로 방문한다")
-            void bfs_linear_graph() {}
+            void bfs_linear_graph() {
+                graph.addVertex(0);
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addEdge(0,1);
+                graph.addEdge(1,2);
+                assertThat(problems.bfs(graph,0)).containsExactly(0,1,2);
+            }
 
             @Test @DisplayName("같은 거리의 정점을 먼저 방문한 후 다음 거리로 넘어간다")
-            void bfs_visits_by_level() {}
+            void bfs_visits_by_level() {
+                graph.addVertex(0);
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addVertex(3);
+                graph.addEdge(0,1);
+                graph.addEdge(0,2);
+                graph.addEdge(1,3);
+                graph.addEdge(2,3);
+                assertThat(problems.bfs(graph, 0)).containsExactly(0,1,2,3);
+
+            }
 
             @Test @DisplayName("이미 방문한 정점은 다시 방문하지 않는다")
             void bfs_does_not_revisit() {}
