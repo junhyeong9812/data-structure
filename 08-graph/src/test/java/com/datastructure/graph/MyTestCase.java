@@ -1214,26 +1214,69 @@ public class MyTestCase {
 
             @Test @DisplayName("같은 거리의 정점을 먼저 방문한 후 다음 거리로 넘어간다")
             void bfs_visits_by_level() {
+                //     0
+                //    / \
+                //   1   2     <- 거리 1
+                //   |   |
+                //   3   4     <- 거리 2
                 graph.addVertex(0);
                 graph.addVertex(1);
                 graph.addVertex(2);
                 graph.addVertex(3);
-                graph.addEdge(0,1);
-                graph.addEdge(0,2);
-                graph.addEdge(1,3);
-                graph.addEdge(2,3);
-                assertThat(problems.bfs(graph, 0)).containsExactly(0,1,2,3);
+                graph.addVertex(4);
+                graph.addEdge(0, 1);
+                graph.addEdge(0, 2);
+                graph.addEdge(1, 3);
+                graph.addEdge(2, 4);
 
+                List<Integer> result = problems.bfs(graph, 0);
+                // 0이 먼저, 그 다음 1,2(거리1), 그 다음 3,4(거리2)
+                assertThat(result.indexOf(0)).isLessThan(result.indexOf(1));
+                assertThat(result.indexOf(0)).isLessThan(result.indexOf(2));
+                assertThat(result.indexOf(1)).isLessThan(result.indexOf(3));
+                assertThat(result.indexOf(2)).isLessThan(result.indexOf(4));
             }
 
             @Test @DisplayName("이미 방문한 정점은 다시 방문하지 않는다")
-            void bfs_does_not_revisit() {}
+            void bfs_does_not_revisit() {
+                //   0 - 1
+                //   |   |
+                //   2 - 3   ← 사이클이 있어도 중복 방문 안 됨
+                graph.addVertex(0);
+                graph.addVertex(1);
+                graph.addVertex(2);
+                graph.addVertex(3);
+                graph.addEdge(0, 1);
+                graph.addEdge(1, 3);
+                graph.addEdge(3, 2);
+                graph.addEdge(2, 0);
+
+                List<Integer> result = problems.bfs(graph, 0);
+                assertThat(result).hasSize(4);
+                assertThat(result).containsExactlyInAnyOrder(0, 1, 2, 3);
+            }
 
             @Test @DisplayName("연결되지 않은 정점은 방문하지 않는다")
-            void bfs_does_not_visit_disconnected() {}
+            void bfs_does_not_visit_disconnected() {
+                //   0 - 1    3 - 4   ← 별도 그룹
+                graph.addVertex(0);
+                graph.addVertex(1);
+                graph.addVertex(3);
+                graph.addVertex(4);
+                graph.addEdge(0, 1);
+                graph.addEdge(3, 4);
+
+                assertThat(problems.bfs(graph, 0)).containsExactlyInAnyOrder(0, 1);
+                assertThat(problems.bfs(graph, 0)).doesNotContain(3, 4);
+            }
 
             @Test @DisplayName("존재하지 않는 정점에서 시작하면 예외가 발생한다")
-            void bfs_non_existent_start_throws_exception() {}
+            void bfs_non_existent_start_throws_exception() {
+                graph.addVertex(0);
+
+                assertThatThrownBy(() -> problems.bfs(graph, 99))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
         }
 
 //        DFS(깊이 우선 탐색): 한 방향으로 끝까지 깊이 들어간 뒤, 막히면 돌아와서 다른 방향으로 탐색합니다
