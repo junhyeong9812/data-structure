@@ -1,159 +1,79 @@
-# 05. 해시맵 (HashMap)
+# 05. 해시맵 (세 가지 구현)
 
-## 📋 문제 정의
+01~04는 전부 **순서**가 있는 구조였습니다. 인덱스든 앞뒤든, 어디에 있는지로 찾았습니다.
+여기서는 다릅니다. **값 자체로부터 위치를 계산합니다.**
 
-**해시 함수**를 사용하여 키-값 쌍을 저장하는 **해시맵(HashMap)**을 구현하세요.
+잘 되면 넣기/찾기/지우기가 전부 평균 O(1)입니다. 배열의 O(1) 접근을 임의의 키로 확장한 셈입니다.
+대신 세 가지 대가를 치릅니다.
 
-평균 O(1) 시간에 삽입, 삭제, 검색이 가능한 핵심 자료구조입니다.
+1. **순서가 없습니다.** 넣은 순서도 정렬 순서도 보장되지 않습니다.
+2. **최악은 O(n)입니다.** 키가 한곳에 몰리면 그냥 리스트가 됩니다.
+3. **공간을 여유 있게 잡아야 합니다.** 꽉 채우면 충돌이 급증합니다.
 
----
+## 세 구현
 
-## 🎯 학습 목표
+| | 충돌 처리 | 삭제 | 메모리 | 약점 |
+|---|---|---|---|---|
+| `ChainingHashMap` | 같은 자리에 사슬로 매단다 | 노드 하나 빼면 끝 | 노드 객체마다 오버헤드 | 사슬이 길어지면 느려진다 |
+| `LinearProbingHashMap` | 옆칸으로 밀어 넣는다 | **까다롭다 (tombstone)** | 배열만 쓴다, 캐시 친화적 | **군집화** |
+| `LinkedHashMap` | 체이닝 그대로 | 체이닝 + 순서 사슬 | 순서 링크가 더 붙는다 | 대가 1번을 되사온 것 |
 
-- 해시 함수의 원리 이해
-- 해시 충돌(Collision) 해결 방법
-- 체이닝(Chaining) vs 개방 주소법(Open Addressing)
-- 로드 팩터(Load Factor)와 리해싱(Rehashing)
-- equals()와 hashCode() 계약 이해
+## 이 문제의 함정: 개방 주소법의 삭제
 
----
+`A`를 넣었더니 3번 칸, `B`는 3번이 차 있어 4번 칸에 들어갔다고 합시다.
+이제 `A`를 지우고 3번을 **그냥 비우면**, `B`를 찾을 때 3번이 비었으니 "없다"고 판단하고 멈춥니다.
 
-## 📝 요구사항
+**`B`는 4번에 멀쩡히 있는데 못 찾습니다.** 탐사 사슬이 끊긴 겁니다.
 
-### 기본 연산
+그래서 지운 자리에 "여기 예전에 뭔가 있었다"는 표시(tombstone)를 남깁니다. 찾을 때는 지나쳐 가고,
+넣을 때는 재사용합니다. 다만 **재사용하기 전에 그 키가 뒤쪽에 이미 있는지 확인**해야 중복이 안 생깁니다.
 
-| 메서드 | 설명 | 평균 시간복잡도 |
-|--------|------|----------------|
-| `put(key, value)` | 키-값 쌍 저장 (키 있으면 덮어쓰기) | O(1) |
-| `get(key)` | 키에 해당하는 값 반환 | O(1) |
-| `remove(key)` | 키-값 쌍 삭제 | O(1) |
-| `containsKey(key)` | 키 존재 여부 확인 | O(1) |
-| `containsValue(value)` | 값 존재 여부 확인 | O(n) |
-| `size()` | 저장된 키-값 쌍 개수 | O(1) |
-| `isEmpty()` | 비어있는지 확인 | O(1) |
-| `clear()` | 모든 요소 삭제 | O(n) |
-| `keySet()` | 모든 키 집합 반환 | O(n) |
-| `values()` | 모든 값 컬렉션 반환 | O(n) |
-| `entrySet()` | 모든 키-값 쌍 집합 반환 | O(n) |
+계약 테스트만으로는 잘 안 잡히는 버그라 `LinearProbingHashMapTest` 가 구조를 직접 봅니다.
 
-### 충돌 해결 방식
+## 하는 방법
 
-1. **체이닝 (Separate Chaining)**
-   - 각 버킷에 연결 리스트 저장
-   - Java 8+에서는 트리화 (8개 이상 → Red-Black Tree)
-
-2. **개방 주소법 (Open Addressing)**
-   - 선형 탐사 (Linear Probing)
-   - 이차 탐사 (Quadratic Probing)
-   - 이중 해싱 (Double Hashing)
-
----
-
-## 📊 입출력 예시
-
-### 예제 1: 기본 사용
-```java
-HashMap<String, Integer> map = new HashMap<>();
-map.put("apple", 100);
-map.put("banana", 200);
-map.put("cherry", 300);
-
-System.out.println(map.get("apple"));     // 출력: 100
-System.out.println(map.get("grape"));     // 출력: null
-System.out.println(map.containsKey("banana")); // 출력: true
+```
+1. MapContractTest.java 를 따라친다              <- 계약이 여기 있다
+2. ChainingHashMap 의 TODO 5개를 채운다          <- 사슬이 단순하다. 여기부터
+3. LinearProbingHashMap 의 TODO 5개를 채운다     <- tombstone 이 나온다
+4. LinkedHashMap 의 TODO 4개를 채운다            <- 부모 훅만 재정의한다
+5. MapProblems 의 TODO 3개를 채운다
 ```
 
-### 예제 2: 값 덮어쓰기
-```java
-HashMap<String, Integer> map = new HashMap<>();
-map.put("key", 1);
-map.put("key", 2);  // 기존 값 덮어쓰기
-
-System.out.println(map.get("key"));  // 출력: 2
-System.out.println(map.size());      // 출력: 1
+```bash
+cd ~/project/myway/data-structure && ./run.sh 05      # 83개가 전부 실패한다
 ```
 
-### 예제 3: 삭제
-```java
-HashMap<String, Integer> map = new HashMap<>();
-map.put("a", 1);
-map.put("b", 2);
+## 특히 생각해볼 것
 
-Integer removed = map.remove("a");
-System.out.println(removed);              // 출력: 1
-System.out.println(map.containsKey("a")); // 출력: false
-```
+**1. 음수 해시** — `Integer` 의 `hashCode` 는 값 그대로입니다. 음수를 그대로 `%` 하면 인덱스가 음수가 됩니다.
+`Math.abs` 도 완전하지 않습니다. `Math.abs(Integer.MIN_VALUE)` 는 오버플로해서 여전히 음수입니다.
+(이 구현은 용량이 늘 2의 거듭제곱이라 그 값의 나머지가 0이 되어 우연히 사고가 안 납니다.
+**우연에 기대는 코드입니다.**) 최상위 비트를 지우면 용량이 무엇이든 안전합니다.
 
-### 예제 4: null 키/값
-```java
-HashMap<String, Integer> map = new HashMap<>();
-map.put(null, 100);      // null 키 허용
-map.put("key", null);    // null 값 허용
+**2. 리사이즈는 "옮기기"가 아니라 "다시 계산하기"** — 버킷 수가 바뀌면 같은 키의 자리도 바뀝니다.
+통째로 복사하면 못 찾게 됩니다. 04번 원형 배열에서 "감김을 풀어야 한다"고 했던 것과 같은 종류의 함정입니다.
 
-System.out.println(map.get(null));   // 출력: 100
-System.out.println(map.get("key"));  // 출력: null
-```
+**3. 개방 주소법의 리사이즈 판단은 `size` 가 아니라 `used`** — tombstone도 탐사를 길게 만듭니다.
+넣고 지우기만 반복해도 느려질 수 있습니다.
+그리고 **실제 원소가 적으면 늘리지 말고 같은 크기로 다시 배치**해야 합니다. 안 그러면 배열만 커집니다.
 
----
+**4. 값이 `null` 인 것과 키가 없는 것은 다릅니다.** `get` 만으로는 구분할 수 없어서 `containsKey` 가 따로 있습니다.
 
-## 🔍 제약 조건
+**5. 문제 2번이 함정입니다.** `twoSum` 에 20만 건 시간 제한이 있습니다.
+모든 쌍을 보면 O(n²)입니다. **"짝을 이미 봤는지"** 를 O(1)로 물을 수 있으면 한 번만 훑어도 됩니다.
+해시맵이 필요한 상황은 대개 이 모양입니다.
 
-- **초기 용량**: 16 (2의 거듭제곱)
-- **로드 팩터**: 0.75 (75% 차면 리해싱)
-- **리해싱**: 용량 2배로 확장
-- `null` 키/값 허용 (구현 방식에 따라)
-- equals()와 hashCode() 일관성 필요
+**6. 선형 탐사의 군집화** — 연속된 정수 키는 슬롯에 빈틈없이 들어차고, 그 구간으로 떨어지는
+"없는 키" 조회가 덩어리 끝까지 걸어갑니다. 실제로 측정했더니 체이닝 120ms 대 선형탐사 75초였습니다.
+버그가 아니라 이 방식의 성질입니다. 실무 구현이 해시를 한 번 섞는(bit mixing) 이유가 이것입니다.
+`sequentialKeysCluster` 테스트가 이걸 보여줍니다.
 
----
+**7. `LinkedHashMap` 은 상속으로 얹습니다** — 해시, 충돌, 리사이즈는 부모와 같습니다.
+달라지는 건 "넣고 지울 때 순서 기록을 갱신한다"뿐이라 부모가 그 지점에 훅을 열어뒀습니다(template method).
+이 구조 위에 접근 순서를 얹으면 LRU 캐시가 됩니다. 10번에서 다시 만납니다.
 
-## 💡 힌트
+## 다음
 
-### 해시 함수
-```java
-// 버킷 인덱스 계산
-int hash = key.hashCode();
-int index = hash & (capacity - 1);  // capacity가 2의 거듭제곱일 때
-
-// 또는
-int index = Math.abs(hash) % capacity;
-```
-
-### 체이닝 구현 힌트
-```java
-class Entry<K, V> {
-    K key;
-    V value;
-    Entry<K, V> next;  // 연결 리스트
-}
-
-Entry<K, V>[] buckets = new Entry[capacity];
-```
-
-### 개방 주소법 힌트
-```java
-// 선형 탐사
-int index = hash & (capacity - 1);
-while (buckets[index] != null && !buckets[index].key.equals(key)) {
-    index = (index + 1) & (capacity - 1);
-}
-```
-
----
-
-## ✅ 체크리스트
-
-- [ ] 체이닝 방식 해시맵 구현
-- [ ] 개방 주소법(선형 탐사) 해시맵 구현
-- [ ] 로드 팩터 기반 리해싱
-- [ ] null 키/값 처리
-- [ ] equals/hashCode 올바른 사용
-- [ ] keySet, values, entrySet 구현
-- [ ] Iterator 구현
-
----
-
-## 📚 참고
-
-- [Java HashMap 소스코드](https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/java/util/HashMap.java)
-- hashCode()와 equals() 계약
-- 해시 충돌 공격 (Hash DoS)
+06-binary-search-tree 에서는 **정렬을 유지하는** 구조가 나옵니다.
+해시맵이 포기한 순서를 다른 방식으로 되찾습니다.

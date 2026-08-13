@@ -1,229 +1,83 @@
-# 08. 그래프 (Graph)
+# 08. 그래프 (두 가지 표현)
 
-## 📋 문제 정의
+01~07은 전부 **"원소를 어떻게 담을까"** 였습니다. 여기서는 다릅니다.
+**원소 사이의 관계 자체가 자료구조입니다.** 담는 것이 아니라 잇는 것입니다.
 
-**정점(Vertex)**과 **간선(Edge)**으로 구성된 그래프 자료구조와 핵심 알고리즘을 구현하세요.
+정점은 0부터 V-1까지의 정수입니다. 이름표가 필요하면 바깥에서 매핑하면 됩니다.
+그 단순화 덕분에 인접 행렬이 그대로 2차원 배열이 됩니다.
 
-그래프는 네트워크, 경로 찾기, 관계 모델링 등 다양한 문제를 해결하는 핵심 자료구조입니다.
+## 두 표현
 
----
+| | 인접 리스트 | 인접 행렬 |
+|---|---|---|
+| 메모리 | O(V + E) | **O(V²)** 간선이 없어도 |
+| `hasEdge(u, v)` | O(deg(u)) | **O(1)** |
+| `neighbors(v)` 순회 | **O(deg(v))** | O(V) 이웃이 없어도 |
+| BFS / DFS 전체 | **O(V + E)** | O(V²) |
 
-## 🎯 학습 목표
+**어느 쪽이 나은지는 그래프의 밀도가 정합니다.**
 
-- 그래프 표현 방식 (인접 행렬 vs 인접 리스트)
-- 그래프 순회 (BFS, DFS)
-- 최단 경로 알고리즘 (다익스트라, 벨만-포드)
-- 최소 신장 트리 (프림, 크루스칼)
-- 위상 정렬 (Topological Sort)
-- 사이클 탐지
+현실의 그래프는 대개 희소합니다. 도로망, 소셜 그래프, 빌드 의존성이 전부 그렇습니다.
+정점 10만 개에 간선 20만 개인 그래프를 행렬로 만들면 100억 칸이 필요합니다. 아예 못 만듭니다.
+그래서 보통 인접 리스트를 씁니다. 행렬은 밀집 그래프이거나 `hasEdge`를 아주 자주 물을 때 씁니다.
 
----
+`AdjacencyMatrixGraphTest`가 그 대가를 숫자로 못 박습니다.
+간선 1개짜리 그래프에서 칸이 100만 개라는 것, 이웃이 없는 정점도 V칸을 훑어야 그걸 안다는 것.
 
-## 📝 요구사항
+## 하는 방법
 
-### 그래프 기본 연산
-
-| 메서드 | 설명 | 시간복잡도 (인접 리스트) |
-|--------|------|------------------------|
-| `addVertex(v)` | 정점 추가 | O(1) |
-| `addEdge(u, v)` | 간선 추가 | O(1) |
-| `addEdge(u, v, weight)` | 가중치 간선 추가 | O(1) |
-| `removeVertex(v)` | 정점 제거 | O(V + E) |
-| `removeEdge(u, v)` | 간선 제거 | O(E) |
-| `hasVertex(v)` | 정점 존재 확인 | O(1) |
-| `hasEdge(u, v)` | 간선 존재 확인 | O(degree) |
-| `getNeighbors(v)` | 인접 정점 조회 | O(1) |
-| `vertexCount()` | 정점 개수 | O(1) |
-| `edgeCount()` | 간선 개수 | O(1) |
-
-### 그래프 순회
-
-| 알고리즘 | 설명 | 시간복잡도 |
-|---------|------|-----------|
-| `bfs(start)` | 너비 우선 탐색 | O(V + E) |
-| `dfs(start)` | 깊이 우선 탐색 | O(V + E) |
-| `bfsIterative(start)` | BFS 반복 구현 | O(V + E) |
-| `dfsIterative(start)` | DFS 반복 구현 | O(V + E) |
-
-### 경로 탐색
-
-| 알고리즘 | 설명 | 시간복잡도 |
-|---------|------|-----------|
-| `shortestPath(start, end)` | 최단 경로 (비가중치) | O(V + E) |
-| `dijkstra(start)` | 다익스트라 (양의 가중치) | O((V+E) log V) |
-| `bellmanFord(start)` | 벨만-포드 (음의 가중치) | O(V * E) |
-| `floydWarshall()` | 모든 쌍 최단 경로 | O(V³) |
-
-### 기타 알고리즘
-
-| 알고리즘 | 설명 | 시간복잡도 |
-|---------|------|-----------|
-| `hasCycle()` | 사이클 존재 여부 | O(V + E) |
-| `topologicalSort()` | 위상 정렬 (DAG) | O(V + E) |
-| `connectedComponents()` | 연결 요소 찾기 | O(V + E) |
-| `isBipartite()` | 이분 그래프 판별 | O(V + E) |
-| `prim()` | 프림 MST | O((V+E) log V) |
-| `kruskal()` | 크루스칼 MST | O(E log E) |
-
----
-
-## 📊 입출력 예시
-
-### 예제 1: 기본 그래프 생성
-```java
-Graph graph = new Graph();
-graph.addVertex(0);
-graph.addVertex(1);
-graph.addVertex(2);
-graph.addEdge(0, 1);
-graph.addEdge(1, 2);
-graph.addEdge(0, 2);
-
-//   0 --- 1
-//    \   /
-//     \ /
-//      2
-
-System.out.println(graph.hasEdge(0, 1));  // true
-System.out.println(graph.getNeighbors(0)); // [1, 2]
+```
+1. GraphContractTest.java 를 따라친다            <- 계약이 여기 있다
+2. AdjacencyListGraph 의 TODO 4개를 채운다
+3. AdjacencyMatrixGraph 의 TODO 4개를 채운다     <- 같은 계약, 전혀 다른 구현
+4. GraphProblems 의 TODO 4개를 채운다            <- BFS, DFS, 위상정렬, 다익스트라
 ```
 
-### 예제 2: BFS/DFS 순회
-```java
-// 그래프:
-//   0 - 1 - 3
-//   |   |
-//   2 - 4
-
-List<Integer> bfsOrder = graph.bfs(0);
-// [0, 1, 2, 3, 4] (레벨 순서)
-
-List<Integer> dfsOrder = graph.dfs(0);
-// [0, 1, 3, 4, 2] (깊이 우선)
+```bash
+cd ~/project/myway/data-structure && ./run.sh 08      # 62개가 전부 실패한다
 ```
 
-### 예제 3: 최단 경로
-```java
-// 비가중치 그래프
-List<Integer> path = graph.shortestPath(0, 4);
-// [0, 1, 4] 또는 [0, 2, 4]
+## 앞 문제들이 여기서 전부 쓰입니다
 
-// 가중치 그래프 (다익스트라)
-graph.addEdge(0, 1, 4);
-graph.addEdge(0, 2, 1);
-graph.addEdge(2, 1, 2);
+| 응용 | 필요한 자료구조 | 어디서 만들었나 |
+|---|---|---|
+| BFS | 큐 | 04번 |
+| DFS | 스택 | 03번 |
+| 위상 정렬 | 큐 | 04번 |
+| 다익스트라 | 힙 | 07번 |
 
-Map<Integer, Integer> distances = graph.dijkstra(0);
-// {0: 0, 1: 3, 2: 1}
-```
+그래프는 **다른 자료구조를 도구로 쓰는** 첫 문제입니다.
+(코드에서는 `java.util` 것을 씁니다. 모듈이 분리되어 있어서일 뿐, 앞에서 만든 것과 같은 물건입니다.)
 
-### 예제 4: 위상 정렬
-```java
-// DAG (방향 비순환 그래프)
-//   5 → 0 ← 4
-//   ↓   ↓   ↓
-//   2 → 3 → 1
+## 특히 생각해볼 것
 
-DirectedGraph dag = new DirectedGraph();
-dag.addEdge(5, 0);
-dag.addEdge(5, 2);
-dag.addEdge(4, 0);
-dag.addEdge(4, 1);
-dag.addEdge(2, 3);
-dag.addEdge(3, 1);
-dag.addEdge(0, 3);
+**1. 무방향 간선은 저장 두 번, 개수 하나** — `edgeCount`를 양쪽에서 세면 두 배가 됩니다.
+그리고 자기 자신으로 가는 간선은 무방향이어도 한 번만 저장해야 합니다.
 
-List<Integer> sorted = dag.topologicalSort();
-// [5, 4, 2, 0, 3, 1] 또는 [4, 5, 2, 0, 3, 1] 등
-```
+**2. 같은 간선을 다시 이으면** — 인접 리스트는 찾아서 덮어써야 합니다. 그냥 넣으면 목록에 중복이 생깁니다.
+행렬은 칸을 보면 되니 찾는 비용이 없습니다. **같은 계약인데 비용 구조가 다릅니다.**
 
-### 예제 5: 사이클 탐지
-```java
-DirectedGraph graph = new DirectedGraph();
-graph.addEdge(0, 1);
-graph.addEdge(1, 2);
-graph.addEdge(2, 0);  // 사이클!
+**3. `neighbors`는 복사본이어야 합니다** — 내부 목록을 그대로 주면 호출자가 그래프를 바꿉니다.
+01번 `toArray`에서 나온 문제가 그대로 재현됩니다.
 
-System.out.println(graph.hasCycle());  // true
-```
+**4. BFS에서 왜 큐인가** — 가까운 것부터 층층이 넓히므로 처음 닿았을 때가 곧 최단입니다.
+깊이 우선으로 하면 먼 길로 먼저 닿을 수 있습니다.
 
----
+`shortestEvenWhenLongPathExploredFirst` 테스트가 이걸 잡습니다.
+작은 그래프에서는 깊이 우선으로도 우연히 맞는 답이 나와서, **긴 경로를 먼저 탐색하게 만든** 그래프가 따로 필요합니다.
 
-## 🔍 제약 조건
+**5. DFS는 반복으로 짜야 합니다** — 재귀로 하면 호출 스택을 쓰는데,
+10만 개가 한 줄로 이어진 그래프에서 넘칩니다. 테스트에 그 케이스가 있습니다.
 
-- 정점은 정수 또는 제네릭 타입
-- 자기 루프(self-loop) 허용 여부는 구현에 따라 결정
-- 다중 간선(multi-edge) 허용하지 않음
-- 가중치는 정수 또는 실수
+**6. 위상 정렬이 순환을 어떻게 아는가** — 진입 차수가 0인 정점부터 빼 나가다가,
+다 돌았는데 정점이 남으면 그건 서로를 기다리는 것들이 있다는 뜻입니다.
+별도의 순환 탐지가 필요 없습니다. **알고리즘이 끝나는 방식 자체가 답을 줍니다.**
 
----
+**7. 다익스트라가 음수 간선을 못 다루는 이유** — "가장 가까운 것을 확정하면 다시는 안 바뀐다"가 전제인데,
+음수 간선이 있으면 나중에 더 싼 길이 나타날 수 있어 그 전제가 깨집니다.
+그래서 `addEdge`가 음수 가중치를 거부합니다.
 
-## 💡 힌트
+## 다음
 
-### 인접 리스트 표현
-```java
-// Map 기반
-Map<Integer, List<Integer>> adjList = new HashMap<>();
-
-// 배열 기반 (정점이 0~n-1일 때)
-List<Integer>[] adjList = new ArrayList[n];
-```
-
-### 인접 행렬 표현
-```java
-// 정점이 0~n-1일 때
-int[][] adjMatrix = new int[n][n];
-// adjMatrix[i][j] = 1 (간선 존재) 또는 가중치
-```
-
-### BFS 템플릿
-```java
-Queue<Integer> queue = new LinkedList<>();
-Set<Integer> visited = new HashSet<>();
-queue.offer(start);
-visited.add(start);
-
-while (!queue.isEmpty()) {
-    int v = queue.poll();
-    for (int neighbor : getNeighbors(v)) {
-        if (!visited.contains(neighbor)) {
-            visited.add(neighbor);
-            queue.offer(neighbor);
-        }
-    }
-}
-```
-
-### DFS 템플릿
-```java
-void dfs(int v, Set<Integer> visited) {
-    visited.add(v);
-    for (int neighbor : getNeighbors(v)) {
-        if (!visited.contains(neighbor)) {
-            dfs(neighbor, visited);
-        }
-    }
-}
-```
-
----
-
-## ✅ 체크리스트
-
-- [ ] 인접 리스트 기반 그래프 구현
-- [ ] 인접 행렬 기반 그래프 구현
-- [ ] 방향 그래프 / 무방향 그래프
-- [ ] BFS, DFS 순회
-- [ ] 최단 경로 (BFS, 다익스트라)
-- [ ] 위상 정렬
-- [ ] 사이클 탐지
-- [ ] 연결 요소 찾기
-- [ ] MST (프림, 크루스칼)
-
----
-
-## 📚 참고
-
-- [Visualgo - Graph Traversal](https://visualgo.net/en/dfsbfs)
-- [Visualgo - Single-Source Shortest Path](https://visualgo.net/en/sssp)
-- 그래프 표현 선택 기준 (희소 vs 밀집)
+09-trie 에서는 **문자열의 접두사**를 공유하는 구조가 나옵니다.
+해시맵으로는 "이 접두사로 시작하는 것 전부"를 물을 수 없습니다. 05번과 같은 종류의 거래가 다시 나옵니다.

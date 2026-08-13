@@ -1,138 +1,98 @@
-# 02. 연결 리스트 (Linked List)
+# 02. 연결 리스트 (두 가지 구현)
 
-## 📋 문제 정의
+01번과 **같은 일을 하는데 저장 방식이 정반대**입니다. 그리고 연결 방식 자체도 두 가지로 갈립니다.
+01번을 먼저 푸세요. 비교가 이 문제의 핵심입니다.
 
-노드와 포인터를 사용하여 **단일 연결 리스트**와 **이중 연결 리스트**를 구현하세요.
+## 대비 두 축
 
-배열과 달리 메모리상에 연속되지 않은 데이터를 포인터로 연결하는 자료구조입니다.
+| 연산 | 동적 배열(01) | 연결 리스트 |
+|---|---|---|
+| `get(i)`, `set(i)` | **O(1)** 주소 계산 | O(n) 세면서 간다 |
+| 맨 앞 추가/삭제 | O(n) 전부 민다 | **O(1)** 링크만 고친다 |
+| 중간 삽입/삭제 | O(n) 민다 | 노드를 알면 **O(1)**, 인덱스로 찾으면 O(n) |
 
----
+| 연산 | 단일 | 이중 |
+|---|---|---|
+| `addFirst`, `removeFirst`, `addLast` | O(1) | O(1) |
+| **`removeLast`** | **O(n)** | O(1) |
+| 뒤쪽 인덱스 접근 | 언제나 head 부터 | 가까운 끝에서 (평균 절반) |
+| 노드당 참조 | 1개 | 2개 |
+| `reverse` | 포인터 3개를 굴린다 | prev/next 를 맞바꾼다 |
 
-## 🎯 학습 목표
+**`tail` 을 들고 있는데 왜 `removeLast` 가 O(n) 인가.** 이 질문에 답할 수 있으면 단일 연결 리스트를
+이해한 겁니다. `tail` 을 알아도 그것을 지우려면 그 **앞** 노드를 알아야 하는데, 뒤로 갈 방법이 없어서
+`head` 부터 다시 세야 합니다.
 
-- 노드(Node) 개념 이해
-- 포인터/참조 조작
-- 단일 vs 이중 연결 리스트 차이점
-- Head/Tail 포인터 관리
-- 순회 알고리즘
+## Iterator 를 여기에만 넣은 이유
 
----
+이 문제집에서 `Iterator` 를 만드는 곳은 여기뿐입니다. for-each 가 편해서가 아닙니다.
 
-## 📝 요구사항
+**`get(i)` 를 반복하면 매번 앞에서부터 세므로 전체가 O(n²) 이 됩니다.**
+인덱스를 안 쓰고 순회하는 유일한 방법이 `Iterator` 이고, 그래서 여기서 `Iterator` 는
+문법 설탕이 아니라 **복잡도를 바꾸는 장치**입니다.
 
-### 단일 연결 리스트 (Singly Linked List)
+01번 배열은 `get(i)` 가 이미 O(1) 이라 `Iterator` 가 복잡도를 안 바꿉니다. 그래서 거기엔 없습니다.
+03번 스택과 04번 큐는 순회 자체가 자료구조 의도와 어긋나서 없습니다.
 
-| 메서드 | 설명 | 시간복잡도 |
-|--------|------|-----------|
-| `addFirst(element)` | 맨 앞에 요소 추가 | O(1) |
-| `addLast(element)` | 맨 뒤에 요소 추가 | O(1)* |
-| `add(index, element)` | 특정 위치에 요소 삽입 | O(n) |
-| `removeFirst()` | 맨 앞 요소 삭제 | O(1) |
-| `removeLast()` | 맨 뒤 요소 삭제 | O(n) |
-| `remove(index)` | 특정 위치 요소 삭제 | O(n) |
-| `get(index)` | 특정 위치 요소 반환 | O(n) |
-| `set(index, element)` | 특정 위치 요소 수정 | O(n) |
-| `size()` | 요소 개수 반환 | O(1) |
-| `isEmpty()` | 비어있는지 확인 | O(1) |
-| `contains(element)` | 요소 존재 여부 확인 | O(n) |
-| `indexOf(element)` | 요소의 인덱스 반환 | O(n) |
-| `clear()` | 모든 요소 삭제 | O(1) |
-| `reverse()` | 리스트 뒤집기 | O(n) |
+`remove()` 까지 지원해야 하는 이유도 같습니다. 순회하면서 지우는 것이 조건부 삭제를 O(n) 으로 하는
+유일한 방법입니다.
 
-*Tail 포인터 유지 시
+## 하는 방법
 
-### 이중 연결 리스트 (Doubly Linked List)
-
-위 연산에 추가로:
-- 각 노드가 이전(prev), 다음(next) 노드를 모두 참조
-- `removeLast()` O(1) 가능
-- 양방향 순회 가능
-
----
-
-## 📊 입출력 예시
-
-### 예제 1: 기본 사용
-```java
-LinkedList<Integer> list = new LinkedList<>();
-list.addLast(1);
-list.addLast(2);
-list.addLast(3);
-System.out.println(list.get(1));  // 출력: 2
-// 리스트: 1 -> 2 -> 3
+```
+1. ListContractTest.java 를 따라친다             <- 계약이 여기 있다
+2. SinglyLinkedList.java 의 TODO 15개를 채운다
+3. DoublyLinkedList.java 의 TODO 2개를 채운다     <- 나머지는 이미 채워져 있다
+4. ListIterationContractTest.java 를 따라친다     <- reverse, iterator
+5. ListProblems.java 의 TODO 3개를 채운다
 ```
 
-### 예제 2: 삽입과 삭제
-```java
-LinkedList<String> list = new LinkedList<>();
-list.addLast("A");
-list.addLast("B");
-list.addLast("C");
-list.addFirst("Z");   // Z -> A -> B -> C
-list.add(2, "X");     // Z -> A -> X -> B -> C
-list.remove(1);       // Z -> X -> B -> C
-System.out.println(list.get(0)); // 출력: Z
+단일을 먼저 하세요. 링크가 하나뿐이라 단순하고, 그 뒤에 이중을 하면
+"참조 하나가 무엇을 바꾸는가"가 선명해집니다.
+
+```bash
+cd ~/project/myway/data-structure && ./run.sh 02      # 89개가 전부 실패한다
 ```
 
-### 예제 3: 리스트 뒤집기
-```java
-LinkedList<Integer> list = new LinkedList<>();
-list.addLast(1);
-list.addLast(2);
-list.addLast(3);
-list.reverse();
-// 리스트: 3 -> 2 -> 1
-System.out.println(list.get(0)); // 출력: 3
+## 계약 테스트를 한 번만 씁니다
+
+```
+ListContractTest (abstract)              기본 연산
+  ListIterationContractTest (abstract)   + 순회와 뒤집기
+    SinglyLinkedListTest                 create() + 단일 고유 성질
+    DoublyLinkedListTest                 create() + 이중 고유 성질
 ```
 
----
+구현마다 계약 테스트를 복사하면 둘이 조용히 어긋납니다.
 
-## 🔍 제약 조건
+## 가장 중요한 단언: `assertSound`
 
-- 인덱스는 0부터 시작
-- 유효하지 않은 인덱스 접근 시 `IndexOutOfBoundsException` 발생
-- 빈 리스트에서 삭제 시 `NoSuchElementException` 발생
-- `null` 요소 저장 가능
+`DoublyLinkedListTest` 의 거의 모든 테스트가 **앞으로 훑은 결과와 뒤로 훑은 결과가 서로의 역순인지**
+검사하며 끝납니다.
 
----
+이게 없으면 **`prev` 링크를 아예 안 잇는 구현도 계약 테스트를 대부분 통과합니다.**
+앞으로 읽을 땐 멀쩡하거든요. 연결 리스트에서 가장 흔하고 가장 늦게 발견되는 버그입니다.
 
-## 💡 힌트
+단일 쪽은 `tail` 이 정말 마지막 노드를 가리키는지를 봅니다. `removeLast`, `reverse`,
+`iterator.remove()` 에서 `tail` 갱신을 빠뜨리는 것이 여기서 제일 잘 나는 실수입니다.
 
-### POP 구현 힌트
-```java
-// 단일 연결 리스트 노드
-class Node {
-    int data;
-    Node next;
-}
+## 특히 생각해볼 것
 
-// 이중 연결 리스트 노드
-class Node {
-    int data;
-    Node prev;
-    Node next;
-}
-```
+**1. 링크를 고치는 순서** — 바꾸기 전에 필요한 참조를 먼저 붙잡아야 합니다.
+`reverse` 와 `iterator.remove()` 가 전부 같은 문제입니다.
 
-### OOP 구현 힌트
-- 내부 클래스로 Node 정의
-- `Iterable<E>` 인터페이스 구현
-- Sentinel(더미) 노드 사용으로 엣지 케이스 단순화
+**2. 떼어낸 노드의 링크** — 그 노드 하나만 어딘가에 남아도 리스트 전체가 GC 되지 않습니다.
+`clear()` 도 마찬가지입니다.
 
----
+**3. `Iterator.remove()` 의 상태 검사** — `next()` 전에 부르거나 연속으로 두 번 부르면
+`IllegalStateException` 입니다.
 
-## ✅ 체크리스트
+**4. 문제 1번이 함정입니다.** `removeAllIf` 에 10만 건 시간 제한이 있습니다.
+01번에서는 `remove` 의 **시프트** 때문에 느렸고, 여기서는 **탐색** 때문입니다. 증상은 같은데 원인이 다릅니다.
 
-- [ ] 단일 연결 리스트 기본 연산
-- [ ] 이중 연결 리스트 기본 연산
-- [ ] Head/Tail 포인터 관리
-- [ ] 경계 조건 처리 (빈 리스트, 단일 요소)
-- [ ] reverse() 구현
-- [ ] Iterator 구현 (OOP)
+**5. 테스트가 내부를 봅니다.** `head`, `tail` 과 `Node` 필드가 패키지 공개입니다.
+**그래서 이 이름들은 계약의 일부입니다.**
 
----
+## 다음
 
-## 📚 참고
-
-- [Java LinkedList 소스코드](https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/java/util/LinkedList.java)
-- Sentinel Node 패턴
+03-stack 에서는 같은 계약을 배열과 연결 두 가지로 구현합니다. 01번과 02번이 거기서 만납니다.

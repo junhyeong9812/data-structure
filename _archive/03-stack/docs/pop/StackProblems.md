@@ -1,0 +1,165 @@
+# pop/StackProblems.java
+
+POP 스타일 스택 응용. 인터페이스 분리 없이 한 클래스에 괄호 매칭 / 후위 평가 / 중위→후위 변환 모두 구현. 내부적으로 `ArrayStack` 사용.
+
+```java
+package com.datastructure.stack.pop;
+
+
+import java.util.Objects;
+
+public class StackProblems {
+    public boolean isValidParentheses(String data) {
+        char[] datas = data.toCharArray();
+
+        // 데이터를 스택에 저장
+
+        int size = datas.length;
+        ArrayStack<Character> openStack = new ArrayStack<>();
+        for (int i = 0; i < size; i++) {
+            if (datas[i] == '(') {
+                openStack.push(datas[i]);
+            }
+            if (datas[i] == '{') {
+                openStack.push(datas[i]);
+            }
+            if (datas[i] == '[') {
+                openStack.push(datas[i]);
+            }
+            if (datas[i] == ')') {
+                if (openStack.isEmpty() || openStack.pop() != '(') {
+                    return false;
+                }
+            }
+            if (datas[i] == '}') {
+                if (openStack.isEmpty() || openStack.pop() != '{') {
+                    return false;
+                }
+            }
+            if (datas[i] == ']') {
+                if (openStack.isEmpty() || openStack.pop() != '[') {
+                    return false;
+                }
+            }
+        }
+        if (!openStack.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+
+
+
+    public int evaluatePostfix(String data) {
+        if (data.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
+        String[] tokens = data.split(" ");
+
+        ArrayStack<Integer> numbers = new ArrayStack<>();
+        for (int i = 0; i < tokens.length; i++) {
+            if (isNumber(tokens[i])) {
+                numbers.push(Integer.parseInt(tokens[i]));
+            } else {
+                if (Objects.equals(tokens[i],"+")) {
+                    int[] checkNumbers= checkNumbers(numbers);
+                    int rightOperand = checkNumbers[1];
+                    int leftOperand = checkNumbers[0];
+                    numbers.push(leftOperand + rightOperand);
+                }
+                if (Objects.equals(tokens[i],"-")) {
+                    int[] checkNumbers= checkNumbers(numbers);
+                    int rightOperand = checkNumbers[1];
+                    int leftOperand = checkNumbers[0];
+                    numbers.push(leftOperand - rightOperand);
+                }
+                if (Objects.equals(tokens[i],"*")) {
+                    int[] checkNumbers= checkNumbers(numbers);
+                    int rightOperand = checkNumbers[1];
+                    int leftOperand = checkNumbers[0];
+                    numbers.push(leftOperand * rightOperand);
+                }
+                if (Objects.equals(tokens[i],"/")) {
+                    int[] checkNumbers= checkNumbers(numbers);
+                    int rightOperand = checkNumbers[1];
+                    int leftOperand = checkNumbers[0];
+                    if (rightOperand == 0) {
+                        throw new ArithmeticException();
+                    }
+                    numbers.push(leftOperand / rightOperand);
+                }
+                if (Objects.equals(tokens[i],"%")) {
+                    int[] checkNumbers= checkNumbers(numbers);
+                    int rightOperand = checkNumbers[1];
+                    int leftOperand = checkNumbers[0];
+                    if (rightOperand == 0) {
+                        throw new ArithmeticException();
+                    }
+                    numbers.push(leftOperand % rightOperand);
+                }
+            }
+
+        }
+        return numbers.pop();
+    }
+    private int[] checkNumbers(ArrayStack<Integer> numbers) {
+        if(numbers.isEmpty()) throw new IllegalArgumentException();
+        int rightOperand = numbers.pop();
+        if(numbers.isEmpty()) throw new IllegalArgumentException();
+        int leftOperand = numbers.pop();
+        return new int[]{leftOperand, rightOperand};
+    }
+
+    private boolean isNumber(String data) {
+        try {
+            Integer.parseInt(data);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private boolean isOperator(String data) {
+        if (data.equals("+") || data.equals("-") || data.equals("*") || data.equals("/") || data.equals("%")) return true;
+        return false;
+    }
+
+    private boolean isParentheses(String data) {
+        if (data.equals("(") || data.equals(")") || data.equals("{") || data.equals("}") || data.equals("[") || data.equals("]")) return true;
+        return false;
+    }
+
+    public String infixToPostfix(String data) {
+        if (!isValidParentheses(data)) {
+            throw new IllegalArgumentException();
+        }
+        String[] tokens = data.split(" ");
+
+        ArrayStack<String> operators = new ArrayStack<>();
+
+        StringBuilder postfixResult = new StringBuilder();
+        for (int i = 0; i < tokens.length; i++) {
+            if (isNumber(tokens[i])) {
+                postfixResult.append(tokens[i]).append(" ");
+            }
+            if (isOperator(tokens[i]) || tokens[i].equals("(")) {
+                operators.push(tokens[i]);
+            }
+            if (tokens[i].equals(")")) {
+                while ( !operators.isEmpty() && !operators.peek().equals("(")) {
+                    String operator = operators.pop();
+                    postfixResult.append(operator).append(" ");
+                }
+                if (!operators.isEmpty() && operators.peek().equals("(")) {
+                    operators.pop();
+                }
+            }
+        }
+        while ( !operators.isEmpty()) {
+            postfixResult.append(operators.pop()).append(" ");
+        }
+        return postfixResult.toString().trim();
+    }
+}
+```

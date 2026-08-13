@@ -1,149 +1,83 @@
-# 04. 큐와 덱 (Queue & Deque)
+# 04. 큐와 데크
 
-## 📋 문제 정의
+03번 스택(LIFO)과 정확히 반대인 선입선출(FIFO)입니다. 그 차이가 배열 구현을 훨씬 까다롭게 만듭니다.
 
-**FIFO(First In First Out)** 원칙을 따르는 큐와 양쪽 끝에서 삽입/삭제가 가능한 **덱(Double-Ended Queue)**을 구현하세요.
+**스택은 한쪽 끝만 건드리므로 배열과 잘 맞았습니다.** 큐는 넣는 쪽과 빼는 쪽이 반대라 문제가 생깁니다.
+그 문제를 직접 만든 다음에 고치는 것이 이 문제의 본체입니다.
 
----
+## 순서대로 하세요
 
-## 🎯 학습 목표
+```
+Queue (인터페이스)
+  1. ArrayQueue      가장 먼저 떠오르는 방식. 동작은 맞다. 그런데 테스트가 한계를 보여준다
+  2. CircularQueue   그 한계를 고친 것
 
-- FIFO 원칙 이해
-- 원형 배열(Circular Array) 구현
-- 큐와 덱의 차이점
-- BFS 알고리즘에서의 큐 활용
-- 슬라이딩 윈도우 문제에서 덱 활용
-
----
-
-## 📝 요구사항
-
-### 큐 (Queue) 기본 연산
-
-| 메서드 | 설명 | 시간복잡도 |
-|--------|------|-----------|
-| `enqueue(element)` / `offer(element)` | 큐 뒤에 요소 추가 | O(1) |
-| `dequeue()` / `poll()` | 큐 앞 요소 제거 및 반환 | O(1) |
-| `peek()` / `front()` | 큐 앞 요소 조회 (제거 안함) | O(1) |
-| `isEmpty()` | 큐가 비어있는지 확인 | O(1) |
-| `size()` | 큐의 요소 개수 반환 | O(1) |
-| `clear()` | 모든 요소 제거 | O(1) |
-
-### 덱 (Deque) 기본 연산
-
-| 메서드 | 설명 | 시간복잡도 |
-|--------|------|-----------|
-| `addFirst(element)` | 앞에 요소 추가 | O(1) |
-| `addLast(element)` | 뒤에 요소 추가 | O(1) |
-| `removeFirst()` | 앞 요소 제거 및 반환 | O(1) |
-| `removeLast()` | 뒤 요소 제거 및 반환 | O(1) |
-| `peekFirst()` | 앞 요소 조회 | O(1) |
-| `peekLast()` | 뒤 요소 조회 | O(1) |
-
-### 응용 문제
-
-1. **원형 큐**: 고정 크기 원형 배열 기반 큐
-2. **슬라이딩 윈도우 최댓값**: 덱을 활용한 O(n) 풀이
-3. **최근 요청 카운터**: 시간 기반 큐 활용
-
----
-
-## 📊 입출력 예시
-
-### 예제 1: 기본 큐 사용
-```java
-Queue<Integer> queue = new Queue<>();
-queue.enqueue(1);
-queue.enqueue(2);
-queue.enqueue(3);
-System.out.println(queue.dequeue());  // 출력: 1 (FIFO)
-System.out.println(queue.peek());     // 출력: 2
-System.out.println(queue.size());     // 출력: 2
+Deque extends Queue
+  3. ArrayDeque      원형을 양쪽 끝으로 확장. 되감기 계산은 2번에서 이미 풀었으므로 채워져 있다
+  4. LinkedDeque     노드. 되감기도 확장도 용량도 없다
 ```
 
-### 예제 2: 덱 사용
-```java
-Deque<Integer> deque = new Deque<>();
-deque.addFirst(1);   // [1]
-deque.addLast(2);    // [1, 2]
-deque.addFirst(0);   // [0, 1, 2]
-System.out.println(deque.removeFirst());  // 출력: 0
-System.out.println(deque.removeLast());   // 출력: 2
+**1번을 건너뛰고 2번부터 하면 안 됩니다.** 무엇을 고치는 것인지 모르면 원형 배열은 그냥 복잡하기만 합니다.
+`ArrayQueueTest.wastesSpace` 와 `CircularQueueTest.reusesSpace` 를 나란히 놓고 보세요.
+같은 시나리오인데 하나는 용량 2048, 하나는 4로 끝납니다.
+
+## `Deque extends Queue` 인 이유
+
+데크는 큐가 할 수 있는 일을 전부 할 수 있습니다. `enqueue = addLast`, `dequeue = removeFirst` 입니다.
+
+그래서 **연결 기반 큐를 따로 만들지 않았습니다.** `LinkedDeque` 가 그 역할을 겸합니다.
+누락이 아니라 인터페이스 상속으로 중복을 없앤 결정입니다.
+
+더 중요한 건 반대 방향입니다. **어떤 코드가 "줄 세우기"만 필요하면 파라미터를 `Queue` 로 받으세요.**
+`Deque` 로 받으면 호출자가 앞으로도 넣을 수 있게 되고, 그건 의도한 계약이 아닙니다.
+`RecentCounter` 와 `firstUniqueStream` 이 `Queue` 만 받는 이유가 그것입니다.
+**인터페이스는 능력을 제한해서 의도를 드러냅니다.**
+
+## 계약 테스트도 같은 모양으로 상속합니다
+
+```
+QueueContractTest (abstract)          네 구현이 전부 물려받는다
+  ArrayQueueTest, CircularQueueTest
+  DequeContractTest (abstract)        Deque 계약 추가
+    ArrayDequeTest, LinkedDequeTest
 ```
 
-### 예제 3: 원형 큐
-```java
-CircularQueue queue = new CircularQueue(3);
-queue.enqueue(1);  // [1, _, _]
-queue.enqueue(2);  // [1, 2, _]
-queue.enqueue(3);  // [1, 2, 3] - Full
-queue.enqueue(4);  // false (가득 참)
-queue.dequeue();   // 1, [_, 2, 3]
-queue.enqueue(4);  // [4, 2, 3] - 원형으로 재사용
+인터페이스 계층과 테스트 계층이 같은 모양이면 어디에 무엇을 적을지 헷갈리지 않습니다.
+
+## 실행
+
+```bash
+cd ~/project/myway/data-structure
+./run.sh 04
 ```
 
-### 예제 4: 슬라이딩 윈도우 최댓값
-```java
-int[] nums = {1, 3, -1, -3, 5, 3, 6, 7};
-int k = 3;
-int[] result = maxSlidingWindow(nums, k);
-// 윈도우: [1,3,-1], [3,-1,-3], [-1,-3,5], [-3,5,3], [5,3,6], [3,6,7]
-// 최댓값:    3,        3,        5,         5,        6,       7
-// result = [3, 3, 5, 5, 6, 7]
-```
+114개가 전부 실패합니다. TODO 는 25개입니다.
 
----
+## 특히 생각해볼 것
 
-## 🔍 제약 조건
+**1. 왜 `tail` 인덱스를 안 두는가** — `head == tail` 이 "꽉 참"인지 "빔"인지 구분되지 않습니다.
+한 칸을 비워두거나 플래그를 두는 방법도 있지만, `size` 를 쓰면 그 모호함이 애초에 없습니다.
 
-- 빈 큐/덱에서 `dequeue()`, `removeFirst()`, `removeLast()` 시 예외 발생
-- `poll()`, `peekFirst()`, `peekLast()`는 빈 경우 `null` 반환
-- 원형 큐는 고정 크기, 가득 차면 삽입 실패
-- `null` 요소 저장 가능 (일반 큐/덱)
+**2. 확장할 때 감김을 풀어야 한다** — 원소가 배열 끝을 넘어 앞쪽에 있을 수 있습니다.
+`Arrays.copyOf` 로 통째 복사하면 순서가 깨집니다. 01번에서 쓰던 방법이 여기서는 안 통합니다.
 
----
+**3. `head` 를 뒤로 감을 때 음수** — `(head - 1)` 만 하면 -1 이 됩니다.
+배열 길이를 더한 뒤 나머지를 취해야 합니다.
 
-## 💡 힌트
+**4. 문제 2번이 함정입니다.** `slidingWindowMax` 에 100만 x k=5만 시간 제한이 있습니다.
+창마다 k 개를 훑으면 O(n·k) 입니다. 데크에 "아직 최댓값이 될 수 있는 후보"의 인덱스만
+내림차순으로 남기면 각 인덱스가 한 번 들어가고 한 번 나옵니다. 03번 `nextGreater` 와 같은 상환 논리입니다.
 
-### 원형 배열 구현 힌트
-```java
-// 인덱스 순환
-int next = (current + 1) % capacity;
-int prev = (current - 1 + capacity) % capacity;
+> 임계값 메모: 처음에 30만 x 1만(3e9회)으로 잡았더니 O(n·k) 구현이 1초대에 통과했습니다.
+> 내림차순 데이터라 분기 예측이 완벽해 JIT 가 너무 잘 돌립니다. 4.75e10회로 올려야 확실히 걸립니다.
 
-// 가득 찼는지 확인
-boolean isFull = (rear + 1) % capacity == front;
+**5. `RecentCounter` 의 경계** — 창이 포함이므로 조건이 `< t - 3000` 입니다.
+`<=` 로 쓰면 딱 3000ms 전 요청이 잘못 빠집니다. 이런 off-by-one 은 테스트 없이는 안 잡힙니다.
 
-// 비어있는지 확인  
-boolean isEmpty = front == rear;
-```
+**6. `rotate` 는 이번이 세 번째입니다** — 01번은 세 번 뒤집기, 02번은 링크 재연결,
+04번은 뒤에서 빼서 앞에 넣기입니다. 같은 문제에 자료구조마다 다른 최선이 있습니다.
 
-### 연결 리스트 기반 덱 힌트
-```java
-// 이중 연결 리스트 사용
-class Node<E> {
-    E data;
-    Node<E> prev, next;
-}
-// 양쪽 끝에서 O(1) 삽입/삭제
-```
+## 다음
 
----
-
-## ✅ 체크리스트
-
-- [ ] 배열 기반 큐 구현
-- [ ] 연결 리스트 기반 큐 구현
-- [ ] 원형 큐 구현
-- [ ] 배열 기반 덱 구현
-- [ ] 연결 리스트 기반 덱 구현
-- [ ] 슬라이딩 윈도우 최댓값 알고리즘
-- [ ] 최근 요청 카운터 구현
-
----
-
-## 📚 참고
-
-- [Java ArrayDeque 소스코드](https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/java/util/ArrayDeque.java)
-- BFS 알고리즘과 큐
-- 프로듀서-컨슈머 패턴
+05-hashmap 에서는 처음으로 "키로 찾는" 자료구조가 나옵니다.
+지금까지는 전부 순서가 있는 구조였습니다.

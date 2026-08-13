@@ -1,0 +1,94 @@
+# pop/ArrayStack.java
+
+POP 스타일 배열 스택. OOP 버전과 동일한 자동 확장/축소 정책. `search`는 OOP 버전과 달리 0-based 인덱스를 반환한다 (top쪽부터 역순 탐색).
+
+```java
+package com.datastructure.stack.pop;
+
+import java.util.Arrays;
+import java.util.EmptyStackException;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+
+public class ArrayStack<E> {
+    private int capacity = 10;
+    private E[] data;
+    private int top;
+
+    @SuppressWarnings("unChecked")
+    public ArrayStack() {
+        this.data = (E[]) new Object[capacity];
+        top = 0;
+    }
+
+    public void push(E element) {
+        extendCapacity();
+        data[top++] = element;
+    }
+
+    public E pop() {
+        if (top == 0) {
+            throw new EmptyStackException();
+        }
+        E popData = data[--top];
+        data[top] = null;
+        shrinkCapacity();
+        return popData;
+    }
+
+    public E peek() {
+        if (top == 0) {
+            throw new EmptyStackException();
+        }
+        return data[top - 1];
+
+    }
+
+    public E top() {
+        if (top == 0) {
+            throw new EmptyStackException();
+        }
+        return data[top - 1];
+    }
+
+    public boolean isEmpty() {
+        return top == 0;
+    }
+
+    public int size() {
+        return top;
+    }
+
+    public void clear() {
+        capacity = 10;
+        data = (E[]) new Object[capacity];
+        top = 0;
+    }
+
+    public int search(E element) {
+        for (int i = top - 1; i >= 0; i--) {
+            if (Objects.equals(data[i], element)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public Object[] toArray() {
+        return Arrays.copyOf(data, top);
+    }
+
+    private void extendCapacity() {
+        if (top == capacity) {
+            capacity = (int)(capacity * 1.5);
+            data = Arrays.copyOf(data, capacity);
+        }
+    }
+    private void shrinkCapacity() {
+        if (top <= capacity/4 && capacity > 10) {
+            capacity = Math.max(capacity/2, 10);
+            data = Arrays.copyOf(data, capacity);
+        }
+    }
+}
+```

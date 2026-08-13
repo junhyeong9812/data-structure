@@ -1,209 +1,123 @@
-# 13. 구간 트리 (Segment Tree)
+# 13. 세그먼트 트리
 
-## 📋 문제 정의
+"3번부터 7번까지의 합" 하나만 필요하면 이건 과합니다. 누적합이면 조회가 O(1)입니다.
 
-**구간 쿼리**와 **점 업데이트**를 효율적으로 처리하는 구간 트리를 구현하세요.
-
-구간 트리는 배열의 특정 구간에 대한 쿼리(합, 최소, 최대 등)를
-O(log n) 시간에 처리할 수 있는 트리 자료구조입니다.
-
----
-
-## 🎯 학습 목표
-
-- 완전 이진 트리 기반 구간 트리 구조
-- 구간 쿼리 알고리즘 (Range Query)
-- 점 업데이트 (Point Update)
-- 지연 전파 (Lazy Propagation)
-- 구간 업데이트 (Range Update)
-
----
-
-## 📝 요구사항
-
-### 기본 연산 (점 업데이트)
-
-| 메서드 | 설명 | 시간복잡도 |
-|--------|------|-----------|
-| `build(arr)` | 배열로 트리 구축 | O(n) |
-| `query(left, right)` | [left, right] 구간 쿼리 | O(log n) |
-| `update(index, value)` | index 위치 값 업데이트 | O(log n) |
-
-### 지연 전파 (Range Update)
-
-| 메서드 | 설명 | 시간복잡도 |
-|--------|------|-----------|
-| `updateRange(left, right, value)` | 구간 [left, right] 전체에 value 적용 | O(log n) |
-| `queryLazy(left, right)` | 지연 전파 적용 후 구간 쿼리 | O(log n) |
-
-### 지원 연산 유형
-
-| 연산 | 설명 |
-|------|------|
-| Sum | 구간 합 |
-| Min | 구간 최소값 |
-| Max | 구간 최대값 |
-| GCD | 구간 최대공약수 |
-
----
-
-## 📊 입출력 예시
-
-### 예제 1: 구간 합 쿼리
-```java
-int[] arr = {1, 3, 5, 7, 9, 11};
-
-SegmentTree tree = new SegmentTree(arr);
-
-// 구간 합 쿼리
-System.out.println(tree.query(1, 3));  // 3+5+7 = 15
-System.out.println(tree.query(0, 5));  // 1+3+5+7+9+11 = 36
-
-// 점 업데이트
-tree.update(1, 10);  // arr[1] = 10
-
-System.out.println(tree.query(1, 3));  // 10+5+7 = 22
+```
+prefix[i] = a[0] + ... + a[i-1]
+sum(l, r) = prefix[r+1] - prefix[l]
 ```
 
-### 예제 2: 구간 최소값
-```java
-int[] arr = {5, 2, 8, 1, 9, 3};
+**문제는 값이 바뀔 때입니다.** `a[2]`를 고치면 `prefix[3]`부터 끝까지 다시 계산해야 합니다.
 
-MinSegmentTree tree = new MinSegmentTree(arr);
+| | 조회 | 갱신 | 언제 |
+|---|---|---|---|
+| 매번 훑기 | O(n) | O(1) | 갱신이 압도적일 때 |
+| 누적합 | **O(1)** | O(n) | **값이 안 바뀔 때** |
+| 세그먼트 트리 | O(log n) | O(log n) | 둘 다 자주 일어날 때 |
+| 펜윅 트리(17번) | O(log n) | O(log n) | 합만 필요할 때. 코드가 훨씬 짧다 |
 
-System.out.println(tree.query(0, 3));  // min(5,2,8,1) = 1
-System.out.println(tree.query(2, 5));  // min(8,1,9,3) = 1
+**어느 쪽이 나은지는 조회와 갱신의 비율이 정합니다.**
 
-tree.update(3, 10);  // arr[3] = 10
+## 구조
 
-System.out.println(tree.query(0, 3));  // min(5,2,8,10) = 2
+배열을 반씩 쪼개 트리로 만들고, **각 노드가 자기 구간의 답을 미리 들고 있습니다.**
+
+```
+노드 1        [0..7]
+노드 2, 3     [0..3] [4..7]
+노드 4~7      [0..1] [2..3] [4..5] [6..7]
+잎             원소 하나씩
 ```
 
-### 예제 3: 지연 전파 (구간 업데이트)
-```java
-int[] arr = {1, 2, 3, 4, 5};
+자식은 `2i`와 `2i+1`입니다. 07번 힙에서 쓴 그 계산입니다.
+**구조가 규칙적이면 그 규칙을 계산으로 대신할 수 있습니다.**
 
-LazySegmentTree tree = new LazySegmentTree(arr);
+조회는 요청 구간을 **미리 계산된 노드 몇 개로 덮습니다.** 아무리 넓어도 O(log n)개면 덮입니다.
 
-// 구간 [1, 3]에 10 더하기
-tree.updateRange(1, 3, 10);
-// arr = {1, 12, 13, 14, 5}
+## 이 문제의 중심 문장
 
-System.out.println(tree.query(0, 4));  // 1+12+13+14+5 = 45
-System.out.println(tree.query(1, 3));  // 12+13+14 = 39
+**combine은 결합법칙을 만족해야 합니다.** `(a·b)·c = a·(b·c)`.
+구간을 어떤 순서로 쪼개 합치든 답이 같아야 하기 때문입니다.
+
+합, 최소, 최대, 곱, GCD, 비트 AND/OR은 됩니다. **평균은 안 됩니다.**
+그리고 항등원이 있어야 합니다. 범위 밖 구간을 "없는 것처럼" 만들 값이 필요하니까요.
+(수학에서 이런 것을 모노이드라고 부릅니다.)
+
+## 다섯 구현
+
+| | 무엇을 보여주나 |
+|---|---|
+| `SumSegmentTree` / `MinSegmentTree` | 뼈대는 하나. **결합 함수와 항등원만 다르다** |
+| `MinMaxSegmentTree` | 접어 넣는 값이 **스칼라일 필요가 없다** |
+| `GenericSegmentTree` | 같은 추상화를 **상속 대신 인자로** |
+| `LazySegmentTree` | 구간 전체 갱신을 O(log n)으로. **미루기** |
+
+## 하는 방법
+
+```
+1. SegmentTree 의 TODO 3개를 채운다        <- build, update, query. 여기가 본체
+2. Sum/Min 의 TODO 2개씩                    <- 각각 두 줄이다
+3. MinMaxSegmentTree 의 TODO 2개
+4. GenericSegmentTree 의 TODO 1개
+5. LazySegmentTree 의 TODO 4개              <- 제일 어렵다. 마지막에
 ```
 
-### 예제 4: 트리 구조 시각화
-```
-배열: [1, 3, 5, 7, 9, 11]
-
-          [36]           <- 전체 합
-         /    \
-      [9]      [27]      <- 좌/우 절반
-      / \      /  \
-    [4] [5]  [16] [11]   <- 4등분
-    /\       /\
-  [1][3]   [7][9]        <- 개별 원소
+```bash
+cd ~/project/myway/data-structure && ./run.sh 13      # 37개 중 35개가 실패한다
 ```
 
----
+## 특히 생각해볼 것
 
-## 🔍 핵심 개념
+**1. `query`의 세 경우를 정확히 나누는 것이 이 자료구조의 전부입니다.**
 
-### 트리 인덱싱
 ```
-배열 기반 트리 (1-indexed):
-- 부모: i / 2
-- 왼쪽 자식: i * 2
-- 오른쪽 자식: i * 2 + 1
-
-배열 기반 트리 (0-indexed):
-- 부모: (i - 1) / 2
-- 왼쪽 자식: i * 2 + 1
-- 오른쪽 자식: i * 2 + 2
+1. 안 겹친다        -> 항등원. 없는 것처럼 취급한다
+2. 통째로 들어간다  -> 미리 계산해둔 값을 그대로 준다      <- 여기서 멈추는 것이 O(log n)을 만든다
+3. 걸쳐 있다        -> 반으로 쪼개 양쪽에 물어 combine
 ```
 
-### 트리 크기
-```
-n개 원소 → 트리 크기: 4 * n (넉넉하게)
-또는 2 * nextPowerOfTwo(n)
-```
+2번에서 안 멈추고 계속 내려가면 답은 맞고 그냥 전수 조사입니다.
 
-### 지연 전파
-```
-구간 업데이트 시 즉시 모든 노드 업데이트 대신,
-쿼리가 해당 구간에 접근할 때 지연 값을 전파
+**2. `update`는 돌아오는 길에 반드시 다시 `combine`해야 합니다.**
+빠뜨리면 잎만 바뀌고 위쪽은 옛 답을 들고 있습니다. **조용히 틀립니다**(37개 중 6개가 무너집니다).
 
-lazy[node]: 이 노드의 자식들에게 전파할 값
-```
+**3. 항등원이 0이면 최소 트리가 망가집니다.** 음수가 있어서가 아닙니다.
+**양수만 있어도** 범위 밖이 0을 반환하면 최소가 0이 됩니다.
+`zeroBreaksEvenWithPositives` 테스트가 그걸 봅니다.
 
----
+**4. 배열이 왜 4n인가** — n이 2의 거듭제곱이면 2n이면 되는데, 아니면 한 층 더 깊어져 최대 4n까지 갑니다.
+정확히 계산하는 대신 넉넉히 잡는 것이 관행입니다.
 
-## 💡 힌트
+**5. "결합법칙이 없다"고 포기하기 전에 무엇을 같이 들고 다니면 되는지 보세요.**
 
-### 빌드
-```java
-void build(int[] arr, int node, int start, int end) {
-    if (start == end) {
-        tree[node] = arr[start];
-    } else {
-        int mid = (start + end) / 2;
-        build(arr, 2*node, start, mid);
-        build(arr, 2*node+1, mid+1, end);
-        tree[node] = tree[2*node] + tree[2*node+1];
-    }
-}
-```
+평균은 결합법칙이 없습니다. 그런데 **합과 개수는 있습니다.** 마지막에 나누면 됩니다.
+`MinMaxSegmentTree`가 같은 발상이고, 이걸 밀면 최대 부분합 문제도 세그먼트 트리로 풀립니다
+(왼쪽 최대, 오른쪽 최대, 전체 합, 최대 구간합 넷을 같이 들고 다닙니다).
 
-### 쿼리
-```java
-int query(int node, int start, int end, int l, int r) {
-    if (r < start || l > end) {
-        return 0;  // 범위 밖
-    }
-    if (l <= start && end <= r) {
-        return tree[node];  // 완전 포함
-    }
-    int mid = (start + end) / 2;
-    return query(2*node, start, mid, l, r) +
-           query(2*node+1, mid+1, end, l, r);
-}
-```
+**평균 테스트에 함정이 하나 더 있습니다.** 원소가 4개면 좌우가 2개씩이라 **우연히 맞습니다.**
+3개여야 어긋납니다. **우연히 맞는 경우가 있다는 것이 더 위험합니다.**
 
-### 업데이트
-```java
-void update(int node, int start, int end, int idx, int val) {
-    if (start == end) {
-        tree[node] = val;
-    } else {
-        int mid = (start + end) / 2;
-        if (idx <= mid) {
-            update(2*node, start, mid, idx, val);
-        } else {
-            update(2*node+1, mid+1, end, idx, val);
-        }
-        tree[node] = tree[2*node] + tree[2*node+1];
-    }
-}
-```
+**6. 상속이냐 인자냐** — `SegmentTree`는 상속으로 combine을 정하고 `GenericSegmentTree`는 인자로 받습니다.
+하는 일은 같고 **언제 정하느냐**가 다릅니다.
+05번 `LinkedHashMap`(상속)과 12번 `SkipListSet`(포함)의 대비와 같은 이야기입니다.
 
----
+**7. 미루기(lazy)의 규칙 둘.**
 
-## ✅ 체크리스트
+- 노드의 `tree` 값은 **자기 쪽지가 이미 반영된 상태**입니다. 쪽지는 자식에게만 밀린 것입니다.
+- 자식을 보러 내려가기 **직전에** push해야 합니다.
 
-- [ ] 구간 합 Segment Tree 구현
-- [ ] 구간 최소값/최대값 구현
-- [ ] 점 업데이트 구현
-- [ ] 지연 전파 구현
-- [ ] 구간 업데이트 구현
-- [ ] 반복문 버전 구현 (선택)
-- [ ] 2D Segment Tree (선택)
+첫째를 헷갈리면 값을 두 번 더하거나 아예 안 더합니다. 가장 흔한 실수입니다.
 
----
+그리고 합은 **원소 하나당 delta씩** 늘어나므로 구간 길이 `hi - lo + 1`을 곱해야 합니다.
+**`+1`을 빠뜨리는 것이 여기서 제일 흔한 실수입니다**(8개가 무너집니다).
 
-## 📚 참고
+**8. `rangeSum`이 자료구조를 바꿉니다.** push 때문입니다.
+10번 LRU의 `get`과 같은 성질이고, 그래서 이것도 동시성이 까다롭습니다.
 
-- [Visualgo - Segment Tree](https://visualgo.net/en/segmenttree)
-- Competitive Programming 필수 자료구조
-- 펜윅 트리와의 비교
-- 활용: 구간 쿼리가 빈번한 문제
+(실무의 대응물: DB의 지연 인덱스 갱신, 렌더링의 dirty flag, React의 배치 업데이트가
+전부 "미뤘다가 필요할 때 한다"는 같은 발상입니다.)
+
+## 다음
+
+14-union-find 에서는 **합치기만 하고 쪼개지 않는** 구조가 나옵니다.
+연산을 포기하는 대신 거의 O(1)을 얻습니다. 여기서 본 "무엇을 포기하면 무엇을 얻는가"가 또 나옵니다.

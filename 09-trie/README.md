@@ -1,199 +1,94 @@
-# 09. 트라이 (Trie / Prefix Tree)
+# 09. 트라이 (두 가지 구현)
 
-## 📋 문제 정의
+05번 해시맵은 키를 일부러 흩뿌렸습니다. O(1)을 얻었고 순서를 잃었습니다.
+06번 BST는 순서를 되찾았습니다. "5 다음", "3 이상 8 이하"를 물을 수 있게 됐습니다.
 
-**접두사 트리(Prefix Tree)**라고도 불리는 트라이를 구현하세요.
+**그런데 둘 다 못 하는 질문이 있습니다. "car로 시작하는 것 전부."**
 
-트라이는 문자열을 효율적으로 저장하고 검색하는 트리 자료구조로,
-자동완성, 맞춤법 검사, IP 라우팅 등에 활용됩니다.
+해시맵은 car와 card를 아예 다른 버킷에 넣으니 불가능합니다.
+BST는 정렬돼 있어 범위로 흉내낼 수는 있지만, 비교마다 문자열 전체를 훑습니다.
 
----
+트라이는 **키를 통째로 저장하지 않습니다.** 한 글자가 간선 하나이고, 경로가 곧 키입니다.
+car와 card와 care는 c-a-r을 공유합니다.
 
-## 🎯 학습 목표
+| 질문 | 해시맵 | BST | 트라이 |
+|---|---|---|---|
+| `contains(w)` | **O(1)** 평균 | O(log n · L) | O(L) |
+| "car로 시작하는 것 전부" | O(n) 전수 | O(log n · L + k) | **O(L + 출력)** |
+| 공통 접두사 | O(n · L) | O(n · L) | **O(L)** |
 
-- 트라이의 구조와 원리 이해
-- 접두사 기반 검색의 효율성
-- 문자열 집합의 효율적 저장
-- 자동완성 기능 구현
-- 와일드카드 검색 패턴
+L은 문자열 길이입니다. **n이 아무리 커져도 조회는 L에만 의존합니다.**
+100만 개가 들어 있어도 "abc"를 찾는 비용은 세 걸음입니다.
 
----
+## 두 구현
 
-## 📝 요구사항
+| | MapTrie | ArrayTrie |
+|---|---|---|
+| 문자 집합 | 아무거나 (한글, 이모지) | **a~z만** |
+| 자식 접근 | 맵 조회 | **배열 인덱스, O(1)** |
+| 빈 자식의 비용 | 없다 | **26칸을 늘 잡는다** |
+| 사전순 순회 | TreeMap이 해준다 | **0~25로 돌면 그게 사전순** |
 
-### 기본 연산
+마지막 줄이 배열 자식의 덤입니다. 인덱스가 곧 문자라서 **순서가 자료 배치에 이미 들어 있습니다.**
+대신 자식이 하나뿐인 노드도 26칸을 씁니다. 20글자 단어 100개를 넣으면
+참조 슬롯 5만 칸을 잡아 1,922칸을 씁니다. `SquareCost` 테스트가 그 숫자를 못 박습니다.
 
-| 메서드 | 설명 | 시간복잡도 |
-|--------|------|-----------|
-| `insert(word)` | 단어 삽입 | O(m) |
-| `search(word)` | 정확한 단어 검색 | O(m) |
-| `startsWith(prefix)` | 접두사로 시작하는 단어 존재 여부 | O(m) |
-| `delete(word)` | 단어 삭제 | O(m) |
-| `countWordsEqualTo(word)` | 정확히 일치하는 단어 개수 | O(m) |
-| `countWordsStartingWith(prefix)` | 접두사로 시작하는 단어 개수 | O(m) |
+## 하는 방법
 
-*m = 단어/접두사 길이
-
-### 자동완성 기능
-
-| 메서드 | 설명 |
-|--------|------|
-| `autocomplete(prefix)` | 접두사로 시작하는 모든 단어 반환 |
-| `autocomplete(prefix, limit)` | 접두사로 시작하는 단어 최대 limit개 반환 |
-| `getSuggestions(prefix)` | 빈도/우선순위 기반 추천 |
-
-### 고급 기능
-
-| 메서드 | 설명 |
-|--------|------|
-| `searchWithWildcard(pattern)` | `.`을 와일드카드로 사용한 검색 |
-| `longestCommonPrefix()` | 모든 단어의 최장 공통 접두사 |
-| `getAllWords()` | 트라이에 저장된 모든 단어 반환 |
-| `size()` | 저장된 단어 개수 |
-
----
-
-## 📊 입출력 예시
-
-### 예제 1: 기본 사용
-```java
-Trie trie = new Trie();
-trie.insert("apple");
-trie.insert("app");
-trie.insert("apricot");
-trie.insert("banana");
-
-System.out.println(trie.search("apple"));     // true
-System.out.println(trie.search("app"));       // true
-System.out.println(trie.search("ap"));        // false (접두사만 있음)
-System.out.println(trie.startsWith("ap"));    // true
-System.out.println(trie.startsWith("ban"));   // true
-System.out.println(trie.startsWith("cat"));   // false
+```
+1. TrieContractTest.java 를 따라친다        <- 계약이 여기 있다
+2. MapTrie 의 TODO 5개를 채운다             <- 로직을 여기서 익힌다
+3. ArrayTrie 의 TODO 3개를 채운다           <- 달라지는 지점만 비워뒀다
+4. WordDictionary 의 TODO 2개를 채운다
+5. TrieProblems 의 TODO 3개를 채운다
 ```
 
-### 예제 2: 자동완성
-```java
-Trie trie = new Trie();
-trie.insert("car");
-trie.insert("card");
-trie.insert("care");
-trie.insert("careful");
-trie.insert("careless");
-
-List<String> suggestions = trie.autocomplete("car");
-// ["car", "card", "care", "careful", "careless"]
-
-List<String> limited = trie.autocomplete("car", 3);
-// ["car", "card", "care"]
+```bash
+cd ~/project/myway/data-structure && ./run.sh 09      # 130개 중 128개가 실패한다
 ```
 
-### 예제 3: 와일드카드 검색
-```java
-Trie trie = new Trie();
-trie.insert("bad");
-trie.insert("dad");
-trie.insert("mad");
-trie.insert("pad");
-trie.insert("bat");
+통과하는 2개는 미리 채워둔 null 검사만 보는 테스트라 정상입니다.
 
-List<String> matches = trie.searchWithWildcard(".ad");
-// ["bad", "dad", "mad", "pad"]
+## 특히 생각해볼 것
 
-List<String> matches2 = trie.searchWithWildcard("b..");
-// ["bad", "bat"]
-```
+**1. `end` 표시가 왜 필요한가** — "app"과 "apple"이 둘 다 있을 때 자식 유무만으로는 구분이 안 됩니다.
+"여기서 끝나는 단어가 있다"를 따로 적어야 합니다. 이걸 빼면 130개 중 13개가 무너집니다.
 
-### 예제 4: 단어 개수 세기
-```java
-Trie trie = new Trie();
-trie.insert("apple");
-trie.insert("apple");
-trie.insert("app");
-trie.insert("application");
+**2. `wordsBelow`가 두 가지를 동시에 해결합니다** — 저장할 것인가 계산할 것인가의 문제입니다.
 
-System.out.println(trie.countWordsEqualTo("apple"));        // 2
-System.out.println(trie.countWordsStartingWith("app"));     // 4
-```
+- `countWithPrefix`가 부분 트리를 안 훑어도 됩니다. 접두사 길이만큼만 걸으면 됩니다.
+- **`remove`에서 노드를 끊어도 되는지를 판단해줍니다.** 내려가며 1씩 깎다가 0이 되는 노드를 만나면
+  그 아래엔 아무 단어도 없다는 뜻이라 통째로 끊고 끝냅니다.
 
-### 예제 5: 최장 공통 접두사
-```java
-Trie trie = new Trie();
-trie.insert("flower");
-trie.insert("flow");
-trie.insert("flight");
+"app"과 "apple"이 있을 때 "apple"을 지운다고 a-p-p를 건드리면 "app"이 사라집니다.
+05번 tombstone과 같은 계열의 함정입니다. **지운 자리를 어떻게 처리하는가.**
 
-System.out.println(trie.longestCommonPrefix()); // "fl"
-```
+**3. 노드가 있느냐로는 부족합니다** — `startsWith`를 `findNode(p) != null`로 쓰면
+**빈 트라이에서 `startsWith("")`가 true가 됩니다.** 뿌리는 단어가 없어도 존재하기 때문입니다.
+(테스트를 먼저 써놓고 구현했는데 이 한 줄에서 걸렸습니다.)
 
----
+**4. `collect`는 붙였다 떼야 합니다** — 자식으로 내려갈 때 글자를 붙이고 **돌아와서 떼어냅니다.**
+떼는 걸 빠뜨리면 결과가 조용히 뒤죽박죽이 됩니다. 매번 새 문자열을 만들면 노드마다 복사가 붙습니다.
 
-## 🔍 제약 조건
+**5. 와일드카드는 갈래가 여럿이 됩니다** — 지금까지의 조회는 한 글자에 갈 곳이 하나로 정해져 있었습니다.
+`WordDictionary`의 '.'을 만나는 순간 갈 곳이 여러 개가 되고, 그래서 되돌아오기가 필요해집니다.
+재귀 호출이 false를 반환하는 것 자체가 되돌아오기라 별도 코드가 없습니다.
 
-- 단어는 소문자 알파벳 (a-z)으로만 구성
-- 빈 문자열 삽입 허용하지 않음
-- null 허용하지 않음
-- 중복 단어 삽입 시 카운트 증가 (구현에 따라)
+접두사가 고정될수록 싸고, 앞쪽부터 점이면 가지치기가 안 됩니다.
+`"....e"`를 빠르게 하려면 뒤집은 문자열로 트라이를 하나 더 만드는 식이 됩니다.
 
----
+**6. 문제 2번이 함정입니다.** 접두사에 10만 개가 걸려 있는데 k가 10입니다.
+`keysWithPrefix(prefix).subList(0, k)`는 **답이 맞습니다.** 다만 질의마다 10만 걸음입니다.
+`MapTrie`를 구체 타입으로 받는 이유가 이것입니다. 중간에 멈추려면 노드를 봐야 합니다.
+**인터페이스가 주는 것만으로는 못 푸는 문제가 있다**는 것도 정보입니다.
 
-## 💡 힌트
+**7. 문제 3번은 이 구조의 한계를 보여줍니다.** 모든 접미사를 넣으면 노드 하나가 부분 문자열 하나입니다.
+중복 제거를 따로 할 필요가 없습니다. 같은 부분 문자열은 같은 경로라 노드를 다시 안 만듭니다.
 
-### 트라이 노드 구조
-```java
-class TrieNode {
-    TrieNode[] children = new TrieNode[26];  // a-z
-    boolean isEndOfWord = false;
-    int count = 0;  // 해당 단어 개수 (선택)
-    int prefixCount = 0;  // 이 접두사를 가진 단어 개수 (선택)
-}
-```
+그런데 길이 n이면 노드가 최대 n(n+1)/2개입니다. n이 10만이면 50억 개라 아예 못 만듭니다.
+**접미사 배열과 접미사 오토마타가 존재하는 이유입니다.**
 
-### Map 기반 노드 (유니코드 지원)
-```java
-class TrieNode {
-    Map<Character, TrieNode> children = new HashMap<>();
-    boolean isEndOfWord = false;
-}
-```
+## 다음
 
-### 트라이 시각화
-```
-        root
-       / | \
-      a  b  c
-     /   |
-    p    a
-   / \   |
-  p   r  n
-  |   |  |
- [l]  i [a]  <- []: isEndOfWord=true
-  |   |  |
- [e]  c  n
-      |  |
-     [o] [a]
-      |
-     [t]
-
-저장된 단어: apple, apricot, ban, banana
-```
-
----
-
-## ✅ 체크리스트
-
-- [ ] 기본 insert, search, startsWith 구현
-- [ ] delete 구현
-- [ ] 자동완성 기능 구현
-- [ ] 와일드카드 검색 구현
-- [ ] 단어 카운팅 기능
-- [ ] 최장 공통 접두사
-- [ ] Iterator 구현
-
----
-
-## 📚 참고
-
-- [LeetCode 208. Implement Trie](https://leetcode.com/problems/implement-trie-prefix-tree/)
-- [LeetCode 211. Design Add and Search Words Data Structure](https://leetcode.com/problems/design-add-and-search-words-data-structure/)
-- 트라이 vs 해시맵 비교
-- 압축 트라이 (Radix Tree)
+10-lru-cache 에서는 **버릴 것을 고르는** 구조가 나옵니다.
+05번 `LinkedHashMap`에서 "이 위에 접근 순서를 얹으면 LRU가 된다"고 했던 그 지점입니다.

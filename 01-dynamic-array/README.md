@@ -1,118 +1,81 @@
-# 01. 동적 배열 (Dynamic Array)
+# 01. 동적 배열
 
-## 📋 문제 정의
+자바 배열은 길이가 고정입니다. 내부에 배열을 두고 꽉 차면 더 큰 배열로 옮겨 담아
+"늘어나는 것처럼" 보이게 하는 것이 동적 배열입니다. `ArrayList` 가 하는 일이 이겁니다.
 
-고정 크기 배열을 기반으로 **자동으로 크기가 확장되는 동적 배열**을 구현하세요.
+## 핵심 개념
 
-Java의 `ArrayList`와 유사한 동작을 하는 자료구조를 직접 만들어봅니다.
+**size 와 capacity 는 다릅니다.** size 는 담긴 원소 수, capacity 는 내부 배열의 길이입니다.
+capacity 8 짜리에 3개가 들어있으면 size=3, capacity=8 입니다.
 
----
+**왜 2배씩 키우는가.** 1씩 늘리면 add 를 n 번 할 때 총 복사량이 `1+2+...+n = O(n^2)` 입니다.
+2배로 키우면 확장이 log n 번만 일어나고 총 복사량은 `n + n/2 + n/4 + ... < 2n = O(n)` 입니다.
+그래서 add 한 번의 **상환 비용**이 O(1) 이 됩니다. 개별 add 는 가끔 O(n) 이지만 평균은 O(1) 입니다.
 
-## 🎯 학습 목표
+**연속 저장의 대가.** 인덱스 접근이 O(1) 인 이유는 원소들이 메모리에 붙어 있어서 주소 계산으로
+바로 찾아가기 때문입니다. 그 대신 중간에 끼우거나 빼면 뒤를 전부 밀거나 당겨야 해서 O(n) 입니다.
+이 트레이드오프가 연결 리스트(02번)와의 차이를 만듭니다.
 
-- 배열의 메모리 구조 이해
-- 동적 크기 조절 메커니즘 (grow/shrink)
-- Amortized Time Complexity 개념
-- 제네릭 프로그래밍 기초
+## 복잡도
 
----
+| 연산 | 시간 | 비고 |
+|---|---|---|
+| `get`, `set` | O(1) | 주소 계산 |
+| `add(E)` | O(1) 상환 | 확장 시에만 O(n) |
+| `add(int, E)` | O(n) | 뒤를 민다 |
+| `remove(int)` | O(n) | 뒤를 당긴다. 단 맨 뒤는 O(1) |
+| `indexOf`, `contains` | O(n) | 순차 탐색 |
 
-## 📝 요구사항
+## 하는 방법
 
-### 기본 연산
-
-| 메서드 | 설명 | 시간복잡도 |
-|--------|------|-----------|
-| `add(element)` | 맨 뒤에 요소 추가 | O(1)* |
-| `add(index, element)` | 특정 위치에 요소 삽입 | O(n) |
-| `get(index)` | 특정 위치의 요소 반환 | O(1) |
-| `set(index, element)` | 특정 위치의 요소 수정 | O(1) |
-| `remove(index)` | 특정 위치의 요소 삭제 | O(n) |
-| `size()` | 현재 요소 개수 반환 | O(1) |
-| `isEmpty()` | 비어있는지 확인 | O(1) |
-| `contains(element)` | 요소 존재 여부 확인 | O(n) |
-| `indexOf(element)` | 요소의 인덱스 반환 | O(n) |
-| `clear()` | 모든 요소 삭제 | O(1) |
-
-*Amortized (분할 상환)
-
-### 크기 조절 정책
-
-- **초기 용량**: 10
-- **확장**: 용량이 가득 차면 **1.5배**로 확장
-- **축소**: 크기가 용량의 **1/4 이하**가 되면 **1/2**로 축소 (최소 용량 10 유지)
-
----
-
-## 📊 입출력 예시
-
-### 예제 1: 기본 사용
-```java
-DynamicArray<Integer> arr = new DynamicArray<>();
-arr.add(1);
-arr.add(2);
-arr.add(3);
-System.out.println(arr.get(1));  // 출력: 2
-System.out.println(arr.size()); // 출력: 3
+```
+1. DynamicArrayTest.java 를 읽으면서 따라친다      <- 계약이 여기 있다
+2. DynamicArray.java 의 TODO 를 채운다             <- 9개
+3. 테스트를 돌려 통과시킨다
+4. ArrayProblemsTest.java 를 따라친다
+5. ArrayProblems.java 의 TODO 를 채운다            <- 5개
+6. 막히면 impl/ 을 본다
 ```
 
-### 예제 2: 삽입과 삭제
-```java
-DynamicArray<String> arr = new DynamicArray<>();
-arr.add("A");
-arr.add("B");
-arr.add("C");
-arr.add(1, "X");  // [A, X, B, C]
-arr.remove(2);    // [A, X, C]
-System.out.println(arr.get(1)); // 출력: X
+**테스트를 먼저 치는 이유**는 계약을 먼저 알아야 구현할 때 헤매지 않기 때문입니다.
+"remove 는 지운 값을 반환한다", "set 은 이전 값을 반환한다" 같은 것들이 테스트에 박혀 있습니다.
+
+`impl/` 을 보는 것은 괜찮습니다. 다만 보고 나면 **다시 스켈레톤으로 돌아가 직접 치세요.**
+눈으로 읽은 것은 손이 기억하지 않습니다.
+
+## 실행
+
+```bash
+cd ~/project/myway/data-structure
+./run.sh 01
 ```
 
-### 예제 3: 자동 확장
-```java
-DynamicArray<Integer> arr = new DynamicArray<>();
-for (int i = 0; i < 100; i++) {
-    arr.add(i);  // 내부적으로 자동 확장
-}
-System.out.println(arr.size()); // 출력: 100
-```
+처음 돌리면 42개가 전부 실패합니다. 그게 정상입니다.
 
----
+## 특히 생각해볼 것
 
-## 🔍 제약 조건
+**1. 지운 자리의 참조** — `remove(index)` 에서 뒤를 당긴 뒤 마지막 칸에 옛 참조가 남습니다.
+size 밖이라 논리적으로는 없는 값인데 배열은 여전히 붙잡고 있습니다. 그 객체는 GC 되지 않습니다.
+`clear()` 도 같은 문제가 있습니다. size 만 0 으로 만들면 안 됩니다.
 
-- 인덱스는 0부터 시작
-- 유효하지 않은 인덱스 접근 시 `IndexOutOfBoundsException` 발생
-- `null` 요소 저장 가능
-- 내부 배열은 `Object[]` 또는 제네릭 배열 사용
+**2. null 탐색** — `indexOf(null)` 을 호출했을 때 `o.equals(...)` 를 부르면 NPE 입니다.
+null 을 담을 수 있게 할 거면 탐색 경로를 나눠야 합니다.
 
----
+**3. 배열을 밀 때의 방향** — `add(int, E)` 에서 뒤로 밀 때 앞에서부터 복사하면 아직 안 읽은 값을
+덮어씁니다. `System.arraycopy` 는 겹치는 구간을 알아서 처리해주지만, 직접 for 문으로 짠다면
+**뒤에서부터** 옮겨야 합니다.
 
-## 💡 힌트
+**4. `toArray` 가 복사본인 이유** — 내부 배열을 그대로 주면 호출자가 우리 상태를 마음대로 바꿉니다.
+그리고 capacity 만큼 길어서 뒤에 null 이 붙어 나옵니다.
 
-### POP 구현 힌트
-- `int[]` 또는 `Object[]` 배열과 `size` 변수 사용
-- `System.arraycopy()`로 효율적인 배열 복사
-- 확장/축소 시 새 배열 생성 후 데이터 복사
+**5. 문제 4번에 함정이 있습니다.** `removeAllIf` 에는 100만 건짜리 시간 제한 테스트가 붙어 있습니다.
+가장 먼저 떠오르는 방법으로 짜면 통과하지 못합니다. `remove` 한 번의 비용부터 계산해보세요.
 
-### OOP 구현 힌트
-- `List<E>` 인터페이스 구현 고려
-- 내부 상태 캡슐화
-- `Iterator` 패턴 적용 가능
+**6. 테스트가 내부 배열을 들여다봅니다.** "지운 자리의 참조를 끊었는가"는 공개 API 로 관측할 수 없어서
+`DynamicArrayTest` 가 리플렉션으로 `elements` 필드를 직접 봅니다.
+**그래서 그 필드 이름은 계약의 일부입니다.** 바꾸면 테스트가 깨집니다.
 
----
+## 다음
 
-## ✅ 체크리스트
-
-- [ ] 기본 add/get/set/remove 동작 확인
-- [ ] 인덱스 범위 검증 (예외 처리)
-- [ ] 자동 확장 동작 확인
-- [ ] 자동 축소 동작 확인
-- [ ] null 요소 처리
-- [ ] 제네릭 타입 지원 (OOP)
-
----
-
-## 📚 참고
-
-- [Java ArrayList 소스코드](https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/java/util/ArrayList.java)
-- Amortized Analysis 개념
+02-linked-list 에서 같은 인터페이스를 연속 저장이 아닌 방식으로 만들어보면
+"왜 자료구조가 여러 개인가"가 손으로 느껴집니다.

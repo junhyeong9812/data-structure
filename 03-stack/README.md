@@ -1,146 +1,87 @@
-# 03. 스택 (Stack)
+# 03. 스택 (두 가지 구현)
 
-## 📋 문제 정의
+여기서부터 구조가 하나 늘어납니다. **같은 계약을 두 방식으로 구현**합니다.
 
-**LIFO(Last In First Out)** 원칙을 따르는 스택 자료구조를 구현하세요.
-
-가장 나중에 추가된 요소가 가장 먼저 제거되는 자료구조입니다.
-
----
-
-## 🎯 학습 목표
-
-- LIFO 원칙 이해
-- 스택의 다양한 구현 방식 (배열 기반, 연결 리스트 기반)
-- 스택 활용 알고리즘 (괄호 매칭, 후위 표기법 등)
-- 재귀와 스택의 관계 이해
-
----
-
-## 📝 요구사항
-
-### 기본 연산
-
-| 메서드 | 설명 | 시간복잡도 |
-|--------|------|-----------|
-| `push(element)` | 스택 맨 위에 요소 추가 | O(1) |
-| `pop()` | 스택 맨 위 요소 제거 및 반환 | O(1) |
-| `peek()` / `top()` | 스택 맨 위 요소 조회 (제거 안함) | O(1) |
-| `isEmpty()` | 스택이 비어있는지 확인 | O(1) |
-| `size()` | 스택의 요소 개수 반환 | O(1) |
-| `clear()` | 모든 요소 제거 | O(1) |
-
-### 추가 기능 (응용)
-
-| 메서드 | 설명 | 시간복잡도 |
-|--------|------|-----------|
-| `search(element)` | 요소의 위치 반환 (top=1 기준) | O(n) |
-| `toArray()` | 스택을 배열로 변환 | O(n) |
-
-### 응용 문제
-
-1. **괄호 매칭**: `()`, `{}`, `[]`의 올바른 짝 검증
-2. **후위 표기법 계산**: `3 4 + 2 *` → `14`
-3. **중위→후위 변환**: `3 + 4 * 2` → `3 4 2 * +`
-
----
-
-## 📊 입출력 예시
-
-### 예제 1: 기본 사용
-```java
-Stack<Integer> stack = new Stack<>();
-stack.push(1);
-stack.push(2);
-stack.push(3);
-System.out.println(stack.pop());   // 출력: 3
-System.out.println(stack.peek());  // 출력: 2
-System.out.println(stack.size());  // 출력: 2
+```
+Stack (인터페이스)      계약. TODO 가 없다. 계약은 주어지는 것이다
+  ArrayStack            배열에 쌓는다  <- 01번의 성질을 물려받는다
+  LinkedStack           노드를 잇는다  <- 02번의 성질을 물려받는다
 ```
 
-### 예제 2: 괄호 매칭
-```java
-isValidParentheses("(){}[]")     // true
-isValidParentheses("([{}])")     // true
-isValidParentheses("(]")         // false
-isValidParentheses("([)]")       // false
-isValidParentheses("{[]}")       // true
+## 왜 두 개인가
+
+겉으로는 **완전히 같게** 동작해야 합니다. 다른 것은 "언제 느려지는가"와 "메모리를 어떻게 쓰는가"뿐입니다.
+
+| | ArrayStack | LinkedStack |
+|---|---|---|
+| `push` | O(1) 상환 (**가끔** 확장 복사로 O(n)) | O(1) **언제나** |
+| `pop`, `peek` | O(1) | O(1) |
+| 메모리 | 원소만, 단 남는 용량 | 원소 + 노드마다 참조 1개 |
+| 최악 지연 | 확장 순간에 튄다 | 튀지 않는다 |
+
+**스택은 배열과 잘 맞는 자료구조입니다.** 맨 뒤만 건드리므로 시프트가 없습니다.
+01번에서 배열의 약점이었던 "중간 삽입/삭제"가 스택에는 아예 없습니다.
+
+그래도 `LinkedStack`이 필요한 경우가 있습니다. 실시간 처리처럼 **최악 지연이 중요한** 곳입니다.
+평균이 빨라도 가끔 튀면 곤란한 시스템이 있습니다.
+
+## 계약 테스트를 한 번만 쓴다
+
+```
+StackContractTest (abstract)    계약을 여기 한 번만 적는다
+  ArrayStackTest  extends       create() 만 채운다 + 배열 고유 성질
+  LinkedStackTest extends       create() 만 채운다 + 연결 고유 성질
 ```
 
-### 예제 3: 후위 표기법 계산
-```java
-evaluatePostfix("3 4 +")         // 7
-evaluatePostfix("3 4 + 2 *")     // 14
-evaluatePostfix("5 1 2 + 4 * + 3 -")  // 14
+구현마다 계약 테스트를 복사하면 둘이 조용히 어긋납니다. 한쪽에만 케이스를 추가하고 다른 쪽은 잊게 됩니다.
+계약이 늘어나면 `StackContractTest` 한 곳만 고치면 양쪽에 적용됩니다.
+
+실패했을 때 **어느 구현인지는 클래스 이름으로 바로 드러납니다.** 실제로 확인했습니다.
+`ArrayStack.pop`만 망가뜨리면 `ArrayStackTest`만 실패하고 `LinkedStackTest`는 통과합니다.
+
+## 하는 방법
+
+```
+1. StackContractTest.java 를 따라친다        <- 계약이 여기 있다
+2. ArrayStack.java 의 TODO 5개를 채운다      <- 01번을 떠올려라
+3. LinkedStack.java 의 TODO 4개를 채운다     <- 02번을 떠올려라
+4. StackProblemsTest.java 를 따라친다
+5. StackProblems.java 의 TODO 4개를 채운다
 ```
 
-### 예제 4: 중위→후위 변환
-```java
-infixToPostfix("3 + 4")          // "3 4 +"
-infixToPostfix("3 + 4 * 2")      // "3 4 2 * +"
-infixToPostfix("( 3 + 4 ) * 2")  // "3 4 + 2 *"
+## 실행
+
+```bash
+cd ~/project/myway/data-structure
+./run.sh 03
 ```
 
----
+처음 돌리면 48개가 전부 실패합니다.
 
-## 🔍 제약 조건
+## 특히 생각해볼 것
 
-- 빈 스택에서 `pop()` 또는 `peek()` 시 `EmptyStackException` 발생
-- `null` 요소 저장 가능
-- 스택 크기는 동적으로 확장 (배열 기반 구현 시)
+**1. 응용 문제가 인터페이스만 안다** — `StackProblems`의 네 메서드는 전부 `Stack`을 인자로 받습니다.
+안에서 `new ArrayStack<>()`라고 쓰는 순간 그 코드는 한 구현에 묶입니다. 그래서 작업용 스택을 받습니다.
+테스트가 두 구현 모두로 같은 문제를 풀어 결과가 같은지 봅니다.
 
----
+**2. 후위 표기의 피연산자 순서** — 나중에 쌓인 것이 먼저 나오므로 **두 번째로 꺼낸 것이 왼쪽**입니다.
+반대로 하면 `"3 4 -"`가 1이 됩니다. 정답은 -1입니다.
 
-## 💡 힌트
+**3. 문제 3번이 함정입니다.** `nextGreater`에 20만 건 시간 제한이 있습니다.
+각 원소마다 오른쪽을 훑으면 O(n²)입니다. 스택에 "아직 답을 못 찾은 인덱스"를 쌓아두면
+새 값이 들어올 때마다 여러 개의 답이 한꺼번에 정해집니다.
 
-### POP 구현 힌트 (배열 기반)
-```java
-public class ArrayStack {
-    private int[] data;
-    private int top;  // 다음에 추가될 위치 (= 현재 크기)
-    
-    public void push(int element) {
-        // 배열이 가득 차면 확장
-        data[top++] = element;
-    }
-    
-    public int pop() {
-        return data[--top];
-    }
-}
-```
+각 인덱스가 스택에 **한 번 들어가고 한 번 나옵니다.** 안쪽 while이 여러 번 돌아도
+전체 pop 횟수는 n을 넘지 않습니다. 이게 상환 분석이고, 01번 배열 확장과 같은 논리입니다.
 
-### OOP 구현 힌트 (연결 리스트 기반)
-```java
-public class LinkedStack<E> {
-    private Node<E> top;  // 맨 위 노드
-    
-    private static class Node<E> {
-        E data;
-        Node<E> next;
-    }
-    
-    // push: 새 노드를 top 앞에 연결
-    // pop: top 노드 제거 후 반환
-}
-```
+**4. 꺼낸 자리 정리** — 01번, 02번과 같은 문제가 또 나옵니다.
+`ArrayStack.pop`은 배열 자리를 비워야 하고 `LinkedStack.pop`은 떼어낸 노드의 `next`를 끊어야 합니다.
+세 번째 반복이니 이제 반사적으로 나와야 합니다.
 
----
+**5. 문제 4번의 복잡도** — `sortAscending`은 O(n²)입니다. 그게 맞습니다.
+스택 두 개만 쓰는 제약에서는 그게 한계입니다. **제약이 복잡도를 결정하는** 예입니다.
 
-## ✅ 체크리스트
+## 다음
 
-- [ ] 기본 push/pop/peek 동작
-- [ ] 빈 스택 예외 처리
-- [ ] 배열 기반 구현
-- [ ] 연결 리스트 기반 구현
-- [ ] 괄호 매칭 알고리즘
-- [ ] 후위 표기법 계산
-- [ ] 중위→후위 변환
-
----
-
-## 📚 참고
-
-- [Java Stack 소스코드](https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/java/util/Stack.java)
-- 콜 스택과 재귀의 관계
-- 웹 브라우저 뒤로가기/앞으로가기 구현
+04-queue-deque 에서는 반대 성질(선입선출)을 다룹니다.
+배열로 큐를 만들면 왜 원형이어야 하는지가 거기서 나옵니다.

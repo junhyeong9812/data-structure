@@ -1,256 +1,121 @@
-# 14. 유니온 파인드 (Union-Find / Disjoint Set Union)
+# 14. 유니온 파인드
 
-## 📋 문제 정의
+08번 그래프에서 "이 둘이 연결돼 있나"는 BFS로 O(V+E)에 답했습니다.
+그런데 **간선이 하나씩 들어오는** 상황이라면 매번 다시 돌려야 합니다.
 
-**서로소 집합(Disjoint Set)**을 효율적으로 관리하는 유니온 파인드를 구현하세요.
+유니온 파인드는 그 질문에 **증분적으로** 답합니다. 그리고 그 값이 거의 O(1)입니다.
 
-유니온 파인드는 원소들을 서로 겹치지 않는 집합들로 분할하고,
-두 집합을 합치거나(Union) 특정 원소가 어느 집합에 속하는지 찾는(Find) 연산을 제공합니다.
+| | 연결 여부 | 간선 추가 | 경로 |
+|---|---|---|---|
+| BFS/DFS (08번) | O(V+E) 매번 | O(1) | **알려준다** |
+| 유니온 파인드 | **거의 O(1)** | 거의 O(1) | 모른다 |
 
----
+마지막 열이 대가입니다. **"연결돼 있다"만 알고 "어떻게"는 모릅니다.**
+그리고 **한 번 합친 것은 쪼갤 수 없습니다.** 이 둘을 포기하고 속도를 얻습니다.
 
-## 🎯 학습 목표
+## 얼마나 빠른가
 
-- 서로소 집합(Disjoint Set) 개념
-- 경로 압축(Path Compression) 최적화
-- 랭크/크기 기반 합치기(Union by Rank/Size)
-- 거의 상수 시간 복잡도 O(α(n))
-- 그래프 연결성 판단
+최적화 둘을 다 넣으면 연산당 **역아커만 함수 α(n)**이 되는데,
+우주의 원자 수보다 큰 n에서도 4를 안 넘습니다. 사실상 상수입니다.
 
----
+**1. 크기로 붙이기** — 작은 나무를 큰 나무 밑에.
+깊이가 1 늘어나려면 나무가 두 배가 돼야 하므로 log n을 절대 안 넘습니다.
 
-## 📝 요구사항
+**2. 경로 압축** — `find`하면서 지나온 노드를 전부 뿌리에 직접 붙입니다.
 
-### 기본 연산
+측정해보면 이렇습니다(1024개를 한 줄로 합친 뒤).
 
-| 메서드 | 설명 | 시간복잡도 |
-|--------|------|-----------|
-| `makeSet(x)` | x를 포함하는 새 집합 생성 | O(1) |
-| `find(x)` | x가 속한 집합의 대표 원소 반환 | O(α(n)) |
-| `union(x, y)` | x와 y가 속한 집합을 합침 | O(α(n)) |
-| `connected(x, y)` | x와 y가 같은 집합인지 확인 | O(α(n)) |
-
-### 추가 연산
-
-| 메서드 | 설명 |
-|--------|------|
-| `getSize(x)` | x가 속한 집합의 크기 |
-| `getSetCount()` | 전체 집합의 개수 |
-| `getComponents()` | 모든 집합 목록 반환 |
-
----
-
-## 📊 입출력 예시
-
-### 예제 1: 기본 사용
-```java
-UnionFind uf = new UnionFind(10);  // 0~9 원소
-
-// 초기: 각 원소가 자신만의 집합
-System.out.println(uf.find(0));     // 0
-System.out.println(uf.find(1));     // 1
-System.out.println(uf.connected(0, 1)); // false
-
-// 합치기
-uf.union(0, 1);
-System.out.println(uf.connected(0, 1)); // true
-
-uf.union(2, 3);
-uf.union(0, 2);
-System.out.println(uf.connected(1, 3)); // true (0-1-2-3 연결)
+```
+둘 다 끔:      최대 깊이 1023
+크기만 켬:     최대 깊이 10       (= log2 1024)
+둘 다 켬:      find 한 번 뒤 깊이 1
 ```
 
-### 예제 2: 집합 크기
-```java
-UnionFind uf = new UnionFind(6);
+**2번은 조회가 자료구조를 바꿉니다.** 10번 LRU의 `get`, 13번 lazy의 `rangeSum`과 같습니다.
+그리고 **바로 그 때문에 쪼갤 수 없습니다.** 압축이 "원래 누구 밑이었는지"를 지웁니다.
 
-uf.union(0, 1);
-uf.union(1, 2);
-System.out.println(uf.getSize(0)); // 3 (0, 1, 2)
+## 네 구현
 
-uf.union(3, 4);
-System.out.println(uf.getSize(3)); // 2 (3, 4)
+| | 무엇을 보여주나 |
+|---|---|
+| `ArrayUnionFind` | 배열 두 개. 트리를 **부모 배열 하나로** 표현한다 |
+| `MapUnionFind` | 원소 수를 몰라도 된다. 흩어진 아이디도 된다 |
+| `DisjointSet<T>` | 아무 타입이나. **번호를 붙여 넘긴다** |
+| `WeightedUnionFind` | 연결 여부만이 아니라 **차이**까지 |
 
-uf.union(0, 3);
-System.out.println(uf.getSize(0)); // 5 (0, 1, 2, 3, 4)
-System.out.println(uf.getSetCount()); // 2 ({0,1,2,3,4}, {5})
+## 하는 방법
+
+```
+1. UnionFindContractTest.java 를 따라친다
+2. ArrayUnionFind 의 TODO 3개를 채운다      <- 여기가 본체
+3. MapUnionFind 의 TODO 2개                 <- 같은 알고리즘, 배열 대신 맵
+4. DisjointSet 의 TODO 2개
+5. WeightedUnionFind 의 TODO 3개            <- 제일 어렵다. 마지막에
 ```
 
-### 예제 3: 트리 구조 시각화
-```
-초기 상태:
-[0] [1] [2] [3] [4]   (5개 집합)
-
-union(0, 1):
-  0
-  |
-  1
-[0,1] [2] [3] [4]     (4개 집합)
-
-union(2, 3):
-  0     2
-  |     |
-  1     3
-[0,1] [2,3] [4]       (3개 집합)
-
-union(1, 3):  (경로 압축 후)
-    0
-  / | \
- 1  2  3
-[0,1,2,3] [4]         (2개 집합)
+```bash
+cd ~/project/myway/data-structure && ./run.sh 14      # 52개 중 49개가 실패한다
 ```
 
-### 예제 4: 그래프 연결 컴포넌트
-```java
-// 그래프 간선: (0,1), (1,2), (3,4)
-UnionFind uf = new UnionFind(5);
+## 특히 생각해볼 것
 
-int[][] edges = {{0,1}, {1,2}, {3,4}};
-for (int[] edge : edges) {
-    uf.union(edge[0], edge[1]);
-}
+**1. 경로 압축 루프에서 다음 부모를 먼저 붙잡아야 합니다.**
+`parent[cur]`를 먼저 바꾸면 어디로 갈지 잃습니다. 02번 `reverse`와 같은 함정입니다.
 
-System.out.println(uf.getSetCount()); // 2 (두 개의 연결 컴포넌트)
-System.out.println(uf.connected(0, 2)); // true
-System.out.println(uf.connected(0, 3)); // false
+**2. 재귀 대신 반복으로 씁니다.** 압축 없이 10만 개를 한 줄로 이으면 재귀는 스택이 넘칩니다.
+08번 DFS와 같은 이유입니다.
+
+**3. `sizeOf`는 뿌리의 것만 정확합니다.** 자식들의 `treeSize`는 합쳐지기 전의 옛 값입니다.
+전부 갱신하려면 O(n)이니 안 합니다. **대신 뿌리에서만 읽습니다.**
+그냥 `treeSize[x]`를 주면 52개 중 6개가 무너집니다.
+
+**4. `groups()`는 O(n)입니다.** 유니온 파인드는 "누가 같은 묶음인가"를 직접 알려주지 않습니다.
+대표만 알려주므로 전부 훑어 모아야 합니다.
+**빠른 것은 "둘이 같은가"뿐입니다.** 그게 이 자료구조가 포기한 것 중 하나입니다.
+
+**5. 배열이냐 맵이냐** — 05번, 09번(ArrayTrie 대 MapTrie)에서 본 거래가 또 나옵니다.
+**배열은 빠르고 조밀하고, 맵은 유연하고 헐겁습니다.**
+사용자 ID가 10만~99만에 흩어져 있으면 배열로는 100만 칸을 잡아야 합니다.
+
+**6. `WeightedUnionFind`가 이 문제집에서 가장 밀도 높은 몇 줄입니다.**
+
+`weight[x]`를 "x의 값 − 부모의 값"으로 둡니다. 뿌리까지 다 더하면 "x의 값 − 뿌리의 값"이 됩니다.
+두 원소가 같은 뿌리를 가지면 **뿌리 값이 소거되므로**
+
+```
+value(y) - value(x) = weight[y] - weight[x]
 ```
 
----
+**뿌리의 값이 무엇인지는 끝까지 몰라도 됩니다.** 차이만 알면 되니까요.
 
-## 🔍 핵심 개념
+그래서 이런 것이 됩니다.
 
-### 경로 압축 (Path Compression)
 ```
-find(4) 호출 시:
-
-압축 전:           압축 후:
-    0                 0
-    |               / | \
-    1              1  2  4
-    |              |
-    2              3
-    |
-    3
-    |
-    4
-
-→ 다음 find(4)는 O(1)
+union(a, b, 3)     "b는 a보다 3 크다"
+union(b, c, 5)     "c는 b보다 5 크다"
+diff(a, c) -> 8    직접 말한 적 없는데 안다
+union(a, c, 2)     -> false. 모순을 잡아낸다
 ```
 
-### Union by Rank/Size
-```
-작은 트리를 큰 트리 아래에 붙이기:
+(환율 일관성 검사, 상대 좌표, 논리 시계 오프셋, 등식 제약 풀이가 전부 이 모양입니다.)
 
-    0        3         0
-   /|\       |    →   /|\\ 
-  1 2        4       1 2 3
-                         |
-                         4
+**7. `find`의 순서가 전부입니다.** 재귀 호출 **뒤에** `weight[x] += weight[부모]`를 해야 합니다.
+그 시점의 `weight[부모]`는 이미 "부모 − 뿌리"라 결과가 정확히 "x − 뿌리"가 됩니다.
+호출 전에 더하면 부모의 옛 값을 더하게 되어 **조용히 틀립니다.** 작은 예제에서는 안 걸립니다.
 
-→ 트리 높이를 최소화
-```
+**8. 크기로 붙이기를 하면 어느 쪽이 밑으로 갈지 모릅니다.**
+그래서 `weight`의 **부호를 두 경우 다** 써야 합니다. 한쪽만 처리하는 것이 흔한 실수입니다.
 
-### 역 아커만 함수 α(n)
-```
-α(n) ≤ 4 for all practical n (n < 10^600)
+**9. Integer 캐시 이야기 하나.** 자바는 −128..127의 `Integer`를 캐시합니다.
+맵에서 꺼낸 `Integer`를 `!=`로 비교하면 그 범위 밖에서 참조 비교가 됩니다.
 
-α(n)은 사실상 상수:
-- α(1) = 0
-- α(2) = 1
-- α(4) = 2
-- α(16) = 3
-- α(65536) = 4
-- α(2^65536) = 5
-```
+**다만 이 구조에서는 우연히 자기 교정됩니다.** 고정점까지 걸어가므로 한 바퀴 더 돌고 같은 답에 도달합니다
+(변종으로 확인했습니다. 52개가 다 통과했습니다).
+그래도 `int`로 쓰세요. **우연에 기대는 코드는 구조를 조금만 바꿔도 물립니다.**
+05번 `Math.abs` 주석과 같은 이야기입니다.
 
----
+## 다음
 
-## 💡 힌트
-
-### 기본 구조
-```java
-public class UnionFind {
-    private int[] parent;
-    private int[] rank;  // 또는 size
-    private int count;   // 집합 개수
-    
-    public UnionFind(int n) {
-        parent = new int[n];
-        rank = new int[n];
-        count = n;
-        for (int i = 0; i < n; i++) {
-            parent[i] = i;  // 자기 자신이 부모
-            rank[i] = 0;    // 또는 size[i] = 1
-        }
-    }
-}
-```
-
-### Find (경로 압축)
-```java
-public int find(int x) {
-    if (parent[x] != x) {
-        parent[x] = find(parent[x]);  // 경로 압축
-    }
-    return parent[x];
-}
-
-// 반복문 버전
-public int find(int x) {
-    int root = x;
-    while (parent[root] != root) {
-        root = parent[root];
-    }
-    // 경로 압축
-    while (parent[x] != root) {
-        int next = parent[x];
-        parent[x] = root;
-        x = next;
-    }
-    return root;
-}
-```
-
-### Union (랭크 기반)
-```java
-public void union(int x, int y) {
-    int rootX = find(x);
-    int rootY = find(y);
-    
-    if (rootX == rootY) return;
-    
-    // 랭크 기반 합치기
-    if (rank[rootX] < rank[rootY]) {
-        parent[rootX] = rootY;
-    } else if (rank[rootX] > rank[rootY]) {
-        parent[rootY] = rootX;
-    } else {
-        parent[rootY] = rootX;
-        rank[rootX]++;
-    }
-    
-    count--;
-}
-```
-
----
-
-## ✅ 체크리스트
-
-- [ ] 기본 find, union 구현
-- [ ] 경로 압축 구현
-- [ ] Union by Rank 구현
-- [ ] Union by Size 구현
-- [ ] 집합 크기 조회
-- [ ] 집합 개수 조회
-- [ ] 제네릭 버전 (선택)
-
----
-
-## 📚 활용 예시
-
-- **Kruskal's MST 알고리즘**: 사이클 탐지
-- **네트워크 연결**: 컴퓨터 네트워크 연결성
-- **동적 연결성**: 온라인 쿼리 처리
-- **이미지 세그멘테이션**: 연결된 픽셀 그룹화
-- **소셜 네트워크**: 친구 그룹 찾기
+15-b-tree 에서는 **디스크를 전제로 설계된** 트리가 나옵니다.
+06번 BST가 노드마다 자식 둘이었다면 거기서는 수백 개입니다.
+"한 번 읽는 비용이 비싸면 한 번에 많이 읽어라"가 구조를 바꿉니다.

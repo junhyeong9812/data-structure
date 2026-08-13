@@ -1,0 +1,205 @@
+# oop/SinglyLinkedListImpl.java
+
+단방향 연결 리스트 구현. `head`, `tail`, `size` 보유. `removeLast`는 직전 노드를 찾기 위해 O(n) 탐색이 필요하다. `reverse`는 in-place로 next 포인터를 뒤집는다.
+
+```java
+package com.datastructure.linkedlist.oop;
+
+import java.util.NoSuchElementException;
+import java.util.Objects;
+
+public class SinglyLinkedListImpl<E> implements LinkedList<E> {
+
+    private Node<E> head;
+    private Node<E> tail;
+    private int size;
+
+    private static class Node<E> {
+        E data;
+        Node<E> next;
+
+        Node(E data) {
+            this.data = data;
+        }
+
+        Node(E data, Node<E> next) {
+            this.data = data;
+            this.next = next;
+        }
+    }
+
+    public void addFirst(E element) {
+        Node<E> newNode = new Node<>(element);
+        if (size == 0) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            newNode.next = head;
+            head = newNode;
+        }
+        size++;
+    }
+
+    public void addLast(E element) {
+        Node<E> newNode = new Node<>(element);
+        if (size == 0) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            tail.next = newNode;
+            tail = newNode;
+        }
+        size++;
+    }
+
+    public void add(int index, E element) {
+        if(index < 0 || index > size) {
+            throw new IndexOutOfBoundsException();
+        }
+        if (index == 0) {
+            addFirst(element);
+            return;
+        }
+        if (index == size) {
+            addLast(element);
+            return;
+        }
+        Node<E> beforeNode = head;
+        for (int i = 0; i < index - 1; i++) {
+            beforeNode = beforeNode.next;
+        }
+        Node<E> newNode = new Node<>(element);
+        newNode.next = beforeNode.next;
+        beforeNode.next = newNode;
+        size++;
+    }
+
+    public E removeFirst() {
+        if (size == 0) {
+            throw new NoSuchElementException();
+        }
+        E removed = head.data;
+        head = head.next;
+        if (size == 1) {
+            tail = null;
+        }
+        size--;
+        return removed;
+    }
+
+    public E removeLast() {
+        if (size == 0) {
+            throw new NoSuchElementException();
+        }
+        E removed = tail.data;
+        if (size == 1) {
+            head = null;
+            tail = null;
+        } else {
+            Node<E> beforeNode = head;
+            for (int i = 0; i < size - 2; i++) {
+                beforeNode = beforeNode.next;
+            }
+            beforeNode.next = null;
+            tail = beforeNode;
+        }
+        size--;
+        return removed;
+    }
+
+    public E remove(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException();
+        }
+        if (index == 0) {
+            return removeFirst();
+        }
+        if (index == size - 1) {
+            return removeLast();
+        }
+        Node<E> beforeNode = head;
+        for (int i = 0; i < index - 1; i++) {
+            beforeNode = beforeNode.next;
+        }
+        Node<E> targetNode = beforeNode.next;
+        beforeNode.next = targetNode.next;
+        size--;
+        return targetNode.data;
+    }
+
+    public E get(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException();
+        }
+        Node<E> targetNode = head;
+        for (int i = 0; i < index; i++) {
+            targetNode = targetNode.next;
+        }
+        return targetNode.data;
+    }
+
+    public E set(int index, E element) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException();
+        }
+        E beforeData = null;
+        Node<E> targetNode = head;
+        for (int i = 0; i < index; i++) {
+            targetNode = targetNode.next;
+        }
+        beforeData = targetNode.data;
+        targetNode.data = element;
+        return beforeData;
+    }
+
+    public int size() {
+        return size;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    public boolean contains(E element) {
+        Node<E> node = head;
+        for (int i = 0; i < size; i++) {
+            if (Objects.equals(element, node.data)) {
+                return true;
+            }
+            node = node.next;
+        }
+        return false;
+    }
+
+    public int indexOf(E element) {
+        Node<E> node = head;
+        for (int i = 0; i < size; i++) {
+            if (Objects.equals(element, node.data)) {
+                return i;
+            }
+            node = node.next;
+        }
+        return -1;
+    }
+
+    public void clear() {
+        head = null;
+        tail = null;
+        size = 0;
+    }
+
+    public void reverse() {
+        Node<E> node = head;
+        Node<E> next = null;
+        Node<E> prev = null;
+        tail = head;
+        for (int i = 0; i < size; i++) {
+            next = node.next;
+            node.next = prev;
+            prev = node;
+            node = next;
+        }
+        head = prev;
+    }
+}
+```

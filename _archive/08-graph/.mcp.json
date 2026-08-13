@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "workbench-knowledge": {
+      "args": [
+        "--knowledge-root",
+        "/home/jun/.local/share/com.multiterminal.dev/archive/08-graph-66d27b27ab615d94/knowledge"
+      ],
+      "command": "/home/jun/.local/share/claude-workbench/knowledge-mcp"
+    }
+  }
+}

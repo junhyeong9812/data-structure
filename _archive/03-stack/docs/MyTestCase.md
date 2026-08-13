@@ -1,0 +1,764 @@
+# MyTestCase
+
+03-stack의 통합 테스트. 최상위 4개 `@Nested`: `ArrayStackTest`, `LinkedStackTest`, `AdditionalTest`(search/toArray), `ApplicationTest`(괄호 매칭, 후위 평가, 중위→후위 변환). POP 구현은 setUp의 주석 라인을 활성화하여 동일 테스트로 검증 가능.
+
+```java
+package com.datastructure.stack;
+
+import com.datastructure.stack.oop.*;
+import com.datastructure.stack.pop.ArrayStack;
+import com.datastructure.stack.pop.LinkedStack;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+
+import java.util.EmptyStackException;
+import java.util.Objects;
+
+import static org.assertj.core.api.Assertions.*;
+
+public class MyTestCase {
+
+    @Nested
+    @DisplayName("배열 기반 스택")
+    class ArrayStackTest {
+
+//        ArrayStack stack ;
+        Stack stack;
+        @BeforeEach
+        void setup() {
+//            stack = new ArrayStack();
+            stack = new ArrayStackImpl<>();
+        }
+
+        @Nested
+        @DisplayName("배열 기반 스택 생성 테스트")
+        class Creation {
+
+            @Test
+            @DisplayName("배열 기반 스택이 생성된다.")
+            void creation_success() {
+                assertThat(stack).isNotNull();
+                assertThat(stack.isEmpty()).isTrue();
+                assertThat(stack.size()).isZero();
+            }
+        }
+
+        @Nested
+        @DisplayName("push 메서드 테스트")
+        class PushTest {
+            @Test
+            @DisplayName("빈 스택에 요소를 추가한다.")
+            void push_emptyStack_success() {
+                stack.push(1);
+
+                assertThat(stack.size()).isEqualTo(1);
+                assertThat(stack.isEmpty()).isFalse();
+                assertThat(stack.top()).isEqualTo(1);
+            }
+
+            @Test
+            @DisplayName("데이터가 있는 스택에 요소를 추가한다")
+            void push_nonEmptyStack_success() {
+                stack.push(0);
+                stack.push(1);
+                stack.push(2);
+
+                assertThat(stack.size()).isEqualTo(3);
+                assertThat(stack.top()).isEqualTo(2);
+            }
+
+            @Test
+            @DisplayName("null인 요소를 추가할 수 있다")
+            void push_nullElement_success() {
+                stack.push(null);
+
+                assertThat(stack.size()).isEqualTo(1);
+                assertThat(stack.top()).isNull();
+            }
+        }
+
+        @Nested
+        @DisplayName("pop 메서드 테스트")
+        class PopTest {
+            @Test
+            @DisplayName("빈 스택에 요소를 제거한다")
+            void pop_emptyStack_throwsException() {
+                assertThatThrownBy(() -> stack.pop())
+                        .isInstanceOf(EmptyStackException.class);
+            }
+
+            @Test
+            @DisplayName("데이터가 있는 스택의 요소를 제거한다")
+            void pop_nonEmptyStack_success() {
+                stack.push(0);
+                stack.push(1);
+                stack.push(2);
+                Object popData = stack.pop();
+
+                assertThat(stack.size()).isEqualTo(2);
+                assertThat(popData).isEqualTo(2);
+            }
+
+            @Test
+            @DisplayName("null인 요소를 제거한다")
+            void pop_nullElement_success() {
+                stack.push(null);
+                Object popData = stack.pop();
+                assertThat(stack.size()).isZero();
+                assertThat(popData).isNull();
+            }
+        }
+
+        @Nested
+        @DisplayName("peek 메서드 테스트")
+        class PeekTest {
+
+            @Test
+            @DisplayName("빈 스택의 요소를 조회하면 예외가 발생한다")
+            void peek_emptyStack_throwsException() {
+                assertThatThrownBy(() -> stack.peek())
+                        .isInstanceOf(EmptyStackException.class);
+            }
+
+            @Test
+            @DisplayName("데이터가 있는 스택의 요소를 조회한다")
+            void peek_nonEmptyStack_success() {
+                stack.push(1);
+                Object peekData = stack.peek();
+                assertThat(stack.size()).isOne();
+                assertThat(peekData).isEqualTo(1);
+            }
+
+            @Test
+            @DisplayName("null인 요소를 조회한다")
+            void peek_nullElement_success() {
+                stack.push(null);
+                Object peekNull = stack.peek();
+                assertThat(stack.size()).isOne();
+                assertThat(peekNull).isNull();
+            }
+        }
+
+        @Nested
+        @DisplayName("top 메서드 테스트")
+        class TopTest {
+            @Test
+            @DisplayName("빈 스택의 요소를 조회하면 예외가 발생한다")
+            void top_emptyStack_throwsException() {
+                assertThatThrownBy(() -> stack.top())
+                        .isInstanceOf(EmptyStackException.class);
+            }
+
+            @Test
+            @DisplayName("데이터가 있는 요소에 데이터를 조회한다")
+            void top_nonEmptyStack_success() {
+                stack.push(1);
+                Object topData = stack.top();
+
+                assertThat(stack.size()).isOne();
+                assertThat(topData).isEqualTo(1);
+            }
+
+            @Test
+            @DisplayName("null 요소를 조회한다")
+            void top_nullElement_success() {
+                stack.push(null);
+                Object topData = stack.top();
+
+                assertThat(stack.size()).isOne();
+                assertThat(topData).isNull();
+            }
+        }
+
+        @Nested
+        @DisplayName("isEmpty 메서드 테스트")
+        class IsEmptyTest {
+
+            @Test
+            @DisplayName("빈 스택을 조회한다")
+            void isEmpty_emptyStack_returnsTrue() {
+                assertThat(stack.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("데이터가 존재하는 스택을 조회한다.")
+            void isEmpty_nonEmptyStack_returnFalse() {
+                stack.push(1);
+                assertThat(stack.isEmpty()).isFalse();
+            }
+        }
+
+        @Nested
+        @DisplayName("size 메서드 테스트")
+        class SizeTest {
+
+            @Test
+            @DisplayName("빈 스택의 사이즈가 0인지 확인한다")
+            void size_emptyStack_returnZero() {
+                assertThat(stack.size()).isZero();
+            }
+
+            @Test
+            @DisplayName("데이터가 있는 스택의 사이즈를 확인한다")
+            void size_nonEmptyStack_returnCount() {
+                stack.push(1);
+                stack.push(2);
+                assertThat(stack.size()).isEqualTo(2);
+            }
+        }
+
+        @Nested
+        @DisplayName("clear 메서드 테스트")
+        class ClearTest {
+            @Test
+            @DisplayName("빈 요소일 때 동작하는 지 확인한다")
+            void clear_emptyStack_success() {
+                assertThatNoException().isThrownBy(() -> stack.clear());
+                assertThat(stack.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("데이터가 있는 스택이 비워지는 지 확인한다")
+            void clear_nonEmptyStack_success() {
+                stack.push(1);
+                stack.push(2);
+
+                stack.clear();
+                assertThat(stack.isEmpty()).isTrue();
+                assertThat(stack.size()).isZero();
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("연결 리스트 기반 스택")
+    class LinkedStackTest {
+
+//        LinkedStack stack ;
+        Stack stack;
+        @BeforeEach
+        void setup() {
+//            stack = new LinkedStack();
+            stack = new LinkedStackImpl<>();
+        }
+
+        @Nested
+        @DisplayName("연결 리스트 기반 스택 생성 테스트")
+        class Creation {
+
+            @Test
+            @DisplayName("연결 리스트 기반 스택이 생성된다.")
+            void creation_success() {
+                assertThat(stack).isNotNull();
+                assertThat(stack.isEmpty()).isTrue();
+                assertThat(stack.size()).isZero();
+            }
+        }
+
+        @Nested
+        @DisplayName("push 메서드 테스트")
+        class PushTest {
+            @Test
+            @DisplayName("빈 스택에 요소를 추가한다.")
+            void push_emptyStack_success() {
+                stack.push(1);
+                assertThat(stack.size()).isEqualTo(1);
+                assertThat(stack.isEmpty()).isFalse();
+                assertThat(stack.top()).isEqualTo(1);
+            }
+
+            @Test
+            @DisplayName("데이터가 있는 스택에 요소를 추가한다")
+            void push_nonEmptyStack_success() {
+                stack.push(1);
+                stack.push(2);
+
+                assertThat(stack.size()).isEqualTo(2);
+                assertThat(stack.top()).isEqualTo(2);
+            }
+
+            @Test
+            @DisplayName("null인 요소를 추가할 수 있다")
+            void push_nullElement_success() {
+                stack.push(null);
+
+                assertThat(stack.size()).isOne();
+                assertThat(stack.top()).isNull();
+            }
+        }
+
+        @Nested
+        @DisplayName("pop 메서드 테스트")
+        class PopTest {
+            @Test
+            @DisplayName("빈 스택에 요소를 제거한다")
+            void pop_emptyStack_throwsException() {
+                assertThatThrownBy(() -> stack.pop())
+                        .isInstanceOf(EmptyStackException.class);
+            }
+
+            @Test
+            @DisplayName("데이터가 있는 스택의 요소를 제거한다")
+            void pop_nonEmptyStack_success() {
+                stack.push(1);
+                stack.push(2);
+                Object popData = stack.pop();
+                assertThat(stack.size()).isOne();
+                assertThat(popData).isEqualTo(2);
+            }
+
+            @Test
+            @DisplayName("null인 요소를 제거한다")
+            void pop_nullElement_success() {
+                stack.push(null);
+
+                Object popNull = stack.pop();
+                assertThat(stack.size()).isZero();
+                assertThat(popNull).isNull();
+            }
+        }
+
+        @Nested
+        @DisplayName("peek 메서드 테스트")
+        class PeekTest {
+
+            @Test
+            @DisplayName("빈 스택의 요소를 조회하면 예외가 발생한다")
+            void peek_emptyStack_throwsException() {
+                assertThatThrownBy(() -> stack.peek())
+                        .isInstanceOf(EmptyStackException.class);
+            }
+
+            @Test
+            @DisplayName("데이터가 있는 스택의 요소를 조회한다")
+            void peek_nonEmptyStack_success() {
+                stack.push(1);
+                Object peekData = stack.peek();
+
+                assertThat(stack.size()).isOne();
+                assertThat(peekData).isEqualTo(1);
+            }
+
+            @Test
+            @DisplayName("null인 요소를 조회한다")
+            void peek_nullElement_success() {
+                stack.push(null);
+                Object peekNull = stack.peek();
+                assertThat(stack.size()).isOne();
+                assertThat(peekNull).isNull();
+            }
+        }
+
+        @Nested
+        @DisplayName("top 메서드 테스트")
+        class TopTest {
+            @Test
+            @DisplayName("빈 스택의 요소를 조회하면 예외가 발생한다")
+            void top_emptyStack_throwsException() {
+                assertThatThrownBy(() -> stack.top())
+                        .isInstanceOf(EmptyStackException.class);
+            }
+
+            @Test
+            @DisplayName("데이터가 있는 요소에 데이터를 조회한다")
+            void top_nonEmptyStack_success() {
+                stack.push(1);
+                stack.push(2);
+
+                Object topData = stack.top();
+
+                assertThat(stack.size()).isEqualTo(2);
+                assertThat(topData).isEqualTo(2);
+            }
+
+            @Test
+            @DisplayName("null 요소를 조회한다")
+            void top_nullElement_success() {
+                stack.push(null);
+
+                Object topNull = stack.top();
+                assertThat(stack.size()).isOne();
+                assertThat(topNull).isNull();
+            }
+        }
+
+        @Nested
+        @DisplayName("isEmpty 메서드 테스트")
+        class IsEmptyTest {
+
+            @Test
+            @DisplayName("빈 스택을 조회한다")
+            void isEmpty_emptyStack_returnsTrue() {
+                assertThat(stack.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("데이터가 존재하는 스택을 조회한다.")
+            void isEmpty_nonEmptyStack_returnFalse() {
+                stack.push(1);
+
+                assertThat(stack.isEmpty()).isFalse();
+            }
+        }
+
+        @Nested
+        @DisplayName("size 메서드 테스트")
+        class SizeTest {
+
+            @Test
+            @DisplayName("빈 스택의 사이즈가 0인지 확인한다")
+            void size_emptyStack_returnZero() {
+                assertThat(stack.size()).isZero();
+            }
+
+            @Test
+            @DisplayName("데이터가 있는 스택의 사이즈를 확인한다")
+            void size_nonEmptyStack_returnCount() {
+                stack.push(1);
+                stack.push(2);
+                stack.push(3);
+                assertThat(stack.size()).isEqualTo(3);
+            }
+        }
+
+        @Nested
+        @DisplayName("clear 메서드 테스트")
+        class ClearTest {
+            @Test
+            @DisplayName("빈 요소일 때 동작하는 지 확인한다")
+            void clear_emptyStack_success() {
+                assertThatNoException().isThrownBy(() -> stack.clear());
+                assertThat(stack.size()).isZero();
+                assertThat(stack.isEmpty()).isTrue();
+            }
+
+            @Test
+            @DisplayName("데이터가 있는 스택이 비워지는 지 확인한다")
+            void clear_nonEmptyStack_success() {
+                stack.push(1);
+                stack.push(2);
+
+                stack.clear();
+
+                assertThat(stack.size()).isZero();
+                assertThat(stack.isEmpty()).isTrue();
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("추가 기능 테스트")
+    class AdditionalTest {
+
+//        ArrayStack arrayStack;
+//        LinkedStack linkedStack;
+        Stack<Integer> arrayStack;
+        Stack<Integer> linkedStack;
+        @BeforeEach
+        void setup() {
+//            arrayStack = new ArrayStack();
+//            linkedStack = new LinkedStack<>();
+            arrayStack = new ArrayStackImpl<>();
+            linkedStack = new LinkedStackImpl<>();
+        }
+
+        @Nested
+        @DisplayName("search 메서드 테스트")
+        class SearchTest {
+            @Test
+            @DisplayName("빈 스택인 경우")
+            void search_emptyStack_returnsMinusOne() {
+                assertThat(arrayStack.search(1)).isEqualTo(-1);
+                assertThat(linkedStack.search(1)).isEqualTo(-1);
+            }
+            @Test
+            @DisplayName("요소가 존재하는 경우")
+            void search_existingElement_returnPosition() {
+                arrayStack.push(1);
+                arrayStack.push(2);
+                arrayStack.push(3);
+                linkedStack.push(1);
+                linkedStack.push(2);
+                linkedStack.push(3);
+
+                assertThat(arrayStack.search(1)).isEqualTo(1);
+                assertThat(arrayStack.search(2)).isEqualTo(2);
+                assertThat(arrayStack.search(3)).isEqualTo(3);
+                assertThat(linkedStack.search(1)).isEqualTo(1);
+                assertThat(linkedStack.search(2)).isEqualTo(2);
+                assertThat(linkedStack.search(3)).isEqualTo(3);
+            }
+
+            @Test
+            @DisplayName("요소가 존재하지 않는 경우")
+            void search_nonExistingElement_returnMinusOne() {
+                arrayStack.push(1);
+                linkedStack.push(1);
+
+                assertThat(arrayStack.search(2)).isEqualTo(-1);
+                assertThat(linkedStack.search(2)).isEqualTo(-1);
+            }
+        }
+
+        @Nested
+        @DisplayName("toArray 메서드 테스트")
+        class ToArrayTest {
+
+            @Test
+            @DisplayName("빈 스택인 경우")
+            void toArray_emptyStack_returnsEmptyArray() {
+                assertThat(arrayStack.toArray()).isEmpty();
+                assertThat(arrayStack.toArray()).isEqualTo(new Object[0]);
+                assertThat(linkedStack.toArray()).isEmpty();
+                assertThat(linkedStack.toArray()).isEqualTo(new Object[0]);
+            }
+
+            @Test
+            @DisplayName("요소가 존재하는 경우")
+            void toArray_nonEmptyStack_returnsArray() {
+                arrayStack.push(1);
+                arrayStack.push(2);
+                arrayStack.push(3);
+                linkedStack.push(1);
+                linkedStack.push(2);
+                linkedStack.push(3);
+
+                assertThat(arrayStack.toArray()).containsExactly(1, 2, 3);
+                assertThat(arrayStack.toArray()).isEqualTo(new Object[]{1, 2, 3});
+                assertThat(linkedStack.toArray()).containsExactly(1, 2, 3);
+                assertThat(linkedStack.toArray()).isEqualTo(new Object[]{1, 2, 3});
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("추가 응용 테스트")
+    class ApplicationTest {
+
+//        StackProblems problems = new StackProblems();
+        StackProblems problems = new StackProblemsImpl();
+
+        @Nested
+        @DisplayName("괄호 매칭 테스트")
+        class ParenthesesTest {
+            @Test
+            @DisplayName("단순 괄호가 매칭된다 - ()")
+            void parentheses_simple_returnsTrue() {
+                String PROBLEM_STRING = "(안녕하)세요";
+                boolean result = problems.isValidParentheses(PROBLEM_STRING);
+                assertThat(result).isTrue();
+            }
+
+            @Test
+            @DisplayName("중괄호가 매칭된다 - {}")
+            void parentheses_curly_returnsTrue() {
+                String PROBLEM_STRING = "{안녕하}세요";
+                boolean result = problems.isValidParentheses(PROBLEM_STRING);
+                assertThat(result).isTrue();
+            }
+
+            @Test
+            @DisplayName("대괄호가 매칭된다 - []")
+            void parentheses_square_returnsTrue() {
+                String PROBLEM_STRING = "[안녕하]세요";
+                boolean result = problems.isValidParentheses(PROBLEM_STRING);
+                assertThat(result).isTrue();
+            }
+
+            @Test
+            @DisplayName("복합 괄호가 매칭된다 - ([{}])")
+            void parentheses_nested_returnsTrue() {
+                String PROBLEM_STRING = "(누군가 [어디선가 {나타나} 그를 ] 잡아 ) 갔다";
+                boolean result = problems.isValidParentheses(PROBLEM_STRING);
+                assertThat(result).isTrue();
+            }
+
+            @Test
+            @DisplayName("여러 괄호가 매칭된다 - (){}[]")
+            void parentheses_multiple_returnsTrue() {
+                String PROBLEM_STRING = "(오늘은){유난히}[좋은 날이였다]";
+                boolean result = problems.isValidParentheses(PROBLEM_STRING);
+                assertThat(result).isTrue();
+            }
+
+            @Test
+            @DisplayName("짝이 맞지 않으면 false =(]")
+            void parentheses_mismatch_returnsFalse() {
+                String PROBLEM_STRING = "안녕(하세]요";
+                boolean result = problems.isValidParentheses(PROBLEM_STRING);
+                assertThat(result).isFalse();
+            }
+
+            @Test
+            @DisplayName("순서가 틀리면 false - ([)]")
+            void parentheses_wrongOrder_returnsFalse() {
+                String PROBLEM_STRING = "안녕(하세[요)반갑]습니다";
+                boolean result = problems.isValidParentheses(PROBLEM_STRING);
+                assertThat(result).isFalse();
+            }
+
+            @Test
+            @DisplayName("여는 괄호만 있으면 false - (")
+            void parentheses_only_returnsFalse() {
+                String PROBLEM_STRING = "(안녕";
+                boolean result = problems.isValidParentheses(PROBLEM_STRING);
+                assertThat(result).isFalse();
+            }
+
+            @Test
+            @DisplayName("닫는 괄호만 있으면 false - )")
+            void parentheses_onlyClose_returnsFalse() {
+                String PROBLEM_STRING = "안녕)";
+                boolean result = problems.isValidParentheses(PROBLEM_STRING);
+                assertThat(result).isFalse();
+            }
+
+            @Test
+            @DisplayName("빈 문자열은 true")
+            void parentheses_empty_returnsTrue() {
+                String PROBLEM_STRING = "";
+                boolean result = problems.isValidParentheses(PROBLEM_STRING);
+                assertThat(result).isTrue();
+            }
+        }
+
+        @Nested
+        @DisplayName("후위 표기법 계산 테스트")
+        class PostfixEvaluationTest {
+
+            @Test
+            @DisplayName("덧셈 계산 - 3 4 +")
+            void postfix_addition_success() {
+                String PROMLEM_STRING = "3 4 +";
+                int result = problems.evaluatePostfix(PROMLEM_STRING);
+                assertThat(result).isEqualTo(7);
+            }
+
+            @Test
+            @DisplayName("뺄셈 계산 - 10 3 -")
+            void postfix_substraction_success() {
+                String PROMLEM_STRING = "10 3 -";
+                int result = problems.evaluatePostfix(PROMLEM_STRING);
+                assertThat(result).isEqualTo(7);
+            }
+
+            @Test
+            @DisplayName("나눗셈 계산 - 12 4 /")
+            void postfix_division_success() {
+                String PROMLEM_STRING = "12 4 /";
+                int result = problems.evaluatePostfix(PROMLEM_STRING);
+                assertThat(result).isEqualTo(3);
+            }
+
+            @Test
+            @DisplayName("곱셈 계산 - 3 4 *")
+            void postfix_multiplication_success() {
+                String PROBLEM_STRING = "3 4 *";
+                int result = problems.evaluatePostfix(PROBLEM_STRING);
+                assertThat(result).isEqualTo(12);
+            }
+
+            @Test
+            @DisplayName("복합 수식 - 3 4 + 2 *")
+            void postfix_complex_success() {
+                String PROMLEM_STRING = "3 4 + 2 *";
+                int result = problems.evaluatePostfix(PROMLEM_STRING);
+                assertThat(result).isEqualTo(14);
+            }
+
+            @Test
+            @DisplayName("빈 수식이면 예외 발생")
+            void postfix_empty_throwsException() {
+                String PROMLEM_STRING = "";
+                assertThatThrownBy(() ->problems.evaluatePostfix(PROMLEM_STRING)).isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test
+            @DisplayName("피연산자 부족하면 예외 발 생 - 3 +")
+            void postfix_insufficientOperands_throwsException() {
+                String PROMLEM_STRING = "3 +";
+                assertThatThrownBy(() ->problems.evaluatePostfix(PROMLEM_STRING)).isInstanceOf(IllegalArgumentException.class);
+            }
+
+            @Test
+            @DisplayName("0으로 나누면 예외 발생")
+            void postfix_divisionByZero_throwsException() {
+                String PROMLEM_STRING = "12 0 /";
+                assertThatThrownBy(() ->problems.evaluatePostfix(PROMLEM_STRING)).isInstanceOf(ArithmeticException.class);
+            }
+        }
+
+        @Nested
+        @DisplayName("중위->후위 변환 테스트")
+        class InfixToPostfixTest {
+
+            @Test
+            @DisplayName("단순 수식 변환 - 3 + 4 -> 3 4 +")
+            void infix_simple_success() {
+                String PROBLEM_STRING = "3 + 4";
+                String result = problems.infixToPostfix(PROBLEM_STRING);
+                assertThat(result).isEqualTo("3 4 +");
+            }
+
+            @Test
+            @DisplayName("뺄셈 연산자 - 10 - 3 -> 10 3 -")
+            void infix_subtraction_success() {
+                String PROBLEM_STRING = "10 - 3";
+                String result = problems.infixToPostfix(PROBLEM_STRING);
+                assertThat(result).isEqualTo("10 3 -");
+            }
+
+            @Test
+            @DisplayName("나눗셈 연산자 - 12 / 4 -> 12 4 /")
+            void infix_division_success() {
+                String PROBLEM_STRING = "12 / 4";
+                String result = problems.infixToPostfix(PROBLEM_STRING);
+                assertThat(result).isEqualTo("12 4 /");
+            }
+
+            @Test
+            @DisplayName("연산자 우선 순위 적용 - 3 + 4 * 2 -> 3 4 2 * +")
+            void infix_precedence_success() {
+                String PROBLEM_STRING = "3 + 4 * 2";
+                String result = problems.infixToPostfix(PROBLEM_STRING);
+                assertThat(result).isEqualTo("3 4 2 * +");
+            }
+
+            @Test
+            @DisplayName("복잡한 연산자 우선 순위 적용 - 3 * 4 + 2 * 5")
+            void infix_complex_precedence_success() {
+                String PROBLEM_STRING = "3 * 4 + 2 * 5";
+                String result = problems.infixToPostfix(PROBLEM_STRING);
+                assertThat(result).isEqualTo("3 4 2 5 * + *");
+            }
+
+            @Test
+            @DisplayName("복합 수식 - ( 1 + 2) * ( 3 + 4) -> 1 2 + 3 4 + *")
+            void infix_complex_success() {
+                String PROBLEM_STRING = "( 1 + 2 ) * ( 3 + 4 )";
+                String result = problems.infixToPostfix(PROBLEM_STRING);
+                assertThat(result).isEqualTo("1 2 + 3 4 + *");
+            }
+
+            @Test
+            @DisplayName("빈 수식이면 빈 문자열 반환")
+            void infix_empty_returnsEmpty() {
+                String PROBLEM_STRING = "";
+                String result = problems.infixToPostfix(PROBLEM_STRING);
+                assertThat(result).isEqualTo("");
+            }
+
+            @Test
+            @DisplayName("괄호가 맞지 않으면 예외 발생")
+            void infix_mismatchedParentheses_throwsException() {
+                String PROBLEM_STRING = "( 1 + 2 * ( 3 + 4 )";
+                assertThatThrownBy(() -> problems.infixToPostfix(PROBLEM_STRING))
+                        .isInstanceOf(IllegalArgumentException.class);
+            }
+        }
+    }
+
+}
+```

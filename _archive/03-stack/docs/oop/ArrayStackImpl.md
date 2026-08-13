@@ -1,0 +1,93 @@
+# oop/ArrayStackImpl.java
+
+배열 기반 스택. 자동 확장(1.5배) / 자동 축소(1/4 이하 시 절반, 최소 10) 지원. 비어있을 때 `pop`/`peek`/`top`은 `EmptyStackException` 발생.
+
+```java
+package com.datastructure.stack.oop;
+
+import java.util.Arrays;
+import java.util.EmptyStackException;
+import java.util.Objects;
+
+public class ArrayStackImpl<E> implements Stack<E> {
+
+    private int capacity;
+    private E[] stackData;
+    private int top;
+
+    @SuppressWarnings("unchecked")
+    public ArrayStackImpl() {
+        this.capacity = 10;
+        this.stackData = (E[]) new Object[capacity];
+        this.top = 0;
+    }
+
+    public void push(E element) {
+        growStack();
+        stackData[top] = element;
+        top++;
+    }
+
+    public E pop() {
+        if (size() == 0) {
+            throw new EmptyStackException();
+        }
+        top--;
+        E popData = stackData[top];
+        shrinkStack();
+        return popData;
+    }
+
+    public E peek() {
+        if (size() == 0) {
+            throw new EmptyStackException();
+        }
+        return stackData[top - 1];
+    }
+
+    public E top() {
+        if (size() == 0) {
+            throw new EmptyStackException();
+        }
+        return stackData[top - 1];
+    }
+
+    public boolean isEmpty() {
+        return top == 0;
+    }
+
+    public int size(){
+        return top;
+    }
+
+    public void clear() {
+        capacity = 10;
+        top = 0;
+        stackData = (E[])(new Object[capacity]);
+    }
+
+    public int search(E element) {
+        for (int i = 0; i < top; i++) {
+            if (Objects.equals(stackData[i],element)) return i + 1;
+        }
+        return -1;
+    }
+
+    public Object[] toArray() {
+        return Arrays.copyOf(stackData,top);
+    }
+
+    private void growStack() {
+        if (capacity == top) {
+            capacity = (int)(capacity * 1.5);
+            stackData = Arrays.copyOf(stackData, capacity);
+        }
+    }
+    private void shrinkStack() {
+        if (top <= capacity/4 && capacity > 10) {
+            capacity = Math.max(capacity/2, 10);
+            stackData = Arrays.copyOf(stackData, capacity);
+        }
+    }
+}
+```

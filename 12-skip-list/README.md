@@ -1,205 +1,113 @@
-# 12. 스킵 리스트 (Skip List)
+# 12. 스킵 리스트
 
-## 📋 문제 정의
+06번 이진 탐색 트리는 정렬된 순서로 넣으면 **높이가 n이 되어 연결 리스트가 됐습니다.**
+그걸 고치는 길이 둘입니다.
 
-**확률적 균형**을 사용하는 스킵 리스트를 구현하세요.
-
-스킵 리스트는 다층 연결 리스트로, 이진 탐색 트리와 유사한 O(log n) 평균 시간복잡도를 제공하면서도
-구현이 상대적으로 간단하고 동시성 처리가 용이합니다.
-
----
-
-## 🎯 학습 목표
-
-- 확률적 자료구조의 개념
-- 다층 리스트 구조 이해
-- 확률적 레벨 결정
-- 탐색/삽입/삭제 알고리즘
-- 균형 트리의 대안으로서의 활용
-
----
-
-## 📝 요구사항
-
-### 기본 연산
-
-| 메서드 | 설명 | 평균 시간복잡도 |
-|--------|------|----------------|
-| `add(key)` 또는 `add(key, value)` | 원소 추가 | O(log n) |
-| `search(key)` 또는 `contains(key)` | 원소 검색 | O(log n) |
-| `remove(key)` | 원소 삭제 | O(log n) |
-| `size()` | 원소 개수 | O(1) |
-| `isEmpty()` | 비어있는지 확인 | O(1) |
-
-### 범위 연산
-
-| 메서드 | 설명 |
-|--------|------|
-| `floor(key)` | key 이하의 최대 원소 |
-| `ceiling(key)` | key 이상의 최소 원소 |
-| `range(from, to)` | [from, to] 범위의 모든 원소 |
-| `getMin()` | 최소 원소 |
-| `getMax()` | 최대 원소 |
-
-### 추가 기능
-
-| 메서드 | 설명 |
-|--------|------|
-| `rank(key)` | key보다 작은 원소 개수 |
-| `select(k)` | k번째로 작은 원소 |
-| `clear()` | 모든 원소 삭제 |
-| `getLevel()` | 현재 최대 레벨 |
-
----
-
-## 📊 입출력 예시
-
-### 예제 1: 기본 사용
-```java
-SkipList<Integer> list = new SkipList<>();
-
-list.add(3);
-list.add(6);
-list.add(7);
-list.add(9);
-list.add(12);
-list.add(19);
-
-System.out.println(list.search(6));   // true
-System.out.println(list.search(8));   // false
-
-list.remove(6);
-System.out.println(list.search(6));   // false
+```
+회전으로 강제로 균형을 맞춘다   ->  16번 레드블랙 트리
+동전을 던져 확률로 맞춘다       ->  여기
 ```
 
-### 예제 2: 시각화
+## 트리가 아닙니다
+
+**정렬된 연결 리스트를 여러 층 쌓은 것**입니다.
+
 ```
-Level 3:  HEAD ─────────────────────────→ 9 ───────────────→ NIL
-Level 2:  HEAD ───────→ 6 ───────────────→ 9 ──────→ 19 ──→ NIL
-Level 1:  HEAD → 3 → 6 → 7 → 9 → 12 → 19 → NIL
-
-탐색 경로 (search 9):
-Level 3: HEAD → 9 (발견!)
-```
-
-### 예제 3: Key-Value 버전
-```java
-SkipList<String, Integer> scores = new SkipList<>();
-
-scores.put("Alice", 95);
-scores.put("Bob", 87);
-scores.put("Charlie", 92);
-
-System.out.println(scores.get("Bob"));    // 87
-scores.put("Bob", 90);                    // 업데이트
-System.out.println(scores.get("Bob"));    // 90
+레벨 3:  head ------------------------> 9
+레벨 2:  head ------> 4 -------------> 9
+레벨 1:  head -> 2 -> 4 -> 6 -------> 9
+레벨 0:  head -> 2 -> 4 -> 6 -> 7 -> 9
 ```
 
-### 예제 4: 범위 쿼리
-```java
-SkipList<Integer> list = new SkipList<>();
-// 1, 3, 5, 7, 9, 11, 13 추가
+찾을 때는 맨 위에서 시작해 **"다음이 목표보다 작으면 전진, 아니면 한 층 내려간다"**를 반복합니다.
+위층이 크게 건너뛰므로 이진 탐색과 같은 걸음 수가 나옵니다.
 
-System.out.println(list.floor(6));     // 5
-System.out.println(list.ceiling(6));   // 7
-System.out.println(list.range(4, 10)); // [5, 7, 9]
+**어느 노드를 몇 층까지 올릴지는 동전으로 정합니다.** 앞면이면 한 층 더.
+그래서 절반이 1층, 4분의 1이 2층이 되고 기대 높이가 log n입니다.
+
+| | BST(06) | 스킵 리스트 |
+|---|---|---|
+| 평균 조회 | O(log n) | O(log n) |
+| **정렬 입력** | **O(n)** 무너진다 | O(log n) 상관없다 |
+| 최악 | O(n) 확정 | O(n) 확률이 아주 낮다 |
+| 균형 유지 코드 | 회전 | **없다** |
+| 동시성 | 회전이 넓은 범위를 잠근다 | **국소적이라 쉽다** |
+
+마지막 두 줄이 실무에서 쓰이는 이유입니다.
+레디스의 sorted set, 레벨DB/RocksDB의 memtable, 자바의 `ConcurrentSkipListMap`이 이것입니다.
+
+## 이 문제의 핵심 문장
+
+**무작위성이 자료가 아니라 구조에 있습니다.**
+
+06번 BST는 입력이 나쁘면 무너졌습니다. 여기서는 **나쁜 입력이라는 것이 존재하지 않습니다.**
+나쁜 **동전 운**이 있을 뿐이고, 그건 아주 드뭅니다.
+정렬 입력, 역순 입력, 무작위 입력 셋이 전부 같은 층 분포를 냅니다
+(`inputOrderDoesNotMatter` 테스트가 확인합니다).
+
+## 하는 방법
+
+```
+1. OrderedMapContractTest.java 를 따라친다
+2. SkipList 의 TODO 9개를 채운다          <- 이 문제의 본체
+   randomLevel -> findPredecessors -> get -> put -> remove 순서를 권한다
+3. SkipListSet 의 TODO 2개를 채운다       <- 두 줄이다
 ```
 
----
-
-## 🔍 핵심 개념
-
-### 레벨 결정 (확률적)
-```
-각 노드의 레벨은 동전 던지기로 결정:
-- 50% 확률로 레벨 1
-- 25% 확률로 레벨 2
-- 12.5% 확률로 레벨 3
-- ...
-
-평균적으로 log₂(n) 레벨이 생성됨
+```bash
+cd ~/project/myway/data-structure && ./run.sh 12      # 36개 중 35개가 실패한다
 ```
 
-### 기대 구조
-```
-n = 16일 때:
-- Level 1: 16개 노드
-- Level 2: 8개 노드 (평균)
-- Level 3: 4개 노드 (평균)
-- Level 4: 2개 노드 (평균)
-- Level 5: 1개 노드 (평균)
-```
+## 특히 생각해볼 것
 
----
+**1. 한 층 내려갈 때 `cur`을 head로 되돌리면 안 됩니다.** 지금 자리에서 이어 내려갑니다.
+그게 "이미 지나온 구간을 다시 안 본다"는 뜻이고, 그래서 log n이 됩니다.
+되돌리면 답은 맞는데 O(n·층수)가 되어 성능 테스트에서 걸립니다.
 
-## 💡 힌트
+**2. `update[]` 배열이 put과 remove 양쪽에서 쓰입니다.** 링크를 고치려면
+**각 층의 앞 노드**를 알아야 하기 때문입니다. 02번 연결 리스트와 같은 이유입니다.
 
-### 노드 구조
-```java
-class Node<K extends Comparable<K>> {
-    K key;
-    Node<K>[] forward;  // 각 레벨의 다음 노드
-    
-    @SuppressWarnings("unchecked")
-    Node(K key, int level) {
-        this.key = key;
-        this.forward = new Node[level + 1];
-    }
-}
-```
+**3. 새 노드가 지금 최고 레벨보다 높으면** 새로 생긴 층의 앞 노드는 `head`입니다.
+`findPredecessors`는 지금 레벨까지만 채워주므로 그 위는 비어 있습니다.
+이걸 빠뜨리면 36개 중 29개가 무너집니다.
 
-### 랜덤 레벨 생성
-```java
-private int randomLevel() {
-    int level = 0;
-    while (random.nextDouble() < P && level < MAX_LEVEL) {
-        level++;
-    }
-    return level;
-}
-// P = 0.5, MAX_LEVEL = 16 (일반적)
-```
+**4. 링크 잇는 순서** — 새 노드의 `forward`를 먼저 잡고 앞 노드를 고쳐야 합니다.
+반대로 하면 뒤쪽을 잃습니다. 02번 `reverse`와 같은 함정입니다.
 
-### 탐색 알고리즘
-```java
-Node<K> search(K key) {
-    Node<K> current = head;
-    
-    // 최상위 레벨부터 아래로
-    for (int i = level; i >= 0; i--) {
-        // 현재 레벨에서 가능한 멀리 이동
-        while (current.forward[i] != null && 
-               current.forward[i].key.compareTo(key) < 0) {
-            current = current.forward[i];
-        }
-    }
-    
-    // 레벨 0에서 다음 노드 확인
-    current = current.forward[0];
-    if (current != null && current.key.equals(key)) {
-        return current;
-    }
-    return null;
-}
-```
+**5. `remove`는 그 층에서 앞 노드가 목표를 안 가리키면 멈춥니다.**
+목표가 그 층까지 안 올라간 것이므로 더 볼 이유가 없습니다.
 
----
+그리고 **맨 위층이 비면 레벨을 내려야 합니다.** 안 내리면 조회가 빈 층을 헛돕니다.
+단, 1 아래로는 안 내려갑니다.
 
-## ✅ 체크리스트
+**6. `floorKey`와 `ceilingKey`는 한 글자 차이입니다.** 전진 조건이 `< 0`이냐 `<= 0`이냐입니다.
+06번 BST에서는 후보를 따로 기억해야 했는데, 여기서는 **멈춘 자리가 곧 답**입니다.
 
-- [ ] 기본 add, search, remove 구현
-- [ ] 랜덤 레벨 생성
-- [ ] 다층 구조 유지
-- [ ] floor, ceiling 구현
-- [ ] range 쿼리 구현
-- [ ] Key-Value 버전 구현
-- [ ] Iterator 구현
+**7. 앞뒤가 대칭이 아닙니다.** `firstKey`는 O(1)인데 `lastKey`는 O(log n)입니다.
+02번 단일 연결 리스트의 `removeLast`와 같은 종류의 비대칭입니다.
 
----
+**8. seed를 주입받는 생성자를 뒀습니다.**
+**무작위를 쓰는 자료구조는 seed를 받아야 테스트할 수 있습니다.** 아니면 실패를 재현할 수 없습니다.
 
-## 📚 참고
+**9. 한계: 확률은 보장이 아닙니다.**
+늘 뒷면만 나오는 동전을 주면 모든 노드가 1층이 되고 **그냥 정렬된 연결 리스트**가 됩니다.
+답은 여전히 맞습니다. 느릴 뿐입니다.
 
-- Redis의 Sorted Set (ZSET)
-- LevelDB의 MemTable
-- ConcurrentSkipListMap (Java)
-- [Skip List Visualizer](https://people.ok.ubc.ca/ylucet/DS/SkipList.html)
+실제로 일어날 확률은 2^-n이라 무시해도 되지만,
+**최악을 막아주는 것이 아니라 확률을 낮춰줄 뿐**이라는 것은 알아야 합니다.
+16번 레드블랙 트리가 이걸 보장으로 바꿉니다. 대신 회전 코드를 짊어집니다.
+
+**10. `MAX_LEVEL` 상한이 없으면** 아주 낮은 확률로 배열이 무한히 커집니다.
+늘 앞면인 동전을 주면 실제로 **무한 루프에 빠집니다**(테스트에 타임아웃을 걸어뒀습니다).
+32면 2^32개까지 감당합니다.
+
+**11. `SkipListSet`은 새 자료구조가 아닙니다.** 값 자리에 상수 하나를 넣고 맵을 그대로 씁니다.
+`add`가 "새로 들어갔는지"를 아는 것도 **`put`이 옛 값을 돌려주기 때문**입니다.
+별도 조회가 필요 없습니다. 계약을 그렇게 설계해두면 이 재사용이 공짜로 됩니다.
+
+05번 `LinkedHashMap`은 **상속**으로 얹었고, 여기서는 **포함**으로 합니다.
+
+## 다음
+
+13-segment-tree 에서는 **구간에 대한 질문**을 O(log n)으로 답하는 구조가 나옵니다.
+"3번부터 7번까지의 합"을 물으면서 동시에 값도 바꿀 수 있어야 할 때 필요합니다.

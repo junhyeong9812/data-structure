@@ -1,199 +1,81 @@
-# 06. 이진 탐색 트리 (Binary Search Tree)
+# 06. 이진 탐색 트리
 
-## 📋 문제 정의
+05번 해시맵은 O(1)을 얻는 대가로 **순서를 버렸습니다.** 키를 일부러 흩뿌리기 때문입니다.
+흩뿌리는 순간 "5 옆에 뭐가 있나"라는 정보가 사라집니다. 5와 6이 완전히 다른 버킷으로 갑니다.
 
-**BST 속성**을 만족하는 이진 탐색 트리를 구현하세요.
+여기서는 반대 거래를 합니다. **왼쪽은 작고 오른쪽은 크다**를 구조에 새깁니다.
 
-모든 노드에서 왼쪽 서브트리의 값 < 현재 노드의 값 < 오른쪽 서브트리의 값을 만족하는 트리입니다.
+| 질문 | 해시맵 | BST |
+|---|---|---|
+| `get(k)` | **O(1)** | O(log n) |
+| 가장 작은 키 | O(n) | **O(log n)** |
+| k보다 큰 것 중 가장 작은 키 | O(n) | **O(log n)** |
+| 3 이상 8 이하를 순서대로 | O(n) | **O(log n + k)** |
+| 정렬 순회 | O(n log n) 정렬 필요 | **O(n)** |
 
----
+어느 쪽이 낫냐는 질문이 잘못됐습니다. **무엇을 물을 것인지가 자료구조를 정합니다.**
 
-## 🎯 학습 목표
+## 인터페이스를 나중을 위해 나눠뒀습니다
 
-- BST 속성 이해
-- 재귀적 트리 순회 (전위, 중위, 후위, 레벨)
-- 삽입, 삭제, 검색 알고리즘
-- 균형 트리의 필요성 이해
-- 트리 기반 집합/맵 구현
+`SortedMap`은 12번 스킵 리스트, 15번 B-트리, 16번 레드블랙 트리도 구현합니다.
+계약 테스트를 `abstract`로 둔 것도 그래서입니다. 지금은 구현이 하나뿐이지만 그때 그대로 물려받습니다.
 
----
+## 가장 어려운 부분: 자식이 둘인 노드 삭제
 
-## 📝 요구사항
-
-### 기본 연산
-
-| 메서드 | 설명 | 평균 시간복잡도 | 최악 시간복잡도 |
-|--------|------|----------------|----------------|
-| `insert(value)` | 값 삽입 | O(log n) | O(n) |
-| `search(value)` | 값 검색 | O(log n) | O(n) |
-| `delete(value)` | 값 삭제 | O(log n) | O(n) |
-| `contains(value)` | 존재 여부 확인 | O(log n) | O(n) |
-| `min()` | 최솟값 반환 | O(log n) | O(n) |
-| `max()` | 최댓값 반환 | O(log n) | O(n) |
-| `size()` | 노드 개수 | O(1) | O(1) |
-| `isEmpty()` | 비어있는지 확인 | O(1) | O(1) |
-| `clear()` | 모든 노드 삭제 | O(1) | O(1) |
-
-### 순회 (Traversal)
-
-| 메서드 | 순서 | 용도 |
-|--------|------|------|
-| `inorder()` | 왼쪽 → 루트 → 오른쪽 | **정렬된 순서** 출력 |
-| `preorder()` | 루트 → 왼쪽 → 오른쪽 | 트리 복사, 직렬화 |
-| `postorder()` | 왼쪽 → 오른쪽 → 루트 | 트리 삭제, 후위 표기법 |
-| `levelorder()` | 레벨 순서 (BFS) | 레벨별 처리 |
-
-### 추가 연산
-
-| 메서드 | 설명 |
-|--------|------|
-| `height()` | 트리 높이 |
-| `floor(value)` | value 이하의 최댓값 |
-| `ceiling(value)` | value 이상의 최솟값 |
-| `rank(value)` | value보다 작은 키 개수 |
-| `select(k)` | k번째로 작은 값 |
-| `predecessor(value)` | 바로 이전 값 (중위 순회 기준) |
-| `successor(value)` | 바로 다음 값 (중위 순회 기준) |
-
----
-
-## 📊 입출력 예시
-
-### 예제 1: 기본 사용
-```java
-BST<Integer> bst = new BST<>();
-bst.insert(5);
-bst.insert(3);
-bst.insert(7);
-bst.insert(1);
-bst.insert(9);
-
-//       5
-//      / \
-//     3   7
-//    /     \
-//   1       9
-
-System.out.println(bst.search(3));  // true
-System.out.println(bst.search(6));  // false
-System.out.println(bst.min());      // 1
-System.out.println(bst.max());      // 9
+```
+1. 자식이 없다  -> 그냥 뗀다
+2. 자식이 하나  -> 그 자식을 자기 자리에 올린다
+3. 자식이 둘    -> ???
 ```
 
-### 예제 2: 순회
-```java
-BST<Integer> bst = new BST<>();
-// 삽입: 5, 3, 7, 1, 4, 6, 9
+3번에서 아무 자식이나 올리면 "왼쪽은 작고 오른쪽은 크다"가 깨집니다.
+지울 노드를 대신할 수 있는 값은 **딱 둘뿐**입니다. 왼쪽에서 가장 큰 것(선행자) 또는
+오른쪽에서 가장 작은 것(후속자)입니다. 그 값을 가져오면 원래 자리는 자식이 하나 이하가 되어
+2번 문제로 바뀝니다.
 
-bst.inorder();    // [1, 3, 4, 5, 6, 7, 9] - 정렬된 순서!
-bst.preorder();   // [5, 3, 1, 4, 7, 6, 9]
-bst.postorder();  // [1, 4, 3, 6, 9, 7, 5]
-bst.levelorder(); // [5, 3, 7, 1, 4, 6, 9]
+계약 테스트는 "정렬된 결과가 나오는가"만 봅니다. 그건 정렬해서 내놓기만 해도 통과합니다.
+그래서 `BinarySearchTreeTest`가 **노드를 직접 재귀로 훑어 탐색 성질이 지켜지는지** 검사합니다.
+
+## 하는 방법
+
+```
+1. SortedMapContractTest.java 를 따라친다      <- 계약이 여기 있다
+2. BinarySearchTree 의 TODO 9개를 채운다
+   findNode -> put -> firstKey/lastKey -> keys 순서를 권한다. remove 는 마지막에
+3. BSTProblems 의 TODO 3개를 채운다
 ```
 
-### 예제 3: 삭제
-```java
-BST<Integer> bst = new BST<>();
-bst.insert(5);
-bst.insert(3);
-bst.insert(7);
-
-// Case 1: 리프 노드 삭제
-bst.delete(3);   // 3 제거
-
-// Case 2: 자식 하나인 노드 삭제
-bst.delete(7);   // 7 제거, 자식이 있으면 승계
-
-// Case 3: 자식 둘인 노드 삭제
-bst.delete(5);   // 후계자(successor)로 대체
+```bash
+cd ~/project/myway/data-structure && ./run.sh 06      # 31개가 전부 실패한다
 ```
 
-### 예제 4: floor/ceiling
-```java
-BST<Integer> bst = new BST<>();
-// 삽입: 10, 20, 30, 40, 50
+## 특히 생각해볼 것
 
-bst.floor(25);    // 20 (25 이하 최대)
-bst.ceiling(25);  // 30 (25 이상 최소)
-bst.floor(10);    // 10
-bst.ceiling(50);  // 50
-bst.floor(5);     // null (없음)
-```
+**1. `floorKey`가 왜 후보를 기억해야 하는가** — 지금 노드가 key 이하면 그게 답일 수도 있는데,
+오른쪽에 더 가까운 답이 있을 수도 있습니다. 그래서 후보로 붙잡아두고 계속 내려갑니다.
+"찾으면 바로 반환"이 안 되는 유일한 탐색입니다.
 
----
+**2. 중위 순회가 왜 정렬을 주는가** — 왼쪽에는 자기보다 작은 것만, 오른쪽에는 큰 것만 있으니
+왼쪽 -> 자기 -> 오른쪽 순서로 모으면 정렬됩니다. 탐색 성질의 직접적인 귀결입니다.
 
-## 🔍 제약 조건
+**3. 범위 조회의 가지치기** — 전부 훑고 걸러내도 답은 맞습니다. 다만 O(n)입니다.
+지금 노드가 `from` 이하면 그 왼쪽은 전부 `from` 미만이라 볼 이유가 없습니다.
+이 가지치기가 있어야 O(log n + k)가 됩니다.
 
-- 중복 값 허용하지 않음 (Set 시맨틱)
-- null 값 허용하지 않음
-- Comparable 구현 또는 Comparator 제공 필요
-- 최악의 경우 (편향 트리) O(n) 성능
+**4. 문제 1번이 함정입니다.** `closestKey`에 10만 개 × 10만 질의 시간 제한이 있습니다.
+전부 훑어 최소 차이를 찾으면 O(n)입니다. `floorKey`와 `ceilingKey`를 각각 한 번씩만 부르면 됩니다.
 
----
+**5. 한계: 정렬된 순서로 넣으면 연결 리스트가 됩니다.**
+1000개를 정렬 순서로 넣으면 높이가 **1000**이 됩니다(균형 잡혔다면 10 근처여야 합니다).
+그러면 O(log n)이 O(n)이 되어 트리라고 부를 이유가 없어집니다.
 
-## 💡 힌트
+이건 버그가 아니라 이 구조의 성질이라 **고치지 않고 `sortedInsertDegenerates` 테스트로 확인만 합니다.**
+16번 레드블랙 트리가 회전으로 이걸 고칩니다. 무엇을 고치는지 모르면 그 복잡한 회전이 그냥 복잡하기만 합니다.
 
-### 노드 구조
-```java
-class Node<T> {
-    T value;
-    Node<T> left;
-    Node<T> right;
-    // 선택: Node<T> parent, int size, int height
-}
-```
+**6. `clear`는 뿌리만 끊으면 됩니다** — 01~04에서는 참조를 하나하나 끊어야 했는데,
+트리는 부모를 끊으면 아래가 통째로 GC 대상이 됩니다. 구조가 다르면 정리 방법도 다릅니다.
 
-### 삭제 알고리즘 (3가지 케이스)
-```java
-// Case 1: 리프 노드 → 그냥 삭제
-// Case 2: 자식 하나 → 자식으로 대체
-// Case 3: 자식 둘 → 후계자(오른쪽 서브트리의 최솟값)로 대체
-```
+## 다음
 
-### 재귀 vs 반복
-```java
-// 재귀 (간결)
-Node<T> insert(Node<T> node, T value) {
-    if (node == null) return new Node<>(value);
-    if (value < node.value)
-        node.left = insert(node.left, value);
-    else
-        node.right = insert(node.right, value);
-    return node;
-}
-
-// 반복 (스택 오버플로우 방지)
-void insert(T value) {
-    if (root == null) { root = new Node<>(value); return; }
-    Node<T> curr = root;
-    while (true) {
-        if (value < curr.value) {
-            if (curr.left == null) { curr.left = new Node<>(value); return; }
-            curr = curr.left;
-        } else {
-            if (curr.right == null) { curr.right = new Node<>(value); return; }
-            curr = curr.right;
-        }
-    }
-}
-```
-
----
-
-## ✅ 체크리스트
-
-- [ ] 삽입, 검색, 삭제 기본 연산
-- [ ] 4가지 순회 구현
-- [ ] min, max, height 구현
-- [ ] floor, ceiling 구현
-- [ ] predecessor, successor 구현
-- [ ] rank, select 구현
-- [ ] Iterator 구현 (중위 순회)
-
----
-
-## 📚 참고
-
-- [Java TreeMap 소스코드](https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/java/util/TreeMap.java)
-- 균형 트리의 필요성 (AVL, Red-Black)
-- 이진 탐색과의 관계
+07-heap 에서는 **부분적인 순서만** 유지하는 구조가 나옵니다.
+전부 정렬하지 않고 "가장 큰 것"만 빨리 아는 것으로 충분한 경우가 있습니다.
