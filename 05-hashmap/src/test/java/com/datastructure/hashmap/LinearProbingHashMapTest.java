@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * LinearProbingHashMap 이 계약을 지키는지 + **tombstone 검증**.
+ * LinearProbingHashMap 이 계약을 지키는지 + tombstone 검증.
  *
  * 이 파일의 핵심은 deleteKeepsProbeChain 이다.
  * 지운 자리를 그냥 비우면 그 자리를 지나 뒤쪽에 들어간 키를 영영 못 찾게 된다.

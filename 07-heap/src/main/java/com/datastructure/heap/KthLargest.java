@@ -10,11 +10,11 @@ package com.datastructure.heap;
  *
  * 왜 힙인가
  *   매번 전부 정렬하면 O(n log n) 이 반복된다.
- *   그런데 우리는 k 번째만 알면 되므로 **k 개만 들고 있으면 된다.**
+ *   그런데 우리는 k 번째만 알면 되므로 k 개만 들고 있으면 된다.
  *   그 k 개 중 가장 작은 것이 곧 k 번째로 큰 값이다.
  *
  * 어떤 힙을 써야 하는가가 이 문제의 핵심이다.
- * "가장 큰 값"을 찾는데 **최소 힙**을 쓰는 것이 처음에는 뒤집혀 보인다.
+ * "가장 큰 값"을 찾는데 최소 힙을 쓰는 것이 처음에는 뒤집혀 보인다.
  */
 public class KthLargest {
 
@@ -23,7 +23,7 @@ public class KthLargest {
 
     /**
      * @param k    몇 번째로 큰 값을 추적할지
-     * @param heap 비어 있는 작업용 힙. **어떤 힙을 넘겨야 하는지는 호출자가 정한다.**
+     * @param heap 비어 있는 작업용 힙. 어떤 힙을 넘겨야 하는지는 호출자가 정한다.
      */
     public KthLargest(int k, Heap<Integer> heap) {
         if (k < 1) {

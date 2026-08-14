@@ -9,7 +9,7 @@ import java.util.Comparator;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * BinaryHeap 이 계약을 지키는지 + **힙 성질을 배열에서 직접 검사**.
+ * BinaryHeap 이 계약을 지키는지 + 힙 성질을 배열에서 직접 검사.
  *
  * 계약 테스트는 "꺼내는 순서"만 본다. 그건 안에서 정렬해두기만 해도 통과한다.
  * 여기서는 배열이 실제로 힙 모양인지 본다. 그게 O(log n) 의 근거이기 때문이다.

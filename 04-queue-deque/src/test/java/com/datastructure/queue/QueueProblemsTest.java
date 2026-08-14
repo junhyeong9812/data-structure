@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * 응용 문제는 구현을 바꿔 끼워도 결과가 같아야 한다.
  *
  * Deque 를 받는 문제는 데크 두 구현으로, Queue 만 받는 문제는 큐 네 구현 전부로 돌린다.
- * **파라미터 타입이 곧 그 문제가 요구하는 능력이다.**
+ * 파라미터 타입이 곧 그 문제가 요구하는 능력이다.
  */
 class QueueProblemsTest {
 

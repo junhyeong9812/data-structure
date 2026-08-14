@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Graph 계약 테스트. 두 구현이 물려받는다.
  *
- * 이웃의 **순서**는 계약이 아니다. 구현마다 다르므로 집합으로만 비교한다.
+ * 이웃의 순서는 계약이 아니다. 구현마다 다르므로 집합으로만 비교한다.
  * 순서를 가정하는 순간 한쪽 구현에 묶인 테스트가 된다.
  */
 abstract class GraphContractTest {

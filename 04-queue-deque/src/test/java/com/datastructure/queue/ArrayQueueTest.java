@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * ArrayQueue 가 Queue 계약을 지키는지 + **이 구현의 한계를 드러내는 테스트**.
+ * ArrayQueue 가 Queue 계약을 지키는지 + 이 구현의 한계를 드러내는 테스트.
  *
  * 아래 wastesSpace 는 버그를 잡는 테스트가 아니다. 올바른 구현에서도 통과한다.
  * "이 구현은 이런 성질을 가진다"를 눈으로 보여주려고 있는 테스트다.

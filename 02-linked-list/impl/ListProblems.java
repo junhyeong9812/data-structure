@@ -22,7 +22,7 @@ public final class ListProblems {
      * 다시 찾을 필요가 없다. 전체 O(n).
      *
      * get(i)/remove(i) 로 풀면 매번 앞에서부터 세느라 O(n^2) 이 된다.
-     * **Iterator 가 문법 설탕이 아니라 복잡도를 바꾸는 장치인 이유가 이것이다.**
+     * Iterator 가 문법 설탕이 아니라 복잡도를 바꾸는 장치인 이유가 이것이다.
      */
     public static <E> int removeAllIf(List<E> list, Predicate<? super E> predicate) {
         int removed = 0;

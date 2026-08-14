@@ -276,7 +276,7 @@ public class BPlusTree<K extends Comparable<K>, V> implements SearchTree<K, V> {
         return out;
     }
 
-    /** from 이상 to 이하를 정렬 순서로. **잎 사슬을 따라 걷기만 하면 된다.** */
+    /** from 이상 to 이하를 정렬 순서로. 잎 사슬을 따라 걷기만 하면 된다. */
     public List<K> keysInRange(K from, K to) {
         requireKey(from);
         requireKey(to);

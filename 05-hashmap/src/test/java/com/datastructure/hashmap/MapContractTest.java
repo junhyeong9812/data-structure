@@ -11,9 +11,9 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Map 계약 테스트. **세 구현이 전부 물려받는다.**
+ * Map 계약 테스트. 세 구현이 전부 물려받는다.
  *
- * 여기는 공개 API 만 쓰고 **순서를 가정하지 않는다.**
+ * 여기는 공개 API 만 쓰고 순서를 가정하지 않는다.
  * 순서는 LinkedHashMap 만의 계약이므로 그쪽 테스트에서 본다.
  */
 abstract class MapContractTest {

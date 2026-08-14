@@ -25,7 +25,7 @@ class LRUCacheTest extends CacheContractTest {
     }
 
     /**
-     * 줄이 건전한가. **앞으로 훑은 결과와 뒤로 훑은 결과가 서로의 역순이어야 한다.**
+     * 줄이 건전한가. 앞으로 훑은 결과와 뒤로 훑은 결과가 서로의 역순이어야 한다.
      *
      * 02번 DoublyLinkedList 의 assertSound 와 같다.
      * 이게 없으면 prev 링크를 제대로 안 고치는 구현도 대부분의 테스트를 통과한다.

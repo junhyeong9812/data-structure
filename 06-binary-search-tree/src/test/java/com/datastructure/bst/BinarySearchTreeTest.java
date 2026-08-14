@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * BinarySearchTree 가 계약을 지키는지 + 트리 구조 자체를 본다.
  *
  * 계약 테스트는 "정렬된 결과가 나오는가"만 본다. 그건 정렬해서 내놓기만 해도 통과한다.
- * 여기서는 **왼쪽은 작고 오른쪽은 크다**가 실제로 지켜지는지 노드를 직접 검사한다.
+ * 여기서는 왼쪽은 작고 오른쪽은 크다가 실제로 지켜지는지 노드를 직접 검사한다.
  */
 class BinarySearchTreeTest extends SortedMapContractTest {
 

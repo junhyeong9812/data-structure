@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * ArrayStack 이 Stack 계약을 지키는지.
  *
- * 계약 테스트는 물려받고, 여기에는 **배열 구현에만 있는 성질**만 적는다.
+ * 계약 테스트는 물려받고, 여기에는 배열 구현에만 있는 성질만 적는다.
  * 이게 이 구조의 요점이다. 계약이 늘어나면 StackContractTest 한 곳만 고치면 양쪽에 적용된다.
  */
 class ArrayStackTest extends StackContractTest {

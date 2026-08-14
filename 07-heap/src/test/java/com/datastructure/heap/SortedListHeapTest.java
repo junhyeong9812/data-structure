@@ -8,7 +8,7 @@ import java.util.Comparator;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * SortedListHeap 이 계약을 지키는지 + **이 구현의 한계**.
+ * SortedListHeap 이 계약을 지키는지 + 이 구현의 한계.
  *
  * insertCostGrowsQuadratically 는 버그를 잡는 테스트가 아니다. 올바른 구현에서도 통과한다.
  * "이 방법은 넣기가 비싸다"를 숫자로 못 박아 BinaryHeap 을 만들 이유를 만든다.

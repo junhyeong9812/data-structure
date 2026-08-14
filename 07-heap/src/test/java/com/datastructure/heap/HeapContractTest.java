@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Heap 계약 테스트. 두 구현이 물려받는다.
  *
- * 힙은 **부분 순서**만 지키므로 "전체가 정렬되어 있는가"를 물으면 안 된다.
+ * 힙은 부분 순서만 지키므로 "전체가 정렬되어 있는가"를 물으면 안 된다.
  * 물어야 하는 것은 "꺼내는 순서가 정렬되어 있는가"다. 그 차이가 이 자료구조의 정의다.
  */
 abstract class HeapContractTest {

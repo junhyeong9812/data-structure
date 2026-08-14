@@ -271,7 +271,7 @@ public class RedBlackTree<K extends Comparable<K>, V> {
         return h == null ? 0 : 1 + Math.max(height(h.left), height(h.right));
     }
 
-    /** 뿌리에서 잎까지 지나는 **검은 링크의 수**. 모든 경로에서 같아야 한다. */
+    /** 뿌리에서 잎까지 지나는 검은 링크의 수. 모든 경로에서 같아야 한다. */
     public int blackHeight() {
         int bh = 0;
         Node<K, V> cur = root;

@@ -11,7 +11,7 @@ import static com.datastructure.dynamicarray.TestSupport.raw;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * 이 테스트는 DynamicArray 의 **계약**이다.
+ * 이 테스트는 DynamicArray 의 계약이다.
  * 각 테스트가 무엇을 확정하는지 읽으면서 치면 구현할 때 지켜야 할 것이 정리된다.
  */
 class DynamicArrayTest {

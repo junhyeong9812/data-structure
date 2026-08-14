@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * CircularQueue 가 Queue 계약을 지키는지 + **ArrayQueue 의 한계를 실제로 고쳤는지**.
+ * CircularQueue 가 Queue 계약을 지키는지 + ArrayQueue 의 한계를 실제로 고쳤는지.
  *
  * ArrayQueueTest.wastesSpace 와 여기 reusesSpace 를 나란히 놓고 보라.
  * 같은 시나리오인데 결과가 다르다. 그게 되감기의 값어치다.

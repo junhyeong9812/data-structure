@@ -4,27 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 좌편향 레드블랙 트리. **회전으로 균형을 보장한다.**
+ * 좌편향 레드블랙 트리. 회전으로 균형을 보장한다.
  *
  * 링크마다 색이 하나 있다(노드에 저장하지만 뜻은 "부모에서 나에게 오는 링크의 색"이다).
  * 지켜야 할 것이 넷이다.
  *
  *   1. 뿌리는 검다
- *   2. **빨간 링크는 왼쪽에만 있다**            <- 좌편향(left-leaning)의 정의
+ *   2. 빨간 링크는 왼쪽에만 있다            <- 좌편향(left-leaning)의 정의
  *   3. 빨간 노드가 연달아 나오지 않는다
- *   4. **모든 뿌리-잎 경로의 검은 링크 수가 같다**
+ *   4. 모든 뿌리-잎 경로의 검은 링크 수가 같다
  *
  * 4번이 균형의 정체다. 검은 높이가 같으니 가장 짧은 경로(전부 검정)와
- * 가장 긴 경로(검빨검빨...)의 길이 차이가 **두 배를 못 넘는다.**
- * 그래서 높이가 2*log2(n+1) 이하로 **보장된다.** 12번 스킵 리스트의 확률과 다른 점이다.
+ * 가장 긴 경로(검빨검빨...)의 길이 차이가 두 배를 못 넘는다.
+ * 그래서 높이가 2*log2(n+1) 이하로 보장된다. 12번 스킵 리스트의 확률과 다른 점이다.
  *
- * **2-3 트리로 읽으면 회전이 마법이 아니게 된다.**
+ * 2-3 트리로 읽으면 회전이 마법이 아니게 된다.
  *
  *   빨간 링크로 이어진 두 노드  =  2-3 트리의 키 2개짜리 노드
  *   검은 링크                    =  2-3 트리의 진짜 간선
  *
  * 15번 B-트리에서 노드가 꽉 차면 쪼개 가운데를 위로 올렸다.
- * 여기서 flipColors 가 정확히 그 일을 한다. **키 3개짜리가 되면 가운데를 위로 올린다.**
+ * 여기서 flipColors 가 정확히 그 일을 한다. 키 3개짜리가 되면 가운데를 위로 올린다.
  * 회전 둘은 "빨간 링크를 왼쪽으로 몰아 모양을 정규화하는" 정리 작업이다.
  *
  * 2번 규칙(좌편향)이 있는 이유가 이것이다. 모양의 가짓수를 줄여 경우의 수를 줄인다.
@@ -78,7 +78,7 @@ public class RedBlackTree<K extends Comparable<K>, V> {
         throw new UnsupportedOperationException("TODO 2: rotateRight");
     }
 
-    /** h 와 두 자식의 색을 **전부 뒤집는다.** */
+    /** h 와 두 자식의 색을 전부 뒤집는다. */
     private void flipColors(Node<K, V> h) {
         // TODO 3: 세 줄이다. h 와 h.left 와 h.right 의 색을 각각 반전한다.
         //
@@ -93,7 +93,7 @@ public class RedBlackTree<K extends Comparable<K>, V> {
         throw new UnsupportedOperationException("TODO 3: flipColors");
     }
 
-    /** 불변식이 깨진 노드를 세 번의 검사로 되돌린다. **모든 수정 연산이 여기로 끝난다.** */
+    /** 불변식이 깨진 노드를 세 번의 검사로 되돌린다. 모든 수정 연산이 여기로 끝난다. */
     private Node<K, V> balance(Node<K, V> h) {
         // TODO 4: 세 규칙을 **이 순서대로** 적용한다.
         //
@@ -316,7 +316,7 @@ public class RedBlackTree<K extends Comparable<K>, V> {
         return h == null ? 0 : 1 + Math.max(height(h.left), height(h.right));
     }
 
-    /** 뿌리에서 잎까지 지나는 **검은 링크의 수**. 모든 경로에서 같아야 한다. */
+    /** 뿌리에서 잎까지 지나는 검은 링크의 수. 모든 경로에서 같아야 한다. */
     public int blackHeight() {
         int bh = 0;
         Node<K, V> cur = root;

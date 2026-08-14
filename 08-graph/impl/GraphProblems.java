@@ -17,7 +17,7 @@ public final class GraphProblems {
      * 너비 우선. 가까운 것부터 층층이 넓혀 가므로 처음 닿았을 때가 곧 최단이다.
      * 깊이 우선으로 하면 먼 길로 먼저 닿을 수 있어 최단이 아니다.
      *
-     * 방문 표시는 **큐에 넣을 때** 한다. 꺼낼 때 하면 같은 정점이 큐에 여러 번 들어간다.
+     * 방문 표시는 큐에 넣을 때 한다. 꺼낼 때 하면 같은 정점이 큐에 여러 번 들어간다.
      */
     public static int[] bfsDistances(Graph graph, int start) {
         int[] distance = new int[graph.vertexCount()];

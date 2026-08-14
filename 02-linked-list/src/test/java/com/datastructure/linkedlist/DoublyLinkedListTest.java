@@ -17,7 +17,7 @@ class DoublyLinkedListTest extends ListIterationContractTest {
     }
 
     /**
-     * 구조 건전성 검사. **이 문제집에서 가장 중요한 단언이다.**
+     * 구조 건전성 검사. 이 문제집에서 가장 중요한 단언이다.
      *
      * 앞으로 훑은 결과와 뒤로 훑은 결과가 서로의 역순이 아니면 링크가 깨진 것이다.
      * 이 검사가 없으면 prev 를 아예 안 잇는 구현도 계약 테스트를 대부분 통과한다.

@@ -10,14 +10,14 @@ import java.util.Iterator;
  *   SinglyLinkedList  노드가 다음만 가리킨다
  *   DoublyLinkedList  노드가 앞뒤를 다 가리킨다
  *
- * 겉으로는 완전히 같게 동작해야 한다. 다른 것은 **어떤 연산이 비싼가**뿐이다.
+ * 겉으로는 완전히 같게 동작해야 한다. 다른 것은 어떤 연산이 비싼가뿐이다.
  * 그 차이가 이 문제의 본체다.
  *
  * | 연산 | 단일 | 이중 |
  * |------|------|------|
  * | addFirst, removeFirst | O(1) | O(1) |
  * | addLast | O(1) (tail 이 있으므로) | O(1) |
- * | **removeLast** | **O(n)** | O(1) |
+ * | removeLast | O(n) | O(1) |
  * | 뒤쪽 인덱스 접근 | O(n) | O(n) 이지만 평균 절반 |
  * | 노드당 메모리 | 참조 1개 | 참조 2개 |
  *
@@ -27,7 +27,7 @@ import java.util.Iterator;
  * Iterable 을 확장하는 이유
  *   `get(i)` 를 반복하면 매번 앞에서부터 세므로 전체가 O(n^2) 이 된다.
  *   순회를 O(n) 으로 하는 유일한 방법이 Iterator 다.
- *   **여기서 Iterator 는 문법 설탕이 아니라 복잡도를 바꾸는 장치다.**
+ *   여기서 Iterator 는 문법 설탕이 아니라 복잡도를 바꾸는 장치다.
  *   01번 배열에서는 get(i) 가 이미 O(1) 이라 Iterator 가 복잡도를 바꾸지 않는다. 그래서 거기엔 없다.
  */
 public interface List<E> extends Iterable<E> {

@@ -20,10 +20,10 @@ public final class MapProblems {
     /**
      * 한 번만 훑는다.
      *
-     * 지금 값이 v 면 짝은 target - v 다. 그 짝을 **앞에서 이미 봤는지**만 물으면 된다.
+     * 지금 값이 v 면 짝은 target - v 다. 그 짝을 앞에서 이미 봤는지만 물으면 된다.
      * 모든 쌍을 다 볼 필요가 없다. O(n^2) 이 O(n) 이 되는 지점이 여기다.
      *
-     * 같은 값이 여러 번 나오면 **처음 위치만** 담는다. 그래야 첫 인덱스가 가장 작아진다.
+     * 같은 값이 여러 번 나오면 처음 위치만 담는다. 그래야 첫 인덱스가 가장 작아진다.
      * 짝을 먼저 확인하고 나서 담는 순서라야 [5], target=10 처럼 자기 자신과 짝짓는 일이 없다.
      */
     public static int[] twoSum(int[] values, int target, Map<Integer, Integer> seen) {

@@ -74,7 +74,7 @@ public class FenwickTree implements PrefixSumTree {
 
     /**
      * 누적합이 target 이상이 되는 가장 작은 인덱스. 없으면 -1.
-     * **모든 값이 0 이상일 때만 뜻이 있다.**
+     * 모든 값이 0 이상일 때만 뜻이 있다.
      */
     public int findPrefixIndex(long target) {
         int pos = 0;

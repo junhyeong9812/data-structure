@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * LinkedHashMap 이 Map 계약을 지키는지 + **삽입 순서**라는 추가 계약.
+ * LinkedHashMap 이 Map 계약을 지키는지 + 삽입 순서라는 추가 계약.
  *
  * 부모(ChainingHashMap)의 계약 테스트를 그대로 물려받는다.
  * 상속으로 기능을 얹었으니 기존 계약이 깨지지 않았음을 확인해야 한다.

@@ -28,7 +28,7 @@ class BTreeStructureTest {
      *   1. 뿌리가 아닌 노드는 키를 t-1 개 이상 2t-1 개 이하로 갖는다
      *   2. 키가 k 개면 자식이 0 개(잎) 또는 k+1 개다
      *   3. 노드 안의 키가 정렬돼 있다
-     *   4. **모든 잎이 같은 깊이다**
+     *   4. 모든 잎이 같은 깊이다
      */
     private void assertInvariants(BTree<Integer, String> b) {
         List<Integer> depths = new ArrayList<>();

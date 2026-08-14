@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * LinkedStack 이 Stack 계약을 지키는지.
  *
- * 계약 테스트는 물려받고, 여기에는 **연결 구현에만 있는 성질**만 적는다.
+ * 계약 테스트는 물려받고, 여기에는 연결 구현에만 있는 성질만 적는다.
  */
 class LinkedStackTest extends StackContractTest {
 

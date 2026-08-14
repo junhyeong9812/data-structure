@@ -7,7 +7,7 @@ import java.util.Random;
 /**
  * 확률로 균형을 잡는 정렬 자료구조.
  *
- * **트리가 아니다.** 정렬된 연결 리스트를 여러 층 쌓은 것이다.
+ * 트리가 아니다. 정렬된 연결 리스트를 여러 층 쌓은 것이다.
  * 노드마다 forward 배열이 있고, 배열 길이가 그 노드의 층수다.
  *
  *   forward[0] 은 바로 다음 노드   (모든 노드가 갖는다)
@@ -16,12 +16,12 @@ import java.util.Random;
  *
  * head 는 센티넬이고 늘 MAX_LEVEL 층을 갖는다. 10번 LRU 의 센티넬과 같은 역할이다.
  *
- * **찾기의 모양이 이 자료구조의 전부다.**
+ * 찾기의 모양이 이 자료구조의 전부다.
  * 맨 위 층에서 시작해 "다음이 목표보다 작으면 전진, 아니면 한 층 내려간다"를 반복한다.
  * 위층이 크게 건너뛰므로 이진 탐색과 같은 걸음 수가 나온다.
  *
- * 층수는 **동전으로** 정한다. 앞면이면 한 층 더. 그래서 절반이 1층, 4분의 1이 2층이 된다.
- * 06번 BST 와 달리 **입력 순서가 구조에 영향을 주지 않는다.**
+ * 층수는 동전으로 정한다. 앞면이면 한 층 더. 그래서 절반이 1층, 4분의 1이 2층이 된다.
+ * 06번 BST 와 달리 입력 순서가 구조에 영향을 주지 않는다.
  * 정렬된 순서로 넣어도 무작위로 넣어도 같은 분포가 나온다.
  *
  * 테스트를 위해 seed 를 받는 생성자를 뒀다. **무작위를 쓰는 자료구조는 seed 를 주입받아야
@@ -77,7 +77,7 @@ public class SkipList<K extends Comparable<K>, V> {
         throw new UnsupportedOperationException("TODO 1: randomLevel");
     }
 
-    /** key 보다 **작은** 마지막 노드를 레벨마다 찾아 update 에 담고, 레벨 0 의 그 노드를 준다. */
+    /** key 보다 작은 마지막 노드를 레벨마다 찾아 update 에 담고, 레벨 0 의 그 노드를 준다. */
     @SuppressWarnings("unchecked")
     Node<K, V>[] findPredecessors(K key) {
         Node<K, V>[] update = new Node[MAX_LEVEL];

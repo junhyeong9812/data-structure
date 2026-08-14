@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
  *
  * CircularQueue 를 양쪽 끝으로 확장한 것이다. 그 문제를 먼저 풀고 오라.
  * 되감기 계산(indexOf)과 확장(ensureCapacity)은 거기서 이미 푼 것이므로 여기서는 채워두었다.
- * **같은 것을 두 번 풀게 하지 않는다.**
+ * 같은 것을 두 번 풀게 하지 않는다.
  *
  * 새로 나오는 것은 "앞쪽으로도 넣고 뺀다"뿐이다. head 가 뒤로 감기는 경우가 생긴다.
  *

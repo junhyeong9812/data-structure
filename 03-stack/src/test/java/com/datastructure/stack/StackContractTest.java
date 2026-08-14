@@ -9,7 +9,7 @@ import java.util.EmptyStackException;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Stack 계약 테스트. **한 번만 쓰고 두 구현이 물려받는다.**
+ * Stack 계약 테스트. 한 번만 쓰고 두 구현이 물려받는다.
  *
  * 구현마다 계약 테스트를 복사하면 둘이 조용히 어긋난다.
  * 한쪽에만 케이스를 추가하고 다른 쪽은 잊는 일이 반드시 생긴다.

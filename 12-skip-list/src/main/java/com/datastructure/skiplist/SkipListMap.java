@@ -3,7 +3,7 @@ package com.datastructure.skiplist;
 import java.util.List;
 
 /**
- * SkipList 를 OrderedMap 계약에 맞춘 것. **거의 전부 위임이다.**
+ * SkipList 를 OrderedMap 계약에 맞춘 것. 거의 전부 위임이다.
  *
  * 왜 둘로 나누는가. SkipList 는 자료구조이고 OrderedMap 은 계약이다.
  * 06번 BinarySearchTree, 15번 BTree, 16번 RedBlackTree 가 같은 계약을 구현할 수 있고,

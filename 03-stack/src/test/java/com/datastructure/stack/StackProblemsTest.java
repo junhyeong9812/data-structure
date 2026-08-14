@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * 응용 문제는 **두 구현 모두로** 돌린다.
+ * 응용 문제는 두 구현 모두로 돌린다.
  *
  * 문제 코드가 Stack 인터페이스만 알고 있으니 구현을 바꿔 끼워도 결과가 같아야 한다.
  * 같지 않다면 둘 중 하나가 계약을 어긴 것이다. 이 테스트가 그걸 잡는다.

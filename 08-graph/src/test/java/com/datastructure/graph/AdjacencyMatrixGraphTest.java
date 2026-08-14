@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * AdjacencyMatrixGraph 가 계약을 지키는지 + **이 표현의 한계**.
+ * AdjacencyMatrixGraph 가 계약을 지키는지 + 이 표현의 한계.
  *
  * 아래 두 테스트는 버그를 잡는 것이 아니다. 올바른 구현에서도 통과한다.
  * "이 표현은 이런 대가를 치른다"를 숫자로 못 박는다.

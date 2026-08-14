@@ -1,10 +1,10 @@
 package com.datastructure.segment;
 
 /**
- * 구간 최소. SumSegmentTree 와 **두 메서드만** 다르다.
+ * 구간 최소. SumSegmentTree 와 두 메서드만 다르다.
  *
  * 항등원이 0 이 아니라는 점을 보라. 최소를 구하는데 0 을 섞으면 답이 0 이 된다.
- * "범위 밖은 없는 것처럼"을 만들려면 **그 연산의 항등원**이어야 한다.
+ * "범위 밖은 없는 것처럼"을 만들려면 그 연산의 항등원이어야 한다.
  */
 public class MinSegmentTree extends SegmentTree {
 

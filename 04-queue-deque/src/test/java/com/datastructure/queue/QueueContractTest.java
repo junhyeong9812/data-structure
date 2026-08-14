@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Queue 계약 테스트. **네 구현이 전부 물려받는다.**
+ * Queue 계약 테스트. 네 구현이 전부 물려받는다.
  * (ArrayQueue, CircularQueue, 그리고 Deque 인 ArrayDeque, LinkedDeque)
  *
  * Deque 가 Queue 를 확장하므로 테스트도 같은 모양으로 상속한다.

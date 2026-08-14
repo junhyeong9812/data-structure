@@ -49,7 +49,7 @@ public final class StackProblems {
      *
      * 숫자는 쌓고, 연산자를 만나면 두 개를 꺼내 계산해 다시 쌓는다.
      *
-     * 꺼내는 순서가 중요하다. 나중에 쌓인 것이 먼저 나오므로 **두 번째로 꺼낸 것이 왼쪽 피연산자**다.
+     * 꺼내는 순서가 중요하다. 나중에 쌓인 것이 먼저 나오므로 두 번째로 꺼낸 것이 왼쪽 피연산자다.
      * 반대로 하면 "3 4 -" 가 1 이 나온다. 정답은 -1 이다.
      */
     public static int evaluatePostfix(String expression, Stack<Integer> buffer) {

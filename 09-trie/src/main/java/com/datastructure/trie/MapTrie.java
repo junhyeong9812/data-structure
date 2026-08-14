@@ -9,17 +9,17 @@ import java.util.TreeMap;
  * 자식을 맵으로 들고 있는 트라이.
  *
  * 어떤 문자든 담을 수 있다. 한글도, 이모지도, 숫자도.
- * 그리고 **실제로 있는 자식만큼만** 메모리를 쓴다.
+ * 그리고 실제로 있는 자식만큼만 메모리를 쓴다.
  *
  * 대신 한 글자 내려갈 때마다 맵 조회 비용이 붙고, 노드마다 맵 객체가 하나씩 생긴다.
  * ArrayTrie 와 비교해보면 그 차이가 숫자로 보인다.
  *
- * **왜 TreeMap 인가.** keysWithPrefix 가 사전순을 약속하기 때문이다.
+ * 왜 TreeMap 인가. keysWithPrefix 가 사전순을 약속하기 때문이다.
  * HashMap 을 쓰면 모아놓고 정렬해야 하는데, TreeMap 은 순회 자체가 이미 사전순이다.
  * 05번에서 "해시맵은 순서를 버린다"고 했던 것의 대가를 여기서 치른다.
  *
  * 필드가 패키지 공개다. 테스트와 WordDictionary, TrieProblems 가 내부를 직접 본다.
- * **그래서 이 이름들은 계약의 일부다.**
+ * 그래서 이 이름들은 계약의 일부다.
  */
 public class MapTrie implements Trie {
 
@@ -80,7 +80,7 @@ public class MapTrie implements Trie {
         throw new UnsupportedOperationException("TODO 3: findNode");
     }
 
-    /** node 아래의 모든 단어를 path 를 앞에 붙여 **사전순으로** out 에 담는다. */
+    /** node 아래의 모든 단어를 path 를 앞에 붙여 사전순으로 out 에 담는다. */
     static void collect(Node node, StringBuilder path, List<String> out) {
         // TODO 4: 재귀로 훑는다.
         //

@@ -3,12 +3,12 @@ package com.datastructure.skiplist;
 import java.util.List;
 
 /**
- * SkipListMap 을 집합으로 쓴 것. **새 자료구조가 아니다.**
+ * SkipListMap 을 집합으로 쓴 것. 새 자료구조가 아니다.
  *
  * 값 자리에 상수 하나를 넣고 맵을 그대로 쓴다.
  * 자바의 TreeSet 이 TreeMap 을, HashSet 이 HashMap 을 그렇게 쓴다.
  *
- * add 가 "새로 들어갔는지"를 어떻게 아는가. **put 이 옛 값을 돌려주기 때문이다.**
+ * add 가 "새로 들어갔는지"를 어떻게 아는가. put 이 옛 값을 돌려주기 때문이다.
  * null 이면 새로 들어간 것이다. 계약을 그렇게 설계해두면 이런 재사용이 공짜로 된다.
  */
 public class SkipListSet<K extends Comparable<K>> implements OrderedSet<K> {

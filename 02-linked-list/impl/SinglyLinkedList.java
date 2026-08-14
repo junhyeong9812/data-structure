@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
  * [구현] 단일 연결 리스트.
  *
  * tail 이 있어 addLast 는 O(1) 인데 removeLast 는 O(n) 이다.
- * 지울 노드의 **앞** 노드를 알 방법이 없어 head 부터 다시 세야 하기 때문이다.
+ * 지울 노드의 앞 노드를 알 방법이 없어 head 부터 다시 세야 하기 때문이다.
  */
 public class SinglyLinkedList<E> implements List<E> {
 

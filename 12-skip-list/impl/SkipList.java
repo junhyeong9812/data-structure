@@ -47,7 +47,7 @@ public class SkipList<K extends Comparable<K>, V> {
         return lvl;
     }
 
-    /** key 보다 **작은** 마지막 노드를 레벨마다 찾아 update 에 담고, 레벨 0 의 그 노드를 준다. */
+    /** key 보다 작은 마지막 노드를 레벨마다 찾아 update 에 담고, 레벨 0 의 그 노드를 준다. */
     @SuppressWarnings("unchecked")
     Node<K, V>[] findPredecessors(K key) {
         Node<K, V>[] update = new Node[MAX_LEVEL];

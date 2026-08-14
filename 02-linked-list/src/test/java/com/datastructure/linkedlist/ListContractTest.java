@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * List 계약 테스트 - 기본 연산.
  *
- * **두 구현이 물려받는다.** 계약을 한 곳에만 적어야 둘이 어긋나지 않는다.
+ * 두 구현이 물려받는다. 계약을 한 곳에만 적어야 둘이 어긋나지 않는다.
  * 여기는 공개 API 만 쓴다. 내부 구조 검사는 구현별 테스트가 한다.
  */
 abstract class ListContractTest {
