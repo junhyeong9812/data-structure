@@ -39,7 +39,9 @@ public class QuadraticProbeMap<K, V> extends ProbeSequenceMap<K, V> {
 
     @Override
     int probe(int hash, int i) {
-        // i 가 커지면 i*i 는 int 를 넘긴다. long 으로 올린 뒤 마스크로 내린다.
+        // i 가 46341 을 넘으면 i*i 가 int 를 넘긴다. 그런데 재보면 결과가 같다.
+        // 마지막에 2의 거듭제곱으로 & 하기 때문에 넘침(2^32 나머지)이 그대로 통과한다.
+        // long 으로 두는 것은 "여기서 넘친다"를 읽는 사람에게 알리기 위해서다.
         long offset = triangular ? ((long) i * i + i) / 2 : (long) i * i;
         return (int) ((hash + offset) & mask);
     }

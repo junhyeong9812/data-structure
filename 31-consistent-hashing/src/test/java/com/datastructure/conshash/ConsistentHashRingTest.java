@@ -111,6 +111,42 @@ class ConsistentHashRingTest extends HashRingContractTest {
         }
 
         @Test
+        @DisplayName("키가 자리와 정확히 같으면 그 자리가 맡는다")
+        void keyExactlyOnASlotBelongsToThatSlot() {
+            // 자리를 손으로 정하는 해시를 넣어 "정확히 겹치는" 경우를 만든다.
+            // MIXED 로는 확률이 2^32 분의 1 이라 키 100,000개를 던져도 한 번도 안 나온다.
+            // 그래서 "이상"과 "초과"를 바꿔 써도 무작위 키로는 영원히 안 걸린다.
+            RingHash fixed = name -> switch (name) {
+                case "node-0#0" -> 100L;
+                default -> 200L;
+            };
+            ConsistentHashRing ring = new ConsistentHashRing(1, fixed);
+            ring.addNode("node-0");
+            ring.addNode("node-1");
+            assertEquals(2, ring.slotCount());
+            assertEquals("node-1", ring.getNode("key-0"),
+                    "자리 200 에 정확히 떨어진 키는 그 자리의 노드 것이다");
+        }
+
+        @Test
+        @DisplayName("자리가 겹친 노드를 빼도 남의 자리는 안 가져간다")
+        void removingDoesNotStealACollidedSlot() {
+            // 두 가상 이름이 같은 자리에 떨어지면 TreeMap 이 뒤에 온 것으로 덮어쓴다.
+            // 그 상태에서 앞의 노드를 뺄 때 자리를 확인 없이 지우면 남은 노드가 원에서 사라진다.
+            // 노드는 하나 살아 있는데 담당은 없는 상태가 된다.
+            RingHash collide = name -> name.startsWith("node-") ? 500L : 700L;
+            ConsistentHashRing ring = new ConsistentHashRing(1, collide);
+            ring.addNode("node-a");
+            ring.addNode("node-b");
+            assertEquals(1, ring.slotCount(), "자리가 겹쳐서 하나로 덮였다");
+
+            ring.removeNode("node-a");
+            assertEquals(1, ring.nodeCount());
+            assertEquals(1, ring.slotCount(), "node-b 의 자리를 node-a 가 가져갔다");
+            assertEquals("node-b", ring.getNode("key-0"));
+        }
+
+        @Test
         @DisplayName("가상 노드 수는 1 이상이어야 한다")
         void virtualNodeCountIsValidated() {
             assertThrows(IllegalArgumentException.class, () -> new ConsistentHashRing(0));

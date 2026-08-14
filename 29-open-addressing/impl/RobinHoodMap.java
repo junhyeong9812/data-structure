@@ -220,8 +220,11 @@ public class RobinHoodMap<K, V> implements ProbeMap<K, V> {
                 carriedKey = tmpKey;
                 carriedValue = tmpValue;
                 carriedHash = tmpHash;
-                dist = residentDist;            // 이제 뺏긴 놈의 거리로 계속 걷는다
-                original = false;               // 뺏은 시점에서 원래 키는 없던 키로 확정됐다
+                // 이제 뺏긴 놈을 대신해 걷는다. 거리도 그의 것으로 바꾼다.
+                // (안 바꿔도 배치가 달라질 뿐 칸마다의 탐사 거리는 같다. 변종 검증에서 확인했다)
+                dist = residentDist;
+                // 뺏은 순간 원래 키가 테이블에 없다는 것이 확정됐다. 더 비교할 필요가 없다.
+                original = false;
             }
             slot = (slot + 1) & mask;
         }

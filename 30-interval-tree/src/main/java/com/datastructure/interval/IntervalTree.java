@@ -140,6 +140,13 @@ public class IntervalTree implements IntervalStore, VisitCounting {
         // 조상 갱신을 빠뜨려도 예외는 안 난다. 트리도 성해 보인다.
         // 낡은 maxEnd 는 "여기 아래엔 볼 게 없다"는 거짓말이 되어 질의가 그 가지를 건너뛴다.
         // 즉 답이 조용히 빠진다. IntervalTreeStructureTest 가 매 삽입 뒤에 그것만 본다.
+        //
+        // 갱신에는 위의 maxEndOf 와 recomputeMaxEnd 를 쓴다.
+        // 빈 자리의 값이 0 이 아니라 Long.MIN_VALUE 인 이유도 같이 보라.
+        // 좌표가 전부 음수면 0 은 "아직 아무것도 없다"와 "끝점이 0 이다"를 구별하지 못해
+        // 가지치기가 있는 답을 잘라낸다. 최댓값의 항등원은 0 이 아니다.
+        // (변종으로 확인했다. 음수 좌표 대조 하나만 깨지고 증상은 "답이 12개인데 null" 이었다.
+        //  13번 세그먼트 트리에서 최소 트리의 항등원을 0 으로 두면 깨지던 것과 같은 계열이다)
         throw new UnsupportedOperationException("TODO 4: insertInto");
     }
 

@@ -55,8 +55,89 @@ summary() {
     [ "$fail" -eq 0 ] || return 1                  # 1 = 테스트 실패
 }
 
+# ---------------------------------------------------------------- --lint
+# 문서 규칙을 도구로 강제한다. 규율로 지키면 반드시 어긴다.
+# (실제로 README 100줄 상한을 20개가 어겼고, javadoc 굵게를 564곳 어겼다)
+lint() {
+    local rc=0 n bad
+
+    # 1) README 100줄 하드 상한. CLAUDE.md 의 규칙이고 예외가 없다.
+    for f in */README.md; do
+        [ -e "$f" ] || continue
+        case "$f" in ./README.md) continue;; esac
+        n=$(wc -l < "$f")
+        if [ "$n" -gt 100 ]; then
+            echo "  README 상한 초과: $n 줄  $f"
+            rc=1
+        fi
+    done
+
+    # 2) javadoc 안의 마크다운 굵게. IDE 에서 별표가 그대로 보인다.
+    bad=$(python3 - <<'PYEOF'
+import pathlib, re
+hits = 0
+for p in sorted(pathlib.Path('.').glob('[0-9][0-9]-*/**/*.java')):
+    if 'build/' in str(p) or '_archive' in str(p):
+        continue
+    src = p.read_text()
+    for m in re.finditer(r'/\*\*.*?\*/', src, re.S):
+        found = re.findall(r'\*\*[^*\n]+\*\*', m.group(0)[3:-2])
+        if found:
+            hits += len(found)
+            print(f"  javadoc 굵게: {p} {found[:2]}")
+print(f"__COUNT__{hits}")
+PYEOF
+)
+    echo "$bad" | grep -v '^__COUNT__' | grep . && rc=1
+    [ "$(echo "$bad" | grep '^__COUNT__' | sed 's/__COUNT__//')" != "0" ] && rc=1
+
+    # 3) 하위 테스트가 계약 테스트의 @Nested 를 가리는가.
+    #    실패가 아니라 **테스트가 사라진다.** 통과 개수만 보면 절대 모른다.
+    python3 - <<'PYEOF' || rc=1
+import pathlib, re, sys
+NESTED = re.compile(r'@Nested\s*(?:@DisplayName\([^)]*\)\s*)?class\s+(\w+)')
+EXTENDS = re.compile(r'class\s+(\w+)\s+extends\s+(\w+)')
+bad = 0
+for box in sorted(pathlib.Path('.').glob('[0-9][0-9]-*')):
+    d = box / 'src/test'
+    if not d.exists():
+        continue
+    info = {}
+    for p in d.rglob('*.java'):
+        s = p.read_text()
+        c = re.search(r'(?:abstract\s+)?class\s+(\w+)', s)
+        if not c:
+            continue
+        m = EXTENDS.search(s)
+        info[c.group(1)] = (p, m.group(2) if m else None, set(NESTED.findall(s)))
+    for name, (p, parent, nested) in info.items():
+        if parent in info:
+            shared = nested & info[parent][2]
+            if shared:
+                print(f"  @Nested 가림: {name} 이 {parent} 의 {sorted(shared)} 를 가린다 ({p})")
+                bad += 1
+sys.exit(1 if bad else 0)
+PYEOF
+
+    return $rc
+}
+
+if [ "${1:-}" = "--lint" ]; then
+    echo "=== 문서와 테스트 구조 검사 ==="
+    if lint; then
+        echo "통과."
+        exit 0
+    fi
+    echo
+    echo "위 항목을 고쳐라. 규칙 근거는 CLAUDE.md 와 docs/문제집-작성-계약.md 에 있다."
+    exit 1
+fi
+
 # ---------------------------------------------------------------- --check
 if [ "${1:-}" = "--check" ]; then
+    echo "=== 문서와 테스트 구조 검사 ==="
+    if lint; then echo "  통과."; else infra_rc=1; fi
+    echo
     checked=0
     while IFS= read -r p; do
         echo "=== $p impl 검증 ==="
@@ -120,4 +201,6 @@ p=$(probs | grep "^$1-" | head -1)
 if [ -z "$p" ]; then
     echo "그런 문제가 없습니다: $1"; echo "사용 가능:"; probs | sed 's/^/  /'; exit 1
 fi
-exec $GRADLE ":$p:test" --console=plain
+# --rerun 이 없으면 gradle 이 UP-TO-DATE 로 건너뛰고 BUILD SUCCESSFUL 만 찍는다.
+# 테스트가 69개 실패한 상태에서도 그렇게 보인다. 초록으로 위장되는 것을 막는다.
+exec $GRADLE ":$p:test" --console=plain --rerun

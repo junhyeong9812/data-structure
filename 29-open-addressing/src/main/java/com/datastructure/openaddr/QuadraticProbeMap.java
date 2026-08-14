@@ -48,8 +48,10 @@ public class QuadraticProbeMap<K, V> extends ProbeSequenceMap<K, V> {
         // 용량이 2의 거듭제곱일 때 삼각수는 모든 칸을 정확히 한 번씩 밟고,
         // i*i 는 6분의 1 정도만 밟는다. QuadraticProbeMapTest 가 그 수를 직접 센다.
         //
-        // 함정: i 가 커지면 i*i 가 int 를 넘긴다. 넘치면 음수가 되고 & mask 가 이상한 칸을 준다.
-        // long 으로 올린 뒤 마스크로 내려라. 11번, 18번에서 겪은 것과 같은 종류의 함정이다.
+        // i 가 46341 을 넘으면 i*i 가 int 를 넘긴다. 그런데 이 경우에는 결과가 같다.
+        // 마지막에 2의 거듭제곱으로 & 하기 때문에 넘침(2^32 나머지)이 그대로 통과한다.
+        // long 으로 쓰든 int 로 쓰든 우리 테스트 152개가 전부 통과한다. 변종 검증에서 확인했다.
+        // 그래도 long 으로 두는 편이 낫다. "여기서 넘친다"가 코드에 드러나기 때문이다.
         throw new UnsupportedOperationException("TODO 4: probe");
     }
 }

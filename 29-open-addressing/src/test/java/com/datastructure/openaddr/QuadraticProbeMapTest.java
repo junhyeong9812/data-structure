@@ -75,10 +75,12 @@ class QuadraticProbeMapTest extends ProbeMapContractTest {
     }
 
     @Test
-    @DisplayName("i 가 커져도 int 를 넘치지 않는다")
-    void offsetDoesNotOverflow() {
-        // i 가 46341 을 넘으면 i*i 가 int 를 넘친다. 넘치면 음수가 되고 & mask 가 엉뚱한 칸을 준다.
-        // 용량이 그만큼 큰 테이블에서만 드러나므로 여기서 수열을 직접 물어 못 박아둔다.
+    @DisplayName("i 가 아무리 커도 수열은 정의대로다")
+    void offsetStaysOnTheSequence() {
+        // i 가 46341 을 넘으면 i*i 가 int 를 넘친다. 그래도 답은 같다.
+        // 마지막에 2의 거듭제곱으로 & 하기 때문에 2^32 나머지가 그대로 통과하기 때문이다.
+        // 이 테스트는 그 사실이 아니라 수열의 정의 자체를 못 박는다.
+        // (long 을 int 로 바꾼 변종은 152개가 전부 통과했다. 결함이 아니라 동치 변환이다)
         QuadraticProbeMap<Integer, String> map = new QuadraticProbeMap<>(1024, 0.9);
         int mask = map.capacity() - 1;
         for (int i : new int[] {46_340, 46_341, 50_000, 100_000}) {

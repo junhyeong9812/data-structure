@@ -282,12 +282,14 @@ class ProbeCountTest {
             Random random = new Random(99);
             Set<Integer> seen = new HashSet<>();
             int inserted = 0;
-            while (map.cycleRehashCount() == 0) {
+            // 상한을 둔다. 고리가 안 나는 구현을 만나면 이 반복이 테이블을 무한정 키운다.
+            while (map.cycleRehashCount() == 0 && inserted < 1024) {
                 int key = random.nextInt(1 << 24);
                 if (!seen.add(key)) continue;
                 map.put(key, "v");
                 if (map.cycleRehashCount() == 0) inserted++;
             }
+            assertTrue(inserted < 1024, "칸을 다 채울 때까지 고리가 한 번도 안 났다");
 
             double loadAtFirstCycle = inserted / 1024.0;
             System.out.printf("  첫 고리: %d 개째, 부하율 %.3f, 그때까지의 뺏기 %d 회%n",

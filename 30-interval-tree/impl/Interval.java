@@ -46,7 +46,7 @@ public final class Interval implements Comparable<Interval> {
         if (other == null) {
             throw new IllegalArgumentException("구간이 null 이다");
         }
-        return this.start < other.end && other.start <= this.end;
+        return this.start < other.end && other.start < this.end;
     }
 
     /** 점이 이 구간 안에 있나. end 는 안 들어간다. */
