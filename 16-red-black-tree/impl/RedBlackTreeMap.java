@@ -2,6 +2,12 @@ package com.datastructure.redblack;
 
 import java.util.List;
 
+/**
+ * RedBlackTree 를 SortedTree 계약에 맞춰 내보내는 어댑터.
+ *
+ * 일이 전부 RedBlackTree 에 있고 여기는 넘기기만 한다.
+ * 이 클래스에는 TODO 가 없다. 같은 계약으로 여러 트리를 나란히 재기 위한 껍데기다.
+ */
 public class RedBlackTreeMap<K extends Comparable<K>, V> implements SortedTree<K, V> {
 
     private final RedBlackTree<K, V> tree = new RedBlackTree<>();

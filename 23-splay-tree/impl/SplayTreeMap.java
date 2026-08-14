@@ -2,6 +2,12 @@ package com.datastructure.splay;
 
 import java.util.List;
 
+/**
+ * SplayTree 를 SortedTree 계약에 맞춰 내보내는 어댑터.
+ *
+ * 일이 전부 SplayTree 에 있고 여기는 넘기기만 한다.
+ * 이 클래스에는 TODO 가 없다. 16번 RedBlackTreeMap 과 같은 껍데기다.
+ */
 public class SplayTreeMap<K extends Comparable<K>, V> implements SortedTree<K, V> {
 
     private final SplayTree<K, V> tree = new SplayTree<>();

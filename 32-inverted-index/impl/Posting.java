@@ -14,6 +14,9 @@ import java.util.Objects;
  * 위치는 분석기가 준 항 목록에서의 인덱스다. 0 부터 세고 오름차순이다.
  * 위치를 안 담으면 구문 검색을 아예 못 한다. 대신 색인이 커진다.
  * 원문의 토큰 하나마다 정수 하나가 색인에 들어간다. MeasurementTest 가 그 개수를 못 박는다.
+ *
+ * 이 클래스에는 TODO 가 없다. 담는 그릇이고, addPosition 의 오름차순 검사는
+ * 학습자가 채울 코드가 기대는 계약이라 미리 세워둔다.
  */
 public final class Posting {
 

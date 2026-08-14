@@ -91,7 +91,35 @@ PYEOF
     echo "$bad" | grep -v '^__COUNT__' | grep . && rc=1
     [ "$(echo "$bad" | grep '^__COUNT__' | sed 's/__COUNT__//')" != "0" ] && rc=1
 
-    # 3) 하위 테스트가 계약 테스트의 @Nested 를 가리는가.
+    # 3) src/main 이 impl 과 같은 파일인가. 스켈레톤화를 빼먹으면 학습자가 답을 그대로 받는다.
+    #    이때 ./run.sh NN 이 전부 통과하므로 **완성처럼 보인다.** 32번에서 실제로 그랬다.
+    python3 - <<'PYEOF' || rc=1
+import pathlib, sys
+bad = 0
+for box in sorted(pathlib.Path('.').glob('[0-9][0-9]-*')):
+    impl = box / 'impl'
+    main = box / 'src/main'
+    if not impl.exists() or not main.exists():
+        continue
+    for p in sorted(impl.glob('*.java')):
+        peers = [q for q in main.rglob(p.name)]
+        if not peers:
+            continue
+        # impl 쪽 [구현] 표식만 걷어내고 비교한다. 그것 말고 같으면 스켈레톤이 아니다.
+        left = p.read_text().replace('[구현] ', '')
+        right = peers[0].read_text()
+        if left != right:
+            continue
+        # 일부러 다 주는 클래스가 있다(어댑터, 자료 홀더, enum).
+        # 그때는 "TODO 가 없다"고 파일 안에 적어라. 빼먹은 것과 구별되지 않으면 검사가 무의미하다.
+        if 'TODO 가 없다' in right:
+            continue
+        print(f"  스켈레톤 아님: {peers[0]} 이 impl 과 같은데 그 사유가 안 적혀 있다")
+        bad += 1
+sys.exit(1 if bad else 0)
+PYEOF
+
+    # 4) 하위 테스트가 계약 테스트의 @Nested 를 가리는가.
     #    실패가 아니라 **테스트가 사라진다.** 통과 개수만 보면 절대 모른다.
     python3 - <<'PYEOF' || rc=1
 import pathlib, re, sys
