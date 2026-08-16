@@ -177,6 +177,6 @@ Gradle 8.14.4 는 JDK 25 에서 실행되지 않습니다(`FAILURE: What went wr
 
 ## 관련
 
-- [`../debugging`](../debugging) — 깨진 코드의 원인을 찾는 훈련
-- [`../api-design`](../api-design) — 요구사항에서 숨은 요구를 읽어내는 훈련
+- [`debugging`](https://github.com/junhyeong9812/debugging) — 깨진 코드의 원인을 찾는 훈련
+- [`api-design`](https://github.com/junhyeong9812/api-design) — 요구사항에서 숨은 요구를 읽어내는 훈련
 - `_archive/` — 이전 구조 (30문제 + practice + 기존 문서)
