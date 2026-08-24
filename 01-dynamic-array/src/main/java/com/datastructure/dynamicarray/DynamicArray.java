@@ -112,7 +112,14 @@ public class DynamicArray<E> {
      * TODO(01): 구현하라. 테스트가 어떤 배수를 기대하는지는 DynamicArrayTest 를 보면 된다.
      */
     private void ensureCapacity(int minCapacity) {
-        throw new UnsupportedOperationException("TODO(01): ensureCapacity");
+        if (minCapacity <= elements.length) {
+            return;
+        }
+        int newCapacity = (elements.length == 0) ? DEFAULT_CAPACITY : elements.length * 2;
+        if (newCapacity < minCapacity) {
+            newCapacity = minCapacity;
+        }
+        elements = Arrays.copyOf(elements, newCapacity);
     }
 
     /**
@@ -121,7 +128,8 @@ public class DynamicArray<E> {
      * TODO(02): 구현하라. 용량 확보를 잊지 말 것.
      */
     public void add(E element) {
-        throw new UnsupportedOperationException("TODO(02): add");
+        ensureCapacity(size + 1);
+        elements[size++] = element;
     }
 
     /**
@@ -135,7 +143,11 @@ public class DynamicArray<E> {
      * TODO(03): 구현하라.
      */
     public void add(int index, E element) {
-        throw new UnsupportedOperationException("TODO(03): add(index, element)");
+        checkPositionIndex(index);
+        ensureCapacity(size + 1);
+        System.arraycopy(elements, index, elements, index + 1, size - index);
+        elements[index] = element;
+        size++;
     }
 
     /**
@@ -145,7 +157,10 @@ public class DynamicArray<E> {
      */
     @SuppressWarnings("unchecked")
     public E set(int index, E element) {
-        throw new UnsupportedOperationException("TODO(04): set");
+        checkIndex(index);
+        E old = (E) elements[index];
+        elements[index] = element;
+        return old;
     }
 
     /**
@@ -159,7 +174,15 @@ public class DynamicArray<E> {
      */
     @SuppressWarnings("unchecked")
     public E remove(int index) {
-        throw new UnsupportedOperationException("TODO(05): remove(index)");
+        checkIndex(index);
+        E old = (E) elements[index];
+        int moved = size - index - 1;
+        if (moved > 0) {
+            System.arraycopy(elements, index + 1, elements, index, moved);
+        }
+        elements[--size] = null;
+        maybeShrink();
+        return old;
     }
 
     /**
@@ -168,7 +191,12 @@ public class DynamicArray<E> {
      * TODO(06): 구현하라. indexOf 를 활용할 수 있다.
      */
     public boolean remove(Object o) {
-        throw new UnsupportedOperationException("TODO(06): remove(Object)");
+        int index = indexOf(o);
+        if (index < 0 ) {
+            return false;
+        }
+        remove(index);
+        return true;
     }
 
     /**
@@ -180,7 +208,16 @@ public class DynamicArray<E> {
      * TODO(07): 구현하라.
      */
     public int indexOf(Object o) {
-        throw new UnsupportedOperationException("TODO(07): indexOf");
+        if ( o == null ) {
+            for (int i = 0; i < size; i++) {
+                if (elements[i] == null) return i;
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                if (o.equals(elements[i])) return i;
+            }
+        }
+        return -1;
     }
 
     /**
@@ -192,7 +229,10 @@ public class DynamicArray<E> {
      * TODO(08): 구현하라.
      */
     public void clear() {
-        throw new UnsupportedOperationException("TODO(08): clear");
+        for (int i = 0; i < size; i++) {
+            elements[i] = null;
+        }
+        size = 0;
     }
 
 
@@ -216,7 +256,10 @@ public class DynamicArray<E> {
      * TODO(15): 구현하라.
      */
     private void maybeShrink() {
-        throw new UnsupportedOperationException("TODO(15): maybeShrink");
+        int halved = elements.length / 2;
+        if (size <= elements.length / 4 && halved >= DEFAULT_CAPACITY) {
+            elements = Arrays.copyOf(elements, halved);
+        }
     }
 
     /**
@@ -225,6 +268,6 @@ public class DynamicArray<E> {
      * TODO(09): 구현하라.
      */
     public Object[] toArray() {
-        throw new UnsupportedOperationException("TODO(09): toArray");
+        return Arrays.copyOf(elements, size);
     }
 }
