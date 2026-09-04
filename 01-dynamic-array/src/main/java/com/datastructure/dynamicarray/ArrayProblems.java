@@ -34,7 +34,18 @@ public final class ArrayProblems {
      * TODO(10): 구현하라.
      */
     public static int removeDuplicatesSorted(DynamicArray<Integer> array) {
-        throw new UnsupportedOperationException("TODO(10): removeDuplicatesSorted");
+        if (array.size() == 0) return 0;
+        int writePlace = 1;
+        for (int read = 0; read < array.size(); read++) {
+            if (!array.get(read).equals(array.get(writePlace - 1))) {
+                array.set(writePlace, array.get(read));
+                writePlace++;
+            }
+        }
+        for (int i = array.size() - 1; i >= writePlace; i--) {
+            array.remove(i);
+        }
+        return array.size();
     }
 
     /**
